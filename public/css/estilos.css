@@ -1,0 +1,115 @@
+.contenido_categorias{
+    
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 10px;
+    height: 160px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-emphasis: none;
+    text-shadow: #96A78D;
+}
+.contenido_categorias:hover{
+    background: #6B7C68;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+
+.boton_categorias{
+    background: #96A78D;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    height: 100%;
+}
+.contenido_marcas{
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 5px;
+    height: 90px;
+    text-emphasis: none;
+    text-shadow: #96A78D;
+}
+.contenido_marcas:hover{
+    background: #6B7C68;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+.boton_marcas{
+    background: #96A78D;
+    
+    width: 100%;
+    height: 100%;
+}
+.contenido_colores{
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 5px;
+    height: 130px;
+    text-emphasis: none;
+    text-shadow: #96A78D;
+}
+.contenido_colores:hover{
+    background: #6B7C68;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+.boton_colores{
+    background: #96A78D;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    height: 100%;
+}
+#Guardar_Ticket{
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: xx-large;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    height: 250px;
+    margin-top: 100px; margin-left: 80px;
+
+}
+.boton_principal{
+    width: 100%;
+    height: 100%;
+}
+.boton_secundario{
+    width: 100%;
+    height: 100%;
+}
+.contenido_perdidos{
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 5px;
+    height: 125px;
+    text-emphasis: none;
+    text-shadow: #96A78D;
+}
+.contenido_perdidos:hover{
+    background: #6B7C68;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+.boton_perdidos{
+    background: #96A78D;
+    padding-right: 5px;
+    padding-left: 5px;      
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    height: 100%;
+}
