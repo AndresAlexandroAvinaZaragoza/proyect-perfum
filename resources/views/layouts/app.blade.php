@@ -16,7 +16,12 @@
   <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet" crossorigin="anonymous">
   <script src="{{ asset('js/datatables.min.js') }}"></script>
   <script src="{{ asset('js/dataTables.buttons.js') }}"></script>
+
+  <!-- Pagina cc para el layout -->
   <link rel="stylesheet" href="{{ asset('css/index.css') }}"> 
+  <! -- Fonts Family -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   
 </head>
 <body class="d-flex">
@@ -24,7 +29,7 @@
   <nav id="sidebar" class="d-flex flex-column p-3">
     <h4 class="text-center mb-4"><i class="bi"></i> Mi Panel</h4>
 
-    <ul class="nav nav-pills flex-column mb-auto">
+    <ul class="nav nav-pills flex-column mb-auto color-a ">
       <li class="nav-item">
         <a href="#" class="nav-link active"><i class="bi me-2"></i> Inicio</a>
       </li>
@@ -55,15 +60,15 @@
 
   <!-- Contenido principal -->
   <div id="content" class="w-100 position-relative">
+
     @yield('content')
-    <p>Hola</p>
 
   </div>
 
 
   <nav id="sidebar" class="d-flex flex-column p-3">
     <div>
-        <h5>Actividad Reciente</h5> 
+        <h6>Actividad Reciente</h6> 
     </div>
   </nav>
 
