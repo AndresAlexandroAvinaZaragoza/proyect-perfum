@@ -1,0 +1,33 @@
+
+h1{
+    color: #fff;
+}
+
+p{
+    color: #516F89;
+}
+
+.card-body h6{
+    color: #516F89;
+}
+
+.btn-primary{
+    background-color: #f9c344;
+    color: black;
+    border: #ffb300;
+}
+
+.btn-primary:hover{
+    background-color: #f9c34485;
+    color: rgba(248, 248, 248, 0.801);
+}
+
+.card{
+    background-color: #2D291D;
+
+}
+
+.card-custom {
+    border: 2px solid #434034;
+    
+}
