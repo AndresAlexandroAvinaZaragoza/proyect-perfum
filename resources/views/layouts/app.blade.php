@@ -61,5 +61,12 @@
   </div>
 
 
+  <nav id="sidebar" class="d-flex flex-column p-3">
+    <div>
+        <h5>Actividad Reciente</h5> 
+    </div>
+  </nav>
+
+
 </body>
 </html>

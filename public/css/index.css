@@ -3,13 +3,19 @@
     }
     /* Sidebar */
     #sidebar {
-      min-width: 220px;
+      min-width: 270px;
       max-width: 220px;
       min-height: 100vh;
+      /*
       background: #0d6efd;
+      */
+
+      background: #1a1c25;
       color: #fff;
       transition: all 0.3s;
     }
+
+
     #sidebar.collapsed {
       margin-left: -220px;
     }
@@ -28,6 +34,7 @@
       transition: all 0.3s;
       padding: 20px;
       flex-grow: 1;
+      background: #221E10;
     }
     .toggle-btn {
       position: absolute;
