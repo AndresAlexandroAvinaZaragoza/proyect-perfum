@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\MarcaController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,3 +10,5 @@ Route::get('/', function () {
 
 
 Route::resource('marca', MarcaController::class);
+
+Route::resource('usuario', UsuarioController::class);

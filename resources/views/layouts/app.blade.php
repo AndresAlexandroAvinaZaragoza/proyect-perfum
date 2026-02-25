@@ -8,7 +8,7 @@
   <!-- Bootstrap 5 CSS -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-  <script src="{{ asset('css/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
   <link rel="stylesheet" href="{{ asset('alertifyjs/css/alertify.css') }}">
 	<link rel="stylesheet" href="{{ asset('alertifyjs/css/themes/bootstrap.css') }}">
   <script src="{{ asset('alertifyjs/alertify.js') }}"></script>
@@ -31,7 +31,7 @@
 
     <ul class="nav nav-pills flex-column mb-auto color-a ">
       <li class="nav-item">
-        <a href="#" class="nav-link active"><i class="bi me-2"></i> Inicio</a>
+        <a href="{{ route('marca.index') }}" class="nav-link active"><i class="bi me-2"></i> Marcas</a>
       </li>
       <li>
         <a href="productos.php" class="nav-link"><i class="bi  me-2"></i> Productos</a>
@@ -44,7 +44,7 @@
       </li>
     
       <li>
-        <a href="usuarios.php" class="nav-link"><i class="bi  me-2"></i> Usuarios </a>
+        <a href="{{ route('usuario.index') }}" class="nav-link"><i class="bi  me-2"></i> Usuarios </a>
       </li>     
       <li>
             <a href="ventas.php" class="nav-link"><i class="bi  me-2"></i> Ventas </a>
