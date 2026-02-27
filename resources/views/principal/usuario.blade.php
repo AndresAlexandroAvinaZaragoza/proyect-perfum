@@ -86,51 +86,25 @@
                         <table class="table table-hover table-custom m-0 .table-wrapper">
                             <tr class=" th-custom">
                                 <th>Nombre</th>
-                                <th>Usuario</th>
                                 <th>Correo</th>
-                                <th>Rol</th>
                                 <th>Registro</th>
                                 <th>Acciones</th>
                             </tr>
-                            <tr class="td-custom">
-                                <td>Andres Alexandro Avina Zaragoza</td>
-                                <td>Andy</td>
-                                <td>aavina966@gmail.com</td>
-                                <td>Administrador</td>
-                                <td>2024-01-01</td>
-                                <td>
-                                    <button class="btn btn-outline-gold">
-                                        <x-icon name="edit" class="me-1" width="16" height="16"/></button>
-                                    <button class="btn btn-outline-gold">
-                                        <x-icon name="delete" class="me-1" width="16" height="16"/></button>
-                                </td>
-                            </tr>
-                                                        <tr class="td-custom">
-                                <td>Andres Alexandro Avina Zaragoza</td>
-                                <td>Andy</td>
-                                <td>aavina966@gmail.com</td>
-                                <td>Administrador</td>
-                                <td>2024-01-01</td>
-                                <td>
-                                    <button class="btn btn-outline-gold">
-                                        <x-icon name="edit" class="me-1" width="16" height="16"/></button>
-                                    <button class="btn btn-outline-gold">
-                                        <x-icon name="delete" class="me-1" width="16" height="16"/></button>
-                                </td>
-                            </tr>
-                                                        <tr class="td-custom">
-                                <td>Andres Alexandro Avina Zaragoza</td>
-                                <td>Andy</td>
-                                <td>aavina966@gmail.com</td>
-                                <td>Administrador</td>
-                                <td>2024-01-01</td>
-                                <td>
-                                    <button class="btn btn-outline-gold">
-                                        <x-icon name="edit" class="me-1" width="16" height="16"/></button>
-                                    <button class="btn btn-outline-gold">
-                                        <x-icon name="delete" class="me-1" width="16" height="16"/></button>
-                                </td>
-                            </tr>
+                            @foreach ($usuarios as $usuario)
+                                <tr class="td-custom">
+                                    <td>{{ $usuario->name }}</td>
+                                    <td>{{ $usuario->email }}</td>
+                                    <td>{{ $usuario->created_at }}</td>
+                                    <td>
+                                        <button class="btn btn-outline-gold">
+                                            <x-icon name="edit" class="me-1" width="16" height="16"/>
+                                        </button>
+                                        <button class="btn btn-outline-gold">
+                                            <x-icon name="delete" class="me-1" width="16" height="16"/>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </table>
                     </div>
                 </div>

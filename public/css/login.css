@@ -1,0 +1,5 @@
+.card {
+    background-color: #2C2516;  /* Color oscuro de fondo */
+    border: 1px solid #483C1D;  /* Borde naranja */
+    color: #fff;                /* Texto blanco */
+}

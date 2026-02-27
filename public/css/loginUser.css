@@ -1,0 +1,17 @@
+body {
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+                url('/storage/imageSistem/imagen2.png') center/cover no-repeat fixed;
+    color: #fff;
+    font-family: 'Manrope', sans-serif;
+}
+.h1-custom{
+    color: #fff;
+}
+p{
+    color: #fff;
+}
+
+.img-custom{
+    width: 250px;
+    height: 175px;
+}
