@@ -22,8 +22,10 @@ return new class extends Migration
                     ->restrictOnDelete();
 
                 $table->foreignId('usuario_id')
-                    ->constrained('usuarios')
+                    ->constrained('users')
                     ->cascadeOnDelete();
+                    
+            $table->timestamps();
         });
     }
 

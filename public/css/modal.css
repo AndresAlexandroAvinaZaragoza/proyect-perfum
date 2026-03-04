@@ -1,0 +1,49 @@
+.modal-fonts{
+    font-family: 'Manrope', sans-serif;
+}
+
+.modal-custom-body{
+    background: #221E11;
+}
+
+.custom-input {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #483C1D;
+    color: #fff;
+}
+
+.custom-input:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #C5A059;
+    color: #fff;
+    box-shadow: none;
+}
+
+.label-color{
+    color: #C59B37;
+}
+
+.modal-header-footer{
+    background: #2D2613;
+}
+
+.h5-custom{
+    color: white;
+
+}
+
+.p-custom{
+    color: #8492A2;
+}
+
+.mi-modal {
+    border: 1px solid #443817;   /* color que quieras */
+    border-radius: 12px;
+}
+
+.mi-header-modal {
+    border-bottom: 1px solid #443817;  /* nuevo color */
+}
+.mi-modal .modal-footer {
+    border-top: 1px solid #443817;
+}

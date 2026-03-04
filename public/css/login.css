@@ -1,5 +1,49 @@
-.card {
-    background-color: #2C2516;  /* Color oscuro de fondo */
-    border: 1px solid #483C1D;  /* Borde naranja */
-    color: #fff;                /* Texto blanco */
+.custom-card {
+    background-color: rgba(30, 25, 15, 0.7); /* Fondo oscuro con ligera transparencia */
+    border: 1px solid #C5A059; /* Borde dorado */
+    border-radius: 12px;
+    backdrop-filter: blur(8px); /* Efecto de cristal esmerilado */
+}
+
+/* Estilo para los inputs */
+.custom-input {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #483C1D;
+    color: #fff;
+}
+
+.custom-input:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #C5A059;
+    color: #fff;
+    box-shadow: none;
+}
+
+/* Botón principal */
+.btn-gold {
+    background-color: #C5A059;
+    color: #1A150D;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover, .btn-gold:focus {
+    background-color: #DFB96E; /* Dorado más claro al pasar el mouse */
+    color: #1A150D;
+    transform: translateY(-2px);
+}
+
+/* Enlaces */
+.link-gold {
+    color: #C5A059;
+    transition: color 0.3s ease;
+}
+
+.link-gold:hover {
+    color: #DFB96E;
+}
+
+.h3-custom{
+    color: #ffffff8a;
 }

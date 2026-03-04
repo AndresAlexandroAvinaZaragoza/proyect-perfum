@@ -2,6 +2,7 @@
     @section('content')
 
         <link rel="stylesheet" href="{{ asset('css/marca.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=edit" />
             <header class="mb-4">
@@ -11,7 +12,7 @@
                         <p>Directorio Global de Fabricantes</p>
                     </div>
 
-                    <button class="btn btn-primary btn-lg">
+                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#agregarMarca">
                         + Agregar Marca
                     </button>
                 </div>
@@ -56,15 +57,27 @@
                         <div class="">
                             <div class="card card-custom rounded-4 h-100">
                                 <div class="card-body">
-                                    <form class="d-flex d-grid gap-3 w-60" role="search" >
-                                        <input class="form-control me-8 search-custom" type="search" placeholder="Buscar por nombre, marca o fecha" aria-label="Search"/>
-                                        <select class="form-select w-auto">
-                                            <option selected>Filtrar por</option>
-                                            <option value="nombre">Nombre</option>
-                                            <option value="marca">Marca</option>
-                                            <option value="fecha">Fecha</option>
+                                    <form class="d-flex d-grid gap-3 w-60" method="GET" action="{{ route('marca.index') }}">
+                                        <!-- Buscador -->
+                                        <input 
+                                            class="form-control me-8 search-custom" 
+                                            type="search" 
+                                            name="search"
+                                            value="{{ request('search') }}"
+                                            placeholder="Buscar..." 
+                                        />
+                                        <!-- Ordenamiento por nombre, fecha, pais o vocal -->
+                                        <select class="form-select w-auto" name="filter">
+                                            <option value="">Filtrar por</option>
+                                            <option value="nombre" {{ request('filter') == 'nombre' ? 'selected' : '' }}>Nombre</option>
+                                            <option value="pais_origen" {{ request('filter') == 'pais_origen' ? 'selected' : '' }}>País</option>
+                                            <option value="fecha" {{ request('filter') == 'fecha' ? 'selected' : '' }}>Fecha</option>
                                         </select>
-                                        <button class="btn btn-sm btn-outline-gold w-25" type="submit">Ordenar A-Z</button>
+
+                                        <button class="btn btn-sm btn-outline-gold w-25" name="orden" value="az">
+                                            Ordenar A-Z
+                                        </button>
+
                                     </form>
                                 </div>
                             </div>
@@ -83,30 +96,229 @@
                             <tr class=" th-custom">
                                 <th>Nombre</th>
                                 <th>Pais de Origen</th>
-                                <th>Fecha de Creación</th>
                                 <th>Usuario</th>
+                                <th>Fecha de Creación</th>
+                                <th>Ultima Actualizacion</th>
                                 <th>Acciones</th>
                             </tr>
-                            <tr class="td-custom">
-                                <td>Chanel</td>
-                                <td>Francia</td>
-                                <td>1910</td>
-                                <td>admin</td>
-                                <td>
-                                    <button class="btn btn-outline-gold">
-                                        <x-icon name="edit" class="me-1" width="16" height="16"/></button>
-                                    <button class="btn btn-outline-gold">
-                                        <x-icon name="delete" class="me-1" width="16" height="16"/></button>
-                                </td>
-                            </tr>
+                            @foreach ($marcas as $marca)
+                                <tr class="td-custom">
+                                    <td>{{ $marca->nombre }}</td>
+                                    <td>{{ $marca->pais_origen }}</td>
+                                    <td>{{ $marca->usuario_id}}</td>
+                                    <td>{{ $marca->created_at->format('d/m/Y H:i')}}</td>
+                                    <td>{{ $marca->updated_at->format('d/m/Y H:i') }}</td>
+                                    <td>
+
+                                        {{$marca->id}}
+                                        <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $marca->id }}">
+                                            <x-icon name="edit" class="me-1" width="16" height="16"/>
+                                        </button>
+
+                                        
+                                        <!-- Modal Para Editar una Marca-->
+                                        <div class="modal fade modal-fonts" id="edit{{ $marca->id }}" data-bs-backdrop="static"
+                                            data-bs-keyboard="false" tabindex="-1"
+                                            aria-labelledby="editLabel{{ $marca->id }}" aria-hidden="true">
+
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content mi-modal">
+
+                                                    <!-- Header -->
+                                                    <div class="modal-header mi-header-modal position-relative modal-header-footer">
+
+                                                        <div class="w-100">
+                                                            <h5 class="modal-title mb-1 h5-custom" id="editLabel{{ $marca->id }}">
+                                                                Registrar una Nueva Marca
+                                                            </h5>
+                                                            <p class="mb-0 small p-custom">
+                                                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                                            </p>
+                                                        </div>
+
+                                                        <button type="button"
+                                                                class="btn-close position-absolute end-0 top-0 m-3"
+                                                                data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+
+                                                    </div>
+
+                                                    <!-- Form -->
+                                                    <form method="POST" action="{{ route('marca.update', $marca->id) }}" enctype="multipart/form-data">
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <!-- Body -->
+                                                        <div class="modal-body modal-custom-body">
+
+                                                            <div class="mb-3">
+                                                                <label for="nombre" class="form-label label-color">Agregar Marca</label>
+                                                                <input type="text"
+                                                                    class="form-control custom-input"
+                                                                    id="nombre"
+                                                                    name="nombre"
+                                                                    value="{{ $marca->nombre }}"
+                                                                    required>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label for="pais_origen" class="form-label label-color">Pais de Origen</label>
+                                                                <input type="text"
+                                                                    class="form-control custom-input"
+                                                                    id="pais_origen"
+                                                                    name="pais_origen"
+                                                                    value="{{ $marca->pais_origen }}"
+                                                                    required>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Footer -->
+                                                        <div class="modal-footer mi-footer-modal modal-header-footer">                            
+                                <!-- 
+                                                            <a href="{{ route('login') }}"
+                                                            class="text-decoration-none">
+                                                                ¿Ya estás registrado?
+                                                            </a>
+                                -->
+                                                            <div>
+                                                                <button type="button"
+                                                                        class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">
+                                                                    Cancelar
+                                                                </button>
+
+                                                                <button type="submit"
+                                                                        class="btn btn-primary">
+                                                                    Guardar Marca
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>        
+
+                                        <form id="delete-form-{{ $marca->id }}" 
+                                            action="{{ route('marca.destroy', $marca->id) }}" 
+                                            method="POST" 
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="button" 
+                                                    class="btn btn-outline-danger"
+                                                    onclick="confirmDelete({{ $marca->id }})">
+                                                <x-icon name="delete" width="16" height="16"/>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
                         </table>
+                        <div class="mt-3">
+                            {{ $marcas->withQueryString()->links() }}
+                        </div>
                     </div>
                 </div>
             </section>
         </div>
         
-        <footer></footer>
+        <!-- Modal Para Agregar Una nueva Marca-->
+        <div class="modal fade modal-fonts" id="agregarMarca" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content mi-modal">
+
+                    <!-- Header -->
+                    <div class="modal-header mi-header-modal position-relative modal-header-footer">
+
+                        <div class="w-100">
+                            <h5 class="modal-title mb-1 h5-custom" id="staticBackdropLabel">
+                                Registrar una Nueva Marca
+                            </h5>
+                            <p class="mb-0 small p-custom">
+                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                            </p>
+                        </div>
+
+                        <button type="button"
+                                class="btn-close position-absolute end-0 top-0 m-3"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+
+                    </div>
+
+                    <!-- Form -->
+                    <form method="POST" action="{{ route('marca.store') }}">
+                        @csrf
+
+                        <!-- Body -->
+                        <div class="modal-body modal-custom-body">
+
+                            <div class="mb-3">
+                                <label for="nombre" class="form-label label-color">Agregar Marca</label>
+                                <input type="text"
+                                    class="form-control custom-input"
+                                    id="nombre"
+                                    name="nombre"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="pais_origen" class="form-label label-color">Pais de Origen</label>
+                                <input type="text"
+                                    class="form-control custom-input"
+                                    id="pais_origen"
+                                    name="pais_origen"
+                                    required>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="modal-footer mi-footer-modal modal-header-footer">                            
+<!-- 
+                            <a href="{{ route('login') }}"
+                            class="text-decoration-none">
+                                ¿Ya estás registrado?
+                            </a>
+-->
+                            <div>
+                                <button type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+
+                                <button type="submit"
+                                        class="btn btn-primary">
+                                    Guardar Marca
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+         <script>
+            function confirmDelete(id) {
+                alertify.confirm(
+                    'Eliminar Marca',
+                    '¿Estás seguro de que deseas eliminar esta marca?',
+                    function() {
+                        document.getElementById('delete-form-' + id).submit();
+                    },
+                    function() {
+                        alertify.error('Cancelado');
+                    }
+                );
+            }
+        </script>
     @endsection
 
 

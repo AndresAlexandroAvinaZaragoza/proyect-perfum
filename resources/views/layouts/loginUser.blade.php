@@ -15,7 +15,7 @@
                 <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
                     
                     <header class="mb-4">
-                        <img class="img-custom mb-3" src="{{ asset('storage/imageSistem/logo.png') }}" alt="Logo Perfum Intense">
+                        <img class="img-custom" src="{{ asset('storage/imageSistem/logo.jpeg') }}" alt="Logo Perfum Intense">
                         <p class="text-white-50 fs-5 mb-0">Sistema Administrativo</p>
                     </header>
                     

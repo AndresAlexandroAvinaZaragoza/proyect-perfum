@@ -11,12 +11,26 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <!-- User -->
+        <div class="mt-4">
+            <x-input-label for="usuario" value="Usuario" />
+            <x-text-input id="usuario" name="usuario" type="text" class="block mt-1 w-full" required />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
+        <!-- Rol -->
+        <div class="mt-4">
+            <x-input-label for="rol" value="Rol" />
+            <select name="rol" class="form-control block mt-1 w-full">
+                <option value="empleado">Empleado</option>
+                <option value="admin">Administrador</option>
+            </select>
+        </div>          
 
         <!-- Password -->
         <div class="mt-4">

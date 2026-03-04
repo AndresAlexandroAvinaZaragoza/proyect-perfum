@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('plan', 20);
             $table->dateTime('registro_fecha');
             $table->string('estatus', 20);
+
+            $table->timestamps();
         });
     }
 

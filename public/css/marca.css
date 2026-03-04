@@ -130,3 +130,7 @@ p{
     overflow: hidden; /* 🔥 CLAVE para que funcione */
     border: 2px solid #3a3525;
 }
+
+.h1-custom{
+    color: #242116;
+}

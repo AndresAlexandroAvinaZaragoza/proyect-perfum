@@ -29,25 +29,28 @@
         <h4 class="text-center mb-4"><i class="bi"></i> Mi Panel</h4>
 
         <ul class="nav nav-pills flex-column mb-auto color-a ">
-        <li class="nav-item">
-            <a href="{{ route('marca.index') }}" class="nav-link active"><i class="bi me-2"></i> Marcas</a>
-        </li>
-        <li>
-            <a href="productos.php" class="nav-link"><i class="bi  me-2"></i> Productos</a>
-        </li>
-        <li>
-            <a href="pedidos.php" class="nav-link"><i class="bi  me-2"></i> Pedidos </a>
-        </li>
-        <li>
-            <a href="provedores.php" class="nav-link"><i class="bi me-2"></i> Provedores </a>
-        </li>
-        
-        <li>
-            <a href="{{ route('usuario.index') }}" class="nav-link"><i class="bi  me-2"></i> Usuarios </a>
-        </li>     
-        <li>
-                <a href="ventas.php" class="nav-link"><i class="bi  me-2"></i> Ventas </a>
-        </li>   
+            <li class="nav-item">
+                <a href="{{ route('dashboard') }}" class="nav-link"><i class="bi me-2"></i> Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ route('marca.index') }}" class="nav-link active"><i class="bi me-2"></i> Marcas</a>
+            </li>
+            <li>
+                <a href="productos.php" class="nav-link"><i class="bi  me-2"></i> Productos</a>
+            </li>
+            <li>
+                <a href="pedidos.php" class="nav-link"><i class="bi  me-2"></i> Pedidos </a>
+            </li>
+            <li>
+                <a href="provedores.php" class="nav-link"><i class="bi me-2"></i> Provedores </a>
+            </li>
+            
+            <li>
+                <a href="{{ route('usuario.index') }}" class="nav-link"><i class="bi  me-2"></i> Usuarios </a>
+            </li>     
+            <li>
+                    <a href="ventas.php" class="nav-link"><i class="bi  me-2"></i> Ventas </a>
+            </li>   
         </ul>
 
         <div class="mt-auto text-center">

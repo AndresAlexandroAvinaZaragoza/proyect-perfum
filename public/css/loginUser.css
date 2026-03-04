@@ -1,9 +1,17 @@
 body {
-    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)),
+    /* Degradado de izquierda a derecha para aprovechar la imagen asimétrica */
+    background: linear-gradient(to right, rgba(15, 12, 7, 0.95) 0%, rgba(15, 12, 7, 0.2) 100%),
                 url('/storage/imageSistem/imagen2.png') center/cover no-repeat fixed;
     color: #fff;
     font-family: 'Manrope', sans-serif;
+    margin: 0;
 }
+
+.img-custom {
+    max-width: 220px;
+    height: auto;
+}
+
 .h1-custom{
     color: #fff;
 }
@@ -11,7 +19,3 @@ p{
     color: #fff;
 }
 
-.img-custom{
-    width: 250px;
-    height: 175px;
-}
