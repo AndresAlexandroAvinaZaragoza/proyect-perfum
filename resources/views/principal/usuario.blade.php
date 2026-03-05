@@ -385,7 +385,7 @@
                     }
                 );
             }
-        </script>`  
+        </script>
 
 @endSection
 

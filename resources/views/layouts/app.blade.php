@@ -36,7 +36,7 @@
                 <a href="{{ route('marca.index') }}" class="nav-link active"><i class="bi me-2"></i> Marcas</a>
             </li>
             <li>
-                <a href="productos.php" class="nav-link"><i class="bi  me-2"></i> Productos</a>
+                <a href="{{ route('perfume.index')}}" class="nav-link"><i class="bi  me-2"></i> Perfumes </a>
             </li>
             <li>
                 <a href="pedidos.php" class="nav-link"><i class="bi  me-2"></i> Pedidos </a>

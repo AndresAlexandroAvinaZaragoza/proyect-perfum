@@ -88,7 +88,11 @@
                 
             <section>
 
-
+            @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+            @endif
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
                     <div class="card-body p-0">

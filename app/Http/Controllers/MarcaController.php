@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Marca;
+use App\MOdels\Perfume;
 use Illuminate\Http\Request;
 
 class MarcaController extends Controller
@@ -65,7 +66,7 @@ class MarcaController extends Controller
 
     public function show($id)
     {
-        //
+        
     }
 
     public function edit($id)
@@ -93,4 +94,9 @@ class MarcaController extends Controller
         return redirect()->back()->with('success', 'Marca eliminada correctamente');
     }
     
+    public function perfumes()
+    {
+        return $this->hasMany(Perfume::class);
+    }
+
 }
