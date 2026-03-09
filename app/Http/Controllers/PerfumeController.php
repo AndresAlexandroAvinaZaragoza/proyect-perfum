@@ -19,7 +19,7 @@ class PerfumeController extends Controller
 
         if($request->genero){
             $query->where('genero',$request->genero);
-        }
+        } 
 
         if($request->marca){
             $query->where('marca_id',$request->marca);

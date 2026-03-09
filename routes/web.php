@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ProovedorController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\PerfumeController;
@@ -15,8 +17,8 @@ Route::get('/', function () {
 Route::resource('marca', MarcaController::class)->middleware(['auth', 'verified']);
 Route::resource('usuario', UsuarioController::class)->middleware(['auth', 'verified']);
 Route::resource('perfume', PerfumeController::class)->middleware(['auth', 'verified']);
-
-
+Route::resource('proovedor', ProovedorController::class)->middleware(['auth', 'verified']);
+Route::resource('cliente', ClienteController::class)->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

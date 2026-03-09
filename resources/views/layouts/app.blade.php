@@ -39,10 +39,10 @@
                 <a href="{{ route('perfume.index')}}" class="nav-link"><i class="bi  me-2"></i> Perfumes </a>
             </li>
             <li>
-                <a href="pedidos.php" class="nav-link"><i class="bi  me-2"></i> Pedidos </a>
+                <a href="{{ route('cliente.index') }}" class="nav-link"><i class="bi  me-2"></i> Clientes </a>
             </li>
             <li>
-                <a href="provedores.php" class="nav-link"><i class="bi me-2"></i> Provedores </a>
+                <a href="{{ route('proovedor.index')}}" class="nav-link"><i class="bi me-2"></i> Provedores </a>
             </li>
             
             <li>
