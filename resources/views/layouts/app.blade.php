@@ -44,12 +44,11 @@
             <li>
                 <a href="{{ route('proovedor.index')}}" class="nav-link"><i class="bi me-2"></i> Provedores </a>
             </li>
-            
             <li>
                 <a href="{{ route('usuario.index') }}" class="nav-link"><i class="bi  me-2"></i> Usuarios </a>
             </li>     
             <li>
-                    <a href="ventas.php" class="nav-link"><i class="bi  me-2"></i> Ventas </a>
+                <a href="{{ route('inventario.index') }}" class="nav-link"><i class="bi  me-2"></i> Inventario </a>
             </li>   
         </ul>
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProovedorController;
 use App\Http\Controllers\MarcaController;
@@ -19,6 +20,7 @@ Route::resource('usuario', UsuarioController::class)->middleware(['auth', 'verif
 Route::resource('perfume', PerfumeController::class)->middleware(['auth', 'verified']);
 Route::resource('proovedor', ProovedorController::class)->middleware(['auth', 'verified']);
 Route::resource('cliente', ClienteController::class)->middleware(['auth', 'verified']);
+Route::resource('inventario', InventarioController::class)->middleware(['auth', 'verified']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
