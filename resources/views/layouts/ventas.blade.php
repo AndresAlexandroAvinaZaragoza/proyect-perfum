@@ -15,12 +15,11 @@
         <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet" crossorigin="anonymous">
         <script src="{{ asset('js/datatables.min.js') }}"></script>
         <script src="{{ asset('js/dataTables.buttons.js') }}"></script>
-
         <!-- Iconos -->
         <script src="https://kit.fontawesome.com/84a2950b3f.js" crossorigin="anonymous"></script>
         <!-- Pagina cc para el layout -->
         <link rel="stylesheet" href="{{ asset('css/index.css') }}"> 
-        <!-- Fonts Family -->
+        <! -- Fonts Family -->
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
         
@@ -74,16 +73,9 @@
     <!-- Contenido principal -->
     <div id="content" class="w-100 position-relative">
 
-        @yield('content')
+        @yield('contentVenta')
 
     </div>
-
-
-    <nav id="sidebar" class="d-flex flex-column p-3">
-        <div>
-            <h6>Actividad Reciente</h6> 
-        </div>
-    </nav>
 
 
     </body>

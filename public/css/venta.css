@@ -1,4 +1,5 @@
 
+
 h1{
     color: #fff;
 }
@@ -9,6 +10,10 @@ p{
 
 .card-body h6{
     color: #516F89;
+}
+
+.h6-custom{
+    color: #ffff;
 }
 
 .btn-primary{
@@ -23,12 +28,12 @@ p{
 }
 
 .card{
-    background-color: #2D291D;
+    background-color: #1A1614;
 
 }
 
 .card-custom {
-    border: 1px solid #434034;
+    border: 1px solid #2D2621;
     
 }
 
@@ -60,9 +65,9 @@ p{
 }
 
 .form-select {
-    background-color: #242116;
+    background-color: #120F0D;
     color: white;
-    border: 2px solid #3a3525;
+    border: 1px solid #3a3525;
 }
 
 .form-select:focus {
@@ -116,21 +121,83 @@ p{
 }
 
 .th-custom th {
-    background-color: #282519;
+    background-color: #120F0D;
     color: #516F89;
 }
 
 .td-custom td{
     color: white;
+    background-color: #1A1614;
 }
 
 .table-wrapper {
     background-color: #2D291D;
     border-radius: 16px;
-    overflow: hidden; /* 🔥 CLAVE para que funcione */
+    overflow: hidden; 
     border: 2px solid #3a3525;
 }
 
 .h1-custom{
     color: #242116;
+}
+
+.input-group-text {
+    background: transparent !important;
+    border: none !important;
+    color: #c9a646; /* dorado */
+}
+
+/* Decoraicon select2 */
+
+.select2-container .select2-selection--single {
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid #2C2621 !important;
+    background-color: #120F0D !important;
+    padding: 5px;
+    transition: all 0.2s ease;
+}
+
+.select2-dropdown {
+    background-color: #120F0D !important; /* fondo del menú */
+    color: #ffff;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #c9a646;
+    box-shadow: 0 0 0 2px #ffb300;
+}
+
+.select2-results__option--highlighted {
+    background-color: #6366f1 !important;
+}
+
+.select2-container--default .select2-selection--single {
+    color: #e0f2fe !important;
+}
+
+.select2-container--default .select2-selection--single {
+    padding-left: 35px !important; /* espacio para el icono */
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+
+/* Altura del select2 */
+.select2-container--default .select2-selection--single {
+    height: 38px !important; /* igual que Bootstrap */
+    display: flex;
+    align-items: center;
+    border-radius: 0.5rem; /* opcional para que combine con tu card */
+}
+
+/* Texto centrado vertical */
+.select2-container--default .select2-selection__rendered {
+    line-height: normal !important;
+}
+
+/* Flechita alineada */
+.select2-container--default .select2-selection__arrow {
+    height: 100% !important;
 }

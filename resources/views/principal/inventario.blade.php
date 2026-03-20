@@ -7,11 +7,13 @@
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=edit" />
         
-<!-- jQuery PRIMERO -->
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Luego Select2 -->
+<!-- Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+
+<!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <header class="mb-4">
                 <div class="d-flex justify-content-between align-items-center">
@@ -65,7 +67,7 @@
                         <div class="">
                             <div class="card card-custom rounded-4 h-100">
                                 <div class="card-body">
-                                    <form id="filtros" method="GET" action="{{ route('perfume.index') }}" class="d-flex gap-3 flex-wrap">
+                                    <form id="filtros" method="GET" action="{{ route('inventario.index') }}" class="d-flex gap-3 flex-wrap">
 
                                         <!-- Buscador -->
                                         <input 
@@ -172,7 +174,7 @@
                                     <td>{{ $inventario->usuario->usuario ?? 'Sin usuario' }}</td>
                                     <td>
                                         <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $inventario->id }}">
-                                            <x-icon name="edit" class="me-1" width="16" height="16"/>
+                                            <x-icon name="edit" class="me-1" width="165" height="16"/>
                                         </button>
 
                                         
@@ -300,7 +302,7 @@
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-
+                                            
                                             <button type="button" 
                                                     class="btn btn-outline-danger"
                                                     onclick="confirmDelete({{ $inventario->id }})">
@@ -353,14 +355,15 @@
                         <div class="modal-body modal-custom-body">
 
                             <div class="mb-3">
-                                <label>Perfume</label>
+                                <label class="form-label label-color">Perfume</label>
+                                <br>
                                 <select id="perfume_id" name="perfume_id" class="form-control">
                                     <option value="">Seleccionar perfume</option>
 
                                     @foreach ($perfumes as $perfume)
                                         <option 
                                         value="{{ $perfume->id }}">
-                                        {{ $perfume->nombre . ' - ' . $perfume->concentracion . ' - ' . $perfume->contenido . 'ml' . ' - ' . $perfume->genero }}
+                                        {{ $perfume->tipo . '-' . $perfume->nombre . ' - ' . $perfume->concentracion . ' - ' . $perfume->contenido . 'ml' . ' - ' . $perfume->genero }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -420,7 +423,7 @@
                 </div>
             </div>
         </div>
-         <script>
+        <script>
             function confirmDelete(id) {
                 alertify.confirm(
                     'Eliminar Perfume',
@@ -473,7 +476,7 @@
         
         <!-- Scrip para rellenar datos del select2 -->
         <script>
-            $('#perfume_select').select2({
+            $('#perfume_id').select2({
                 placeholder: "Buscar perfume...",
                 allowClear: true,
                 minimumResultsForSearch: 0,
