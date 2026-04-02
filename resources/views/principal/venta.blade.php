@@ -81,6 +81,7 @@
                                             <option value="{{ $inventario->id }}"
                                             data-nombre="{{ $inventario->perfume->nombre ?? 'Sin nombre' }} - {{ $inventario->perfume->concentracion ?? '' }} - {{ $inventario->perfume->contenido ?? '' }}ml - {{ $inventario->perfume->genero ?? '' }} - {{ $inventario->perfume->tipo ?? 'sin tipo' }}"
                                             data-precio="{{ $inventario->precio_venta}}"
+                                            data-stock="{{ $inventario->stock }}"
                                             >
                                                 {{ $inventario->perfume->nombre ?? 'Sin nombre' }} -
                                                 {{ $inventario->perfume->concentracion ?? '' }} -
@@ -119,6 +120,7 @@
                                         <tr class="th-custom">
                                             <th>Producto</th>
                                             <th>Cantidad</th>
+                                            <th>Stock</th>
                                             <th>Precio</th>
                                             <th>Subtotal</th>
                                             <th>Acciones</th>
@@ -155,17 +157,34 @@
                             <strong id="iva" class="h6-custom">$0</strong>
                         </div>
 
+
                         <hr>
 
+                        <br>
                         <div class="d-flex justify-content-between mb-3">
                             <span class="h6-custom">Total:</span>
                             <strong id="total" class="h6-custom">$0</strong>
                         </div>
+                        
+                        <div>
 
-                        <!-- BOTÓN ABAJO -->
-                        <button class="btn btn-success w-100 mt-auto">
-                            <i class="fa-solid fa-cart-shopping"></i> Finalizar venta
-                        </button>
+                            <p>METODO DE OPERACION</p>  
+
+                            <label for="">
+
+                            </label>
+
+                            <label for="">
+                                
+                            </label>
+                            <!-- BOTÓN ABAJO -->
+                            <button class="button w-100 mt-auto">
+
+                            Finalizar venta <i class="fa-solid fa-arrow-right"></i> 
+                            </button>
+
+                        </div>
+
 
                     </div>
                 </div>
@@ -194,20 +213,25 @@
                 let id = selected.val();
                 let nombre = selected.data('nombre');
                 let precio = selected.data('precio');
-
+                let stock = selected.data('stock');    
                 if (!id) return;
 
                 // Ver si ya existe
                 let producto = carrito.find(p => p.id == id);
 
                 if (producto) {
-                    producto.cantidad += 1;
+                    if(producto.cantidad < producto.stock) {
+                        producto.cantidad +=1;
+                    } else {
+                        alert('No hay suficiente stock disponible');
+                    }
                 } else {
                     carrito.push({
                         id: id,
                         nombre: nombre,
                         precio: precio,
-                        cantidad: 1
+                        cantidad: 1,
+                        stock: stock
                     });
                 }
 
@@ -250,6 +274,7 @@
 
                                 </div>
                             </td>
+                            <td>${item.cantidad} / ${item.stock}</td>
                             <td>$${item.precio}</td>
                             <td>$${sub}</td>
                             <td>
@@ -291,8 +316,13 @@
 
                 nuevaCantidad = parseInt(nuevaCantidad);
 
-                if (nuevaCantidad < 1 || isNaN(nuevaCantidad)) {
+                if (isNaN(nuevaCantidad) || nuevaCantidad < 1) {
                     nuevaCantidad = 1;
+                }
+
+                if(nuevaCantidad > carrito[index].stock){
+                    nuevaCantidad = carrito[index].stock;
+                    alert('No puedes agregar más de ' + carrito[index].stock + ' unidades de este producto');
                 }
 
                 carrito[index].cantidad = nuevaCantidad;
@@ -301,8 +331,12 @@
             }
 
             function sumar(index) {
-                carrito[index].cantidad++;
-                renderTabla();
+                if(carrito[index].cantidad < carrito[index].stock) {
+                    carrito[index].cantidad++;
+                    renderTabla();
+                } else {
+                    alert('No hay suficiente stock disponible');
+                }
             }
 
             function restar(index) {
@@ -310,6 +344,11 @@
                     carrito[index].cantidad--;
                     renderTabla();
                 }
+            }
+
+            function strockmax(index) {
+
+            
             }
         </script>
 
