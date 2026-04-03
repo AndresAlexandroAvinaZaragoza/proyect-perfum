@@ -19,9 +19,9 @@ class VentaController extends Controller
 
 
         $clientes = Cliente::orderBy('nombre')->get();
-
-        //cargamos la relacion perfume
-        $inventarios = Inventario::with('perfume')->get();
+        
+        //cargamos la relacion inventario para mostrar solo los perfumes disponibles
+        $inventarios = Inventario::with('perfume')->where('stock', '>', 0)->get();
         return view('principal.venta', compact('clientes', 'inventarios'));
     }
 
@@ -44,13 +44,13 @@ class VentaController extends Controller
             $carrito = json_decode($request->carrito, true);
 
             foreach($carrito as $item){
-
+            $inventario = Inventario::find($item['id']);
                 //guardar detalle en la tabla detalle__venta
                 Detalle_Venta::create([
                     'venta_id' => $venta->id,
-                    'perfume_id' => $item['id'], //enrealidad es del inventario pero como el perfume es unico por inventario se puede usar el mismo id
-                    'cantidad' => $item['cantidad'],
+                    'perfume_id' => $inventario->perfume_id,
                     'precio_unitario' => $item['precio'],
+                    'cantidad' => $item['cantidad'],
                     'subtotal' => $item['precio'] * $item['cantidad'],
                     'empresa_id' => 1
                 ]);

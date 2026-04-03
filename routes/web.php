@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\DeudaController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ClienteController;
@@ -25,7 +25,7 @@ Route::resource('proovedor', ProovedorController::class)->middleware(['auth', 'v
 Route::resource('cliente', ClienteController::class)->middleware(['auth', 'verified']);
 Route::resource('inventario', InventarioController::class)->middleware(['auth', 'verified']);
 Route::resource('venta', VentaController::class)->middleware(['auth', 'verified']);
-
+Route::resource('deuda', DeudaController::class)->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

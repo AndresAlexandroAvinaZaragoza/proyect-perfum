@@ -55,6 +55,9 @@
             <li>
                 <a href="{{ route('venta.index') }}" class="nav-link"><i class="bi  me-2"></i> Ventas </a>
             </li>  
+            <li>
+                <a href="{{ route('deuda.index') }}" class="nav-link"><i class="bi  me-2"></i> Deuda </a>
+            </li>
         </ul>
 
         <div class="mt-auto text-center">

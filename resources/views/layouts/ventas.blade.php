@@ -19,7 +19,7 @@
         <script src="https://kit.fontawesome.com/84a2950b3f.js" crossorigin="anonymous"></script>
         <!-- Pagina cc para el layout -->
         <link rel="stylesheet" href="{{ asset('css/index.css') }}"> 
-        <! -- Fonts Family -->
+        <!-- Fonts Family -->
         <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
         
@@ -54,6 +54,9 @@
             <li>
                 <a href="{{ route('venta.index') }}" class="nav-link"><i class="bi  me-2"></i> Ventas </a>
             </li>  
+            <li>
+                <a href="{{ route('deuda.index') }}" class="nav-link"><i class="bi  me-2"></i> Deuda </a>
+            </li>
         </ul>
 
         <div class="mt-auto text-center">
