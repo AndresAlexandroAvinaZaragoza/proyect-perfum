@@ -30,7 +30,7 @@
     <nav id="sidebar" class="d-flex flex-column p-3">
         <h4 class="text-center mb-4"><i class="bi"></i> Mi Panel</h4>
 
-        <ul class="nav nav-pills flex-column mb-auto color-a ">
+        <ul class="nav nav-pills flex-column mb-auto color-a  ">
             <li class="nav-item">
                 <a href="{{ route('dashboard') }}" class="nav-link"><i class="bi me-2"></i> Dashboard</a>
             </li>

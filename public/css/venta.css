@@ -201,9 +201,21 @@ p{
     height: 100% !important;
 }
 
+.h-custom{
+    height: 34rem;
+}
+
+.h-custom-2{
+    height: 42rem;
+}
 
 
 /* apartado venta */
+
+.card-title-venta{
+    font-size: 30px;
+    color: #fff;
+}
 
 .btn-venta{
     background-color: #FFC107;
@@ -221,11 +233,12 @@ p{
     font-size: 18px;
     color: rgb(193, 163, 98);
     border: 2px solid rgb(193, 163, 98);
-    border-radius: 34px;
+    border-radius: 15px;
     background-color: transparent;
     font-weight: 600;
     transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
     overflow: hidden;
+
 }
 
 .button::before {
@@ -257,3 +270,88 @@ p{
 }
 
 
+.radio-inputs {
+    display: flex;
+    justify-content: center;
+    alaign-items: center;
+    gap: 10px;
+}
+
+.radio-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 217px;
+    min-height: 120px;
+    border-radius: 12px;
+    border: 2px solid #2c2c2c;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+}
+
+/* ICONO */
+.radio-icon i {
+    font-size: 40px;
+    color: #888;
+}
+
+/* TEXTO */
+.radio-label {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+/* SELECCIONADO */
+.radio-input:checked + .radio-tile {
+    border-color: #c9a646;
+    background-color: #2a2418;
+}
+
+.radio-input:checked + .radio-tile .radio-icon i {
+    color: #c9a646;
+}
+
+.radio-input:checked + .radio-tile .radio-label {
+    color: #c9a646;
+}
+
+/* HOVER */
+.radio-tile:hover {
+    border-color: #c9a646;
+}
+
+/* OCULTAR RADIO */
+.radio-input {
+    position: absolute;
+    opacity: 0;
+}
+
+.radio-tile {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.radio-input:checked + .radio-tile {
+    border-color: #c9a646;
+    background: linear-gradient(145deg, #2a2418, #1a1a1a);
+    transform: scale(1.05);
+}
+
+
+.bloque-total {
+    border-top: 2px solid #2C2621;
+    border-bottom: 2px solid #2C2621;
+    padding: 10px 0;
+    margin-top: 10px;
+}
+
+.backgroud-custom {
+    background-color: #161311;
+}
+
+.h4-custom {
+    color: #fff;
+}

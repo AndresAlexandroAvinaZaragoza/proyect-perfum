@@ -31,7 +31,7 @@
         </header>
 
 
-        <div class="row g-4">
+        <div class="row g-4 ">
 
             <!--  IZQUIERDA -->
             <div class="col-md-8">
@@ -49,8 +49,9 @@
                                 <div class="position-relative">
                                     <i class="fa-regular fa-user position-absolute"
                                     style="top: 50%; left: 15px; transform: translateY(-50%); color:#c9a646;"></i>
-
-                                    <select class="form-select ps-5 w-100">
+                                <form action="{{ route('venta.store') }}" method="POST" id="form-venta">
+                                @csrf
+                                    <select name="cliente_id" class="form-select ps-5 w-100" required>
                                         <option value="">Consumidor Final</option>
                                         @foreach ($clientes as $cliente)
                                             <option value="{{ $cliente->id }}">
@@ -101,7 +102,7 @@
                 </div>
 
                 <!--  TABLA -->
-                <div class="card card-custom rounded-4 h-100">
+                <div class="card card-custom rounded-4  ">
                     <div>
                             <div class="d-flex align-items-center justify-content-between px-4 py-3 header-table">
         
@@ -139,49 +140,90 @@
                 </div>
 
             </div>
-
-            <!-- 💰 DERECHA -->
+                @if(session('success'))
+                <script>
+                    alertify.success("{{ session('success') }}");
+                </script>
+                @endif
+            <!-- DERECHA -->
             <div class="col-md-4">
-                <div class="card card-custom rounded-4 h-100">
-                    <div class="card-body d-flex flex-column">
+                <div class="card card-custom rounded-4 h-custom-2">
+                    <div class=" d-flex flex-column">
+                        
+                        <div class="card-body p-4">
+                            <p class="card-title-venta">Resumen de Venta</p>
+                            
+                            <div class="d-flex justify-content-between">
+                                <h6>Articulos</h6>
+                                <span class="h6-custom" id="contador2">0</span>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <h6 class="h6-custom">Subtotal:</h6>
+                                <strong id="subtotal_display">$0</strong>
+                            </div>
 
-                        <h6 class="card-title">Resumen de venta</h6>
-
-                        <div class="d-flex justify-content-between">
-                            <span class="h6-custom">Subtotal:</span>
-                            <strong id="subtotal" class="h6-custom">$0</strong>
-                        </div>
-
-                        <div class="d-flex justify-content-between mt-2">
-                            <span class="h6-custom">IVA:</span>
-                            <strong id="iva" class="h6-custom">$0</strong>
-                        </div>
-
-
-                        <hr>
-
-                        <br>
-                        <div class="d-flex justify-content-between mb-3">
-                            <span class="h6-custom">Total:</span>
-                            <strong id="total" class="h6-custom">$0</strong>
+                            <div class="d-flex justify-content-between mt-2">
+                                <h6 class="h6-custom">IVA:</h6>
+                                <strong id="iva_display" class="h6-custom">$0</strong>
+                            </div>
                         </div>
                         
+
+
+                        <div class="bloque-total backgroud-custom">
+                            <div class="d-flex justify-content-between mt-1">
+                                <h4 class="h4-custom p-2">Total a Pagar:</h4>
+                                <h4 id="total_display" class="h6-custom p-2">$0</h4>
+                            </div>
+                        </div>
+
+
                         <div>
 
-                            <p>METODO DE OPERACION</p>  
+                            <p class="p-4 mt-1">METODO DE OPERACION</p>  
 
-                            <label for="">
+                            <div class="radio-inputs mt-4">
 
-                            </label>
+                                <!-- Metodo de Contado -->
+                                <label>
+                                    <input class="radio-input" type="radio" name="metodo_pago" value="contado" checked>
 
-                            <label for="">
-                                
-                            </label>
+                                    <span class="radio-tile">
+                                        <span class="radio-icon">
+                                            <i class="fa-solid fa-money-bill-1-wave"></i>
+                                        </span>
+                                        <span class="radio-label">Contado</span>
+                                    </span>
+                                </label>
+
+                                <!-- Metodo de Credito -->
+                                <label>
+                                    <input class="radio-input" type="radio" name="metodo_pago" value="credito">
+
+                                    <span class="radio-tile">
+                                        <span class="radio-icon">
+                                            <i class="fa-solid fa-credit-card"></i>
+                                        </span>
+                                        <span class="radio-label">Credito</span>
+                                    </span>
+                                </label>
+
+                            </div>
                             <!-- BOTÓN ABAJO -->
-                            <button class="button w-100 mt-auto">
+                            <div class="mt-4 p-4">
 
-                            Finalizar venta <i class="fa-solid fa-arrow-right"></i> 
-                            </button>
+                                <input type="hidden" name="carrito" id="input_carrito">
+                                <input type="hidden" name="total" id="input_total">
+                                <input type="hidden" name="subtotal" id="input_subtotal">
+                                <input type="hidden" name="articulos" id="input_articulos">
+
+                                <button type="submit" class="button w-100 btn-finalizar">
+                                    Finalizar venta <i class="fa-solid fa-arrow-right"></i> 
+                                </button>  
+            </form>
+                            </div>
+
 
                         </div>
 
@@ -287,16 +329,18 @@
                 });
 
                 // CALCULOS
-                let iva = subtotal * 0.16;
+               /* let iva = subtotal * 0.16;
                 let total = subtotal + iva;
-
+                */
+                let total = subtotal; // Si no se maneja IVA, el total es igual al subtotal
                 // ACTUALIZAR HTML
-                $('#subtotal').text(formatoMoneda(subtotal));
-                $('#iva').text(formatoMoneda(iva));
-                $('#total').text(formatoMoneda(total));
+                $('#subtotal_display').text(formatoMoneda(subtotal));
+                //$('#iva_display').text(formatoMoneda(iva));
+                $('#total_display').text(formatoMoneda(total));
 
                     //para mostrar la cantidad de productos
                 $('#contador').text(`${carrito.length} ITEMS SELECCIONADOS`);
+                $('#contador2').text(`${carrito.length}`);
             }
 
             function formatoMoneda(num) {
@@ -351,5 +395,28 @@
             
             }
         </script>
+
+
+<script>
+    const formVenta = document.getElementById('form-venta');
+
+    formVenta.addEventListener('submit', function (event) {
+        if (carrito.length === 0) {
+            alert("El carrito está vacío. Agrega productos para continuar.");
+            event.preventDefault();
+            return;
+        }
+
+        let subtotalFinal = 0;
+        carrito.forEach(item => {
+            subtotalFinal += (item.precio * item.cantidad);
+        });
+
+        document.getElementById('input_carrito').value = JSON.stringify(carrito);
+        document.getElementById('input_total').value = subtotalFinal;
+        document.getElementById('input_subtotal').value = subtotalFinal;
+        document.getElementById('input_articulos').value = carrito.length;
+    });
+</script>
 
     @endsection
