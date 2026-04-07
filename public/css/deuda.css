@@ -27,7 +27,7 @@ p{
 }
 
 .card-search{
-    width: 800px;
+    width: 82rem;
 }
 
 .card-deuda {
@@ -140,7 +140,7 @@ p{
 .table-wrapper {
     background-color: #2D291D;
     border-radius: 16px;
-    overflow: hidden; /* 🔥 CLAVE para que funcione */
+    overflow: hidden; 
     border: 2px solid #3a3525;
 }
 
@@ -157,12 +157,13 @@ p{
 
 .bloque-total {
     position: relative;
-    padding: 15px 0.3rem 10px 1rem;  /* Aumenta top padding */
+    padding: 15px 0.3rem 8px 1rem;  /* Aumenta top padding */
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 0;
+    
 }
 /* Fondo de toda la sección */
 .bloque-total::after {
@@ -170,10 +171,12 @@ p{
     position: absolute;
     top: 0;
     bottom: calc(var(--bs-card-spacer-y, 1rem) * -1);
-    left: -1.8rem;
-    right: -1.8rem;
-    background-color: #171412; /* <-- tu color */
+    left: -1.7rem;
+    right: -1.7rem;
+    background-color: #171412; 
     z-index: -1;
+    border-radius: 0 0 1rem 1rem; 
+    
 }
 
 
@@ -187,6 +190,7 @@ p{
     height: 1px;
     background-color: #ebe7e4;
     z-index: 1;
+    
 }
 
 h3{
@@ -202,14 +206,46 @@ h3{
 }
 
 .card-deuda:hover {
-  border-radius: 15px;
-  cursor: pointer;
-  transform: scale(1.03);
-  box-shadow: 0px 0px 5px 1px  rgba(165, 116, 10, 0.705);
-  background: #1d1815;
+    border-radius: 15px;
+    cursor: pointer;
+    transform: scale(1.03);
+    box-shadow: 0px 0px 5px 1px  rgba(165, 116, 10, 0.705);
+}
 
+.card-deuda:hover h3{
+    color: #f9c344;
 }
 
 .color-custom{
     color: #8A817C;
 }
+
+.color-porcentaje{
+    color: #F8AB0D;
+}
+
+.strong-custom{
+    color: #fff;
+}
+
+.bg-custom{
+    color: #F2C107;
+    background-color: #312813;
+    border: 1px solid #ca9f0f; /* borde normal */
+    border-radius: 3px;
+}
+.bg-deudaF{
+    background-color: #1A1614;
+}
+
+.p-custom{
+    font-size: 0.9rem;
+}
+
+.p-custom-2{
+    font-size: 2rem;
+    color: #F2C107;
+}
+
+
+
