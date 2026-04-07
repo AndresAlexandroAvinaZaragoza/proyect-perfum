@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use App\Models\AbonoRegistro;
 use App\Models\Detalle_Venta;
 use App\Models\User;
 use App\Models\Perfume;
@@ -60,7 +61,23 @@ class VentaController extends Controller
                 $inventario->stock -= $item['cantidad'];
                 $inventario->save();
             }
+
+            //Guardar si es a credito
+            if($request->metodo_pago == 'credito'){
+                AbonoRegistro::create([
+                    'deuda_total' => $request->total,
+                    'abonado' => 0,
+                    'faltante' => $request->total,
+                    'estatus' => $request->total == 0 ? 'pagada' : 'pendiente',
+                    'cliente_id' => $request->cliente_id,
+                    'venta_id' => $venta->id,
+                    'empresa_id' => 1,
+                    'user_id' => auth()->id()
+                ]);
+            }
+
             DB::commit();
+
 
 
         }catch(\Exception $e){
