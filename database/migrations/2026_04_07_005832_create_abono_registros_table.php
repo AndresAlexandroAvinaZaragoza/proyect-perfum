@@ -11,25 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('abonos_registro', function (Blueprint $table) {
-            $table->id();
+        if (! Schema::hasTable('abono_registros')) {
+            Schema::create('abono_registros', function (Blueprint $table) {
+                $table->id();
 
-            $table->double('pago');
+                $table->double('pago');
 
-            $table->foreignId('deuda_id')
-                ->constrained('deudas')
-                ->cascadeOnDelete();
+                $table->foreignId('deuda_id')
+                    ->constrained('deudas')
+                    ->cascadeOnDelete();
 
-            $table->foreignId('user_id')
-                ->constrained('users')
-                ->restrictOnDelete();
+                $table->foreignId('user_id')
+                    ->constrained('users')
+                    ->restrictOnDelete();
 
-            $table->foreignId('empresa_id')
-                ->constrained('empresas')
-                ->cascadeOnDelete();
+                $table->foreignId('empresa_id')
+                    ->constrained('empresas')
+                    ->cascadeOnDelete();
 
-            $table->timestamps();
-        });
+                $table->timestamps();
+            });
+        }
     }
 
     /**

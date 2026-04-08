@@ -112,7 +112,7 @@
                                         <!-- Aqui traemos los datos de la tabla abonos_registro --> 
                                         Ultimo pago: 
                                         <span class="color-custom-2 strong-custom">
-                                            {{ optional($deuda->ultimoAbono?->fecha_abono)->format('d/m/Y') ?? 'Sin abonos' }}
+                                            {{ optional($deuda->ultimoAbono?->created_at)->format('d/m/Y') ?? 'Sin abonos' }}
                                         </span>
                                         <br>
                                         Registrado por: 
@@ -123,7 +123,7 @@
 
                                     <div>
                                         <button class="btn btn-primary">Detalles</button>
-                                        <button class="btn btn-success">Pagar</button>
+                                        <a class="btn btn-success" href="{{ route('abonos.index') }}">Pagar</a>
                                     </div>
                 
                                 </div>

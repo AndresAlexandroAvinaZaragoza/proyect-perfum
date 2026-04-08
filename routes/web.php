@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RegistrarAbonoController;
 use App\Http\Controllers\DeudaController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\InventarioController;
@@ -18,6 +19,7 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+Route::resource('abonos', RegistrarAbonoController::class)->middleware(['auth', 'verified']);
 Route::resource('marca', MarcaController::class)->middleware(['auth', 'verified']);
 Route::resource('usuario', UsuarioController::class)->middleware(['auth', 'verified']);
 Route::resource('perfume', PerfumeController::class)->middleware(['auth', 'verified']);

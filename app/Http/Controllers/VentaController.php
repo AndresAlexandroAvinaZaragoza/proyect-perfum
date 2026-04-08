@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-use App\Models\AbonoRegistro;
+use App\Models\Deuda;
 use App\Models\Detalle_Venta;
 use App\Models\User;
 use App\Models\Perfume;
@@ -64,7 +64,7 @@ class VentaController extends Controller
 
             //Guardar si es a credito
             if($request->metodo_pago == 'credito'){
-                AbonoRegistro::create([
+                Deuda::create([
                     'deuda_total' => $request->total,
                     'abonado' => 0,
                     'faltante' => $request->total,

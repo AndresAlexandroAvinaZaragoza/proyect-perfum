@@ -1,0 +1,279 @@
+
+h1{
+    color: #fff;
+}
+
+p{
+    color: #516F89;
+}
+
+.icon-big{
+    font-size: 30px;
+    color: #F39D0B;
+    transition: transform 0.3s ease;
+}
+
+.header:hover .icon-biger{
+    transform: scale(1.2);
+}
+.card-body h6{
+    color: #516F89;
+}
+
+.btn-primary{
+    background-color: #f9c344;
+    color: black;
+    border: #ffb300;
+}
+
+.btn-primary:hover{
+    background-color: #f9c34485;
+    color: rgba(248, 248, 248, 0.801);
+}
+
+.card{
+    background-color: #1A1614;
+}
+
+.card-search{
+    width: 82rem;
+}
+
+.card-deuda {
+    background-color: #1A1614;
+    width: 39.5rem;
+
+}
+
+.gap-custom {
+    gap: 3rem; /* 24px */
+}
+
+.card-custom {
+    border: 1px solid #434034;
+    
+}
+
+.w-25 {
+    width: calc(var(--spacing) * 15) /* 6.25rem = 100px */;
+}
+
+
+.search-custom {
+    background-color: #242116;
+    color: white;
+    border: 2px solid #3a3525; /* borde normal */
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Placeholder */
+.search-custom::placeholder {
+    color: #516F89;
+}
+
+/* Focus */
+.search-custom:focus {
+    background-color: #242116;
+    color: white;
+    border-color: #ffb300; /* cambia solo el color */
+    box-shadow: none;
+    outline: none;
+}
+
+.form-select {
+    background-color: #242116;
+    color: white;
+    border: 2px solid #3a3525;
+}
+
+.form-select:focus {
+    border-color: #ffb300;
+    box-shadow: none;
+}
+
+.btn-outline-gold {
+    background-color: transparent;
+    color: white;
+    border: 2px solid #3a3525;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+    background-color: #8f835e;
+    color: #242116;
+}
+
+
+/* Tabla personalizada */
+.table-custom {
+    background-color: #2D291D;
+    color: white;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Encabezado */
+.table-custom thead {
+    background-color: #242116;
+    color: #f9c344;
+}
+
+/* Bordes */
+.table-custom th,
+.table-custom td {
+    border-color: #3a3525;
+    vertical-align: middle;
+}
+
+/* Hover */
+.table-custom tbody tr:hover {
+    background-color: #38311c;
+}
+
+/* Quitar fondo blanco default */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: transparent;
+}
+
+.th-custom th {
+    background-color: #282519;
+    color: #516F89;
+}
+
+.td-custom td{
+    color: white;
+}
+
+.table-wrapper {
+    background-color: #2D291D;
+    border-radius: 16px;
+    overflow: hidden; 
+    border: 2px solid #3a3525;
+}
+
+.h1-custom{
+    color: #242116;
+}
+
+
+.card-deuda {
+    position: relative;
+}
+
+
+
+.bloque-total {
+    position: relative;
+    padding: 15px 0.3rem 8px 1rem;  /* Aumenta top padding */
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 0;
+    
+}
+/* Fondo de toda la sección */
+.bloque-total::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: calc(var(--bs-card-spacer-y, 1rem) * -1);
+    left: -1.7rem;
+    right: -1.7rem;
+    background-color: #171412; 
+    z-index: -1;
+    border-radius: 0 0 1rem 1rem; 
+    
+}
+
+
+
+.bloque-total::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1.8rem;
+    right: -1.8rem;
+    height: 1px;
+    background-color: #ebe7e4;
+    z-index: 1;
+    
+}
+
+h3{
+    color: #fff;
+}
+
+.card-deuda{
+    transition: all 0.4s;
+}
+
+.background-custom{
+    background-color: #171412;
+}
+
+.card-deuda:hover {
+    border-radius: 15px;
+    cursor: pointer;
+    transform: scale(1.03);
+    box-shadow: 0px 0px 5px 1px  rgba(165, 116, 10, 0.705);
+}
+
+.card-deuda:hover h3{
+    color: #f9c344;
+}
+
+.color-custom{
+    color: #8A817C;
+}
+
+.color-porcentaje{
+    color: #F8AB0D;
+}
+
+.strong-custom{
+    color: #fff;
+}
+
+.bg-custom{
+    color: #F2C107;
+    background-color: #312813;
+    border: 1px solid #ca9f0f; /* borde normal */
+    border-radius: 3px;
+}
+.bg-deudaF{
+    background-color: #1A1614;
+}
+
+.p-custom{
+    font-size: 0.9rem;
+}
+
+.p-custom-2{
+    font-size: 1.25rem;
+    color: #F2C107;
+}
+
+hr{
+    color: #fff;
+}
+
+.border-secondary {
+    background-color: #241D15;
+    width: auto;
+
+    border-left: 4px solid #F39D0B !important;
+}
+.border-custom{
+    background-color: #292524;
+    width: 4rem;
+    height: 4rem;
+    border : 1px solid #523D1F;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 6px;
+}
