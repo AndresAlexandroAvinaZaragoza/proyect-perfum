@@ -45,13 +45,15 @@ p{
 
 }
 
-.gap-custom {
-    gap: 3rem; /* 24px */
-}
+
 
 .card-custom {
     border: 1px solid #434034;
     
+}
+
+.card-custom-mov{
+    background-color: #0E0C0A;
 }
 
 .w-25 {
@@ -105,53 +107,7 @@ p{
 }
 
 
-/* Tabla personalizada */
-.table-custom {
-    background-color: #2D291D;
-    color: white;
-    border-collapse: separate;
-    border-spacing: 0;
-}
 
-/* Encabezado */
-.table-custom thead {
-    background-color: #242116;
-    color: #f9c344;
-}
-
-/* Bordes */
-.table-custom th,
-.table-custom td {
-    border-color: #3a3525;
-    vertical-align: middle;
-}
-
-/* Hover */
-.table-custom tbody tr:hover {
-    background-color: #38311c;
-}
-
-/* Quitar fondo blanco default */
-.table {
-    --bs-table-bg: transparent;
-    --bs-table-striped-bg: transparent;
-}
-
-.th-custom th {
-    background-color: #282519;
-    color: #516F89;
-}
-
-.td-custom td{
-    color: white;
-}
-
-.table-wrapper {
-    background-color: #2D291D;
-    border-radius: 16px;
-    overflow: hidden; 
-    border: 2px solid #3a3525;
-}
 
 .h1-custom{
     color: #242116;
@@ -235,6 +191,7 @@ h3{
 
 .strong-custom{
     color: #fff;
+
 }
 
 .bg-custom{
@@ -254,6 +211,19 @@ h3{
 .p-custom-2{
     font-size: 1.25rem;
     color: #F2C107;
+}
+
+.p-custom-21{
+    font-size: 1.40rem;
+    color: #F59E0B;
+}
+
+.span-custom{
+    color: #787169;
+}
+
+.p-custom-3{
+    color: #9F5D12;
 }
 
 hr{
@@ -276,4 +246,57 @@ hr{
     justify-content: center;
     flex-shrink: 0;
     border-radius: 6px;
+}
+
+.custom-input {
+    background-color: #1C1917;
+    border: 1px solid #483C1D;
+    padding-left: 35px;
+    color: #fff;
+}
+
+.custom-input:focus {
+    background-color: #1C1917;
+    border-color: #F39D0B;
+    color: #fff;
+    box-shadow: none;
+}
+
+.custom-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Color del label */
+.label-color {
+    color: #C59B37;
+}
+
+/* Diseño del input normal */
+.input-flotante {
+    background-color: #1C1917;
+    border: 1px solid #483C1D;
+    border-radius: 0.375rem;
+    padding-left: 35px; /* IMPORTANTE: Deja espacio para que el número no tape el ícono */
+    transition: all 0.3s ease;
+}
+
+/* Efecto al darle clic (Focus) */
+.input-flotante:focus {
+    background-color: #1C1917;
+    border-color: #F39D0B; /* Borde dorado */
+    box-shadow: none; /* Quita el brillo azul feo de Bootstrap */
+    outline: none;
+    color: #fff;
+}
+
+/* Placeholder gris discreto */
+.input-flotante::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.border-3{
+    background-color: #0E0C0A;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-top: 1px solid #292524 !important;
 }
