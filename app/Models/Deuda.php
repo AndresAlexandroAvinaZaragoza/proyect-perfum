@@ -38,8 +38,8 @@ class Deuda extends Model
         return $this->belongsTo(Cliente::class);
     }
 
-    public function AbonoRegistro()
+    public function abonos()
     {
-        return $this->hasMany(AbonoRegistro::class);
+        return $this->hasMany(AbonoRegistro::class, 'deuda_id');
     }
 }

@@ -160,7 +160,7 @@
                             
                             <div class="d-flex justify-content-between">
                                 <h6 class="h6-custom">Subtotal:</h6>
-                                <strong id="subtotal_display">$0</strong>
+                                <strong class="h6-custom" id="subtotal_display">$0</strong>
                             </div>
 
                             <div class="d-flex justify-content-between mt-2">

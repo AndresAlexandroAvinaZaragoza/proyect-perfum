@@ -62,102 +62,95 @@
 
 
             <!-- --- Aquí se mostrarán los créditos y deudas en forma de tarjetas --->
-            <div class="row g-4 p-3 gap-custom"> <!-- div para todas las tarjetas -->
-                @foreach($deudas as $deuda)
-                    <div class="card card-deuda card-custom rounded-4"> <!-- tarjeta individual -->
-                        
-                        <div class=""> <!-- contenido de la tarjeta -->
-                            <!-- titulo -->
-                            <div class="card-body d-flex justify-content-between align-items-center mb-1">
-                                <div>
-                                    <div>
-                                        <h3 class="mb-0">{{ $deuda->cliente->nombre }}</h3>
-                                        <p class="card-text color-custom">Estado: {{ $deuda->estatus }}</p>
-                                    </div>
-                                </div>
-                                <span class="badge bg-custom fs-6">{{ $deuda->estatus }}</span>
-                            </div>
 
-                            <!-- detalles del crédito -->
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="color-custom">Progreso del Pago</span>
-                                    <span class="porcentaje color-porcentaje">0%</span>
-                                </div>
-
-                                <div class="progress mb-3">
-                                    <div class="progress-bar" role="progressbar"  aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-
-                                <div class=" pb-4 d-flex justify-content-between align-items-center">
-                                    <span  class="color-custom">Abonado: 
-                                    <strong class="strong-custom monto-abonado">${{ number_format($deuda->abonado, 2) }}</strong>    
-                                    </span>
-                                    
-                                    <span class="color-custom">
-                                        Total: <strong class="strong-custom monto-total">${{ number_format($deuda->total, 2) }}</strong>
-                                    </span>
-                                </div>
-
-                                <div class="p-4 rounded border border-secondary d-flex align-items-center justify-content-between">
-                                    <div>
-                                        <p  class="p-custom">MONTO FALTANTE</p>
-                                        <p class="mb-0  p-custom-2"><strong>${{ number_format($deuda->faltante, 2) }}</strong></p>
-                                    </div>
-                                    <span></span> <!-- espacio para alinear el monto faltante a la derecha -->
-                                </div>
+                    <div class="row g-4 p-3 gap-custom"> <!-- div para todas las tarjetas -->
+                        @foreach($deudas as $deuda)
+                            @php
+                                // 1. Calculamos el Total Real sumando lo abonado y lo faltante (por si el total original viene en 0)
+                                $totalReal = $deuda->total > 0 ? $deuda->total : ($deuda->abonado + $deuda->faltante);
                                 
-                                <div class="bloque-total justify-content-between align-items-center mt-4 d-flex">
-                                    <div class="color-custom">
-                                        <!-- Aqui traemos los datos de la tabla abonos_registro --> 
-                                        Ultimo pago: 
-                                        <span class="color-custom-2 strong-custom">
-                                            {{ optional($deuda->ultimoAbono?->created_at)->format('d/m/Y') ?? 'Sin abonos' }}
-                                        </span>
-                                        <br>
-                                        Registrado por: 
-                                        <span class="strong-custom">
-                                            {{ $deuda->ultimoAbono->usuario->name ?? 'N/D' }}
+                                // 2. Calculamos el porcentaje en base a ese Total Real
+                                $porcentaje = $totalReal > 0 ? min(($deuda->abonado / $totalReal) * 100, 100) : 0;
+                            @endphp
+                            <div class="card card-deuda card-custom rounded-4"
+                                data-abonado="{{ $deuda->abonado }}"
+                                data-total="{{ $totalReal }}"> <!-- tarjeta individual -->
+                                
+                                <div class=""> <!-- contenido de la tarjeta -->
+                                    <!-- titulo -->
+                                    <div class="card-body d-flex justify-content-between align-items-center mb-1">
+                                        <div>
+                                            <div>
+                                                <h3 class="mb-0">{{ $deuda->cliente->nombre }}</h3>
+                                                <p class="card-text color-custom">{{ \Carbon\Carbon::parse($deuda->created_at)->format('d M Y') }}</p>
+                                            </div>
+                                        </div>
+
+
+                                        <span class="badge fs-6 bg-custom bg-custom-{{ $deuda->estatus }}">
+                                            {{ ucfirst($deuda->estatus) }}
                                         </span>
                                     </div>
 
-                                    <div>
-                                        <button class="btn btn-primary">Detalles</button>
-                                        <a class="btn btn-success" href="{{ route('abonos.index') }}">Pagar</a>
-                                    </div>
-                
+                                    <!-- detalles del crédito -->
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="color-custom">Progreso del Pago</span>
+                                            <span class="porcentaje color-porcentaje">{{ number_format($porcentaje, 0) }}%</span>
+                                        </div>
+
+                                        <div class="progress mb-3" style="height: 10px;">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $porcentaje }}%;" aria-valuenow="{{ round($porcentaje) }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+
+                                        <div class=" pb-4 d-flex justify-content-between align-items-center">
+                                            <span  class="color-custom">Abonado: 
+                                            <strong class="strong-custom monto-abonado">${{ number_format($deuda->abonado, 2) }}</strong>    
+                                            </span>
+                                            
+                                            <span class="color-custom">
+                                                Total: <strong class="strong-custom monto-total">${{ number_format($totalReal, 2) }}</strong>
+                                            </span>
+                                        </div>
+
+                                        <div class="p-4 rounded border border-secondary d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p  class="p-custom">MONTO FALTANTE</p>
+                                                <p class="mb-0  p-custom-2"><strong>${{ number_format($deuda->faltante, 2) }}</strong></p>
+                                            </div>
+                                            <span></span> <!-- espacio para alinear el monto faltante a la derecha -->
+                                        </div>
+                                        
+                                        <div class="bloque-total justify-content-between align-items-center mt-4 d-flex">
+                                            <div class="color-custom">
+                                                <!-- Aqui traemos los datos de la tabla abonos_registro --> 
+                                                Ultimo pago: 
+                                                <span class="color-custom-2 strong-custom">
+                                                    {{ optional($deuda->ultimoAbono?->created_at)->format('d/m/Y') ?? 'Sin abonos' }}
+                                                </span>
+                                                <br>
+                                                Registrado por: 
+                                                <span class="strong-custom">
+                                                    {{ $deuda->ultimoAbono->usuario->name ?? 'N/D' }}
+                                                </span>
+                                            </div>
+
+                                            <div>
+                                                <button class="btn btn-primary" oneclick="flipCard()">Detalles</button>
+
+                                                @if($deuda->estatus === 'Pagada')
+                                                    <button class="btn btn-success" disabled>Pagar</button>
+                                                @else
+                                                    <a class="btn btn-success" href="{{ route('abonos.show', $deuda->id) }}">Pagar</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>            
                                 </div>
-                            </div>            
-                        </div>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
-            </div>
+                </div>    
+            </div>        
         </div>
-
-        <script>
-            function actualizarPorcentaje() {
-                $('.card-deuda').each(function() {
-                    const abonado = parseFloat(
-                        $(this).find('.monto-abonado').text().replace(/[^0-9.-]+/g, "")
-                    ) || 0;
-
-                    const total = parseFloat(
-                        $(this).find('.monto-total').text().replace(/[^0-9.-]+/g, "")
-                    ) || 0;
-
-                    const porcentaje = total > 0 ? (abonado / total) * 100 : 0;
-
-                    $(this).find('.porcentaje').text(porcentaje.toFixed(2) + '%');
-                    $(this).find('.progress-bar')
-                        .css('width', porcentaje + '%')
-                        .attr('aria-valuenow', porcentaje.toFixed(2));
-                });
-            }
-
-            $(document).ready(function() {
-                actualizarPorcentaje();
-            });
-        </script>
-
-            
-    @endsection
+@endsection

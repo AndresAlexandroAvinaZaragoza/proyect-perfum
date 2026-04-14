@@ -23,7 +23,7 @@ p{
 }
 
 .card{
-    background-color: #2D291D;
+    background-color: #1A1614;
 
 }
 
@@ -38,9 +38,9 @@ p{
 
 
 .search-custom {
-    background-color: #242116;
+    background-color: #120F0D;
     color: white;
-    border: 2px solid #3a3525; /* borde normal */
+    border: 1px solid #3a3525; /* borde normal */
     border-radius: 8px;
     transition: all 0.3s ease;
 }
@@ -52,7 +52,7 @@ p{
 
 /* Focus */
 .search-custom:focus {
-    background-color: #242116;
+    background-color: #120F0D;
     color: white;
     border-color: #ffb300; /* cambia solo el color */
     box-shadow: none;
@@ -60,9 +60,9 @@ p{
 }
 
 .form-select {
-    background-color: #242116;
+    background-color: #120F0D;
     color: white;
-    border: 2px solid #3a3525;
+    border: 1px solid #3a3525;
 }
 
 .form-select:focus {
@@ -85,7 +85,7 @@ p{
 
 /* Tabla personalizada */
 .table-custom {
-    background-color: #2D291D;
+    background-color: #1A1614;
     color: white;
     border-collapse: separate;
     border-spacing: 0;
@@ -116,7 +116,7 @@ p{
 }
 
 .th-custom th {
-    background-color: #282519;
+    background-color: #120F0D;
     color: #516F89;
 }
 
