@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DecantController;
 use App\Http\Controllers\RegistrarAbonoController;
 use App\Http\Controllers\DeudaController;
 use App\Http\Controllers\VentaController;
@@ -18,7 +19,7 @@ Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
+Route::resource('decant', DecantController::class)->middleware(['auth', 'verified']);
 Route::resource('abonos', RegistrarAbonoController::class)->middleware(['auth', 'verified']);
 Route::resource('marca', MarcaController::class)->middleware(['auth', 'verified']);
 Route::resource('usuario', UsuarioController::class)->middleware(['auth', 'verified']);

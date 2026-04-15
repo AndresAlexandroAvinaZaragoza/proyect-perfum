@@ -1,7 +1,7 @@
 @extends('layouts.app')
     @section('content')
 
-        <link rel="stylesheet" href="{{ asset('css/marca.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/decants.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
 
@@ -16,15 +16,21 @@
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <header class="mb-4">
-                <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-custom flex-wrap justify-content-start">
                     <div>
                         <h1>Gestion de Inventario</h1>
                         <p>Directorio Global de Fabricantes</p>
                     </div>
 
-                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#dropdownParent">
-                        + Agregar Inventario
-                    </button>
+                    <div class="d-flex gap-4 ">
+                        <a href="{{ route('decant.index') }}" class="btn btn-outline-warning btn-lg ">
+                            Ver Decants
+                        </a>
+
+                        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#dropdownParent">
+                            + Agregar Inventario
+                        </button>
+                    </div>
                 </div>
 
                 <div class="row g-4 mb-4">  <!-- g-4 agrega espacio -->
@@ -174,7 +180,7 @@
                                     <td>{{ $inventario->usuario->usuario ?? 'Sin usuario' }}</td>
                                     <td>
                                         <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $inventario->id }}">
-                                            <x-icon name="edit" class="me-1" width="165" height="16"/>
+                                            <x-icon name="edit" class="me-1" width="16" height="16"/>
                                         </button>
 
                                         
@@ -306,8 +312,9 @@
                                             <button type="button" 
                                                     class="btn btn-outline-danger"
                                                     onclick="confirmDelete({{ $inventario->id }})">
-                                                <x-icon name="delete" width="16" height="16"/>
+                                                <x-icon name="delete" width="19" height="16"/>
                                             </button>
+
                                         </form>
                                     </td>
                                 </tr>

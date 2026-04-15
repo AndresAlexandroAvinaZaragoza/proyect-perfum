@@ -4,7 +4,7 @@
     
 
     <header>
-        <h2>Dashboard</h2>
+        <h1 style="color: #fff;">Dashboard</h1>
     </header>
     
 
