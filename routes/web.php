@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InventarioDecantController;
 use App\Http\Controllers\DecantController;
 use App\Http\Controllers\RegistrarAbonoController;
 use App\Http\Controllers\DeudaController;
@@ -19,6 +20,11 @@ Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::post('decant/generar', [DecantController::class, 'generarDecant'])
+    ->middleware(['auth', 'verified'])
+    ->name('decant.generar');
+
+Route::resource('inventario_decants', InventarioDecantController::class)->middleware(['auth', 'verified']);
 Route::resource('decant', DecantController::class)->middleware(['auth', 'verified']);
 Route::resource('abonos', RegistrarAbonoController::class)->middleware(['auth', 'verified']);
 Route::resource('marca', MarcaController::class)->middleware(['auth', 'verified']);

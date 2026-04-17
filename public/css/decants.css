@@ -150,6 +150,7 @@ p{
 
 .select2-container .select2-selection--single {
     height: 42px;
+    width: 29rem;
     border-radius: 12px;
     border: 1px solid #2C2621 !important;
     background-color: #120F0D !important;
@@ -360,3 +361,109 @@ p{
     gap: 32rem;
 }
 
+.radio-tile-custom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 5px;
+    border: 1px solid #2D2621;
+    background-color: #1A1614;
+    border-radius: 12px;
+    color: white;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.radio-tile-custom.active {
+    border-color: #f9c344;
+    background-color: #242116;
+}
+
+.radio-tile-custom.active .fw-bold {
+    color: #f9c344;
+}
+
+.check-icon {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #1A1614;
+    color: #f9c344;
+    font-size: 14px;
+    border-radius: 50%;
+}
+
+.radio-tile-custom small {
+    font-size: 10px;
+}
+
+/* Variante pequeña para los tamaños */
+.radio-tile-size {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 65px; /* Más bajo para los tamaños */
+    border-radius: 12px;
+    border: 2px solid #2c2c2c;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #fff;
+}
+
+.radio-sublabel {
+    font-size: 10px;
+    color: #516F89;
+}
+
+/* Reutilizar el comportamiento de tus .radio-input */
+.radio-input:checked + .radio-tile-size {
+    border-color: #c9a646;
+    background: linear-gradient(145deg, #2a2418, #1a1a1a);
+    transform: scale(1.05);
+}
+
+.radio-input:checked + .radio-tile-size .fw-bold {
+    color: #c9a646;
+}
+
+.radio-input:checked + .radio-tile-size .radio-sublabel {
+    color: #c9a646;
+}
+
+/* Hover */
+.radio-tile-size:hover {
+    border-color: #c9a646;
+}
+
+/* Quita las flechas por defecto del input number */
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.no-spinners {
+    -moz-appearance: textfield;
+}
+
+/* Estilo para que los botones del spinner se sientan parte del input */
+.spinner-custom .btn {
+    border-color: #2D2621 !important;
+    transition: all 0.2s;
+}
+
+.spinner-custom .btn:hover {
+    background-color: #2a2418;
+    color: #c9a646 !important;
+    border-color: #c9a646 !important;
+}
+
+.spinner-custom .form-control:focus {
+    box-shadow: none;
+    border-color: #c9a646;
+}

@@ -21,4 +21,13 @@ class Decant extends Model
     {
         return $this->belongsTo(Empresa::class);
     }
+
+    public function inventario(){
+        return $this->belongsTo(Inventario::class);
+    }
+
+    public function precios()
+    {
+        return $this->hasMany(PrecioDecant::class);
+    }
 }

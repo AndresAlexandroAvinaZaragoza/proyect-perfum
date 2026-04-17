@@ -7,25 +7,25 @@
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=edit" />
         
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Select2 CSS -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+        <!-- Select2 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 
-<!-- Select2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <!-- Select2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <header class="mb-4">
                 <div class="d-flex align-items-center gap-custom flex-wrap justify-content-start">
                     <div>
-                        <h1>Gestion de Inventario</h1>
+                        <h1>Gestion de Inventario de Decants</h1>
                         <p>Directorio Global de Fabricantes</p>
                     </div>
 
                     <div class="d-flex gap-4 ">
-                        <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#dropdownParent">
-                            + Agregar Inventario
-                        </button>
+                        <a href="{{ route('decant.index') }}" class="btn btn-outline-warning btn-lg ">
+                            Ver Decants
+                        </a>
                     </div>
                 </div>
 
@@ -69,7 +69,7 @@
                         <div class="">
                             <div class="card card-custom rounded-4 h-100">
                                 <div class="card-body">
-                                    <form id="filtros" method="GET" action="{{ route('inventario.index') }}" class="d-flex gap-3 flex-wrap">
+                                    <form id="filtros" method="GET" action="{{ route('inventario_decants.index') }}" class="d-flex gap-3 flex-wrap">
 
                                         <!-- Buscador -->
                                         <input 
@@ -124,7 +124,7 @@
                                             <option value="Arabe">Arabe</option>
                                         </select>
 
-                                        <a href="{{ route('inventario.index') }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('inventario_decants.index') }}" class="btn btn-outline-secondary">
                                             Limpiar
                                         </a>
 
@@ -152,38 +152,36 @@
                                 <th>Contenido</th>
                                 <th>Stock</th>
                                 <th>Precio de venta</th>
-                                <th>Precio de compra</th>
+                                <th>Precio por ML</th>
                                 <th>Concentracion</th>
                                 <th>Marca</th>
                                 <th>Genero</th>
-                                <th>Tipo</th>
                                 <th>Categoria</th>
                                 <th>Usuario</th>
                                 <th>Acciones</th>
                             </tr>
-                            @foreach ($inventarios as $inventario)
+                            @foreach ($inventario_decants as $inventarios)
                                 <tr class="td-custom"> 
-                                    <td>{{ $inventario->perfume->nombre ?? 'Sin Nombre' }}</td>
-                                    <td>{{ $inventario->perfume->contenido ?? 'Sin contenido' }}</td>
-                                    <td>{{ $inventario->stock ?? 'Sin stock'}}</td>
-                                    <td>{{ $inventario->precio_venta}}</td>
-                                    <td>{{ $inventario->precio_compra}}</td>
-                                    <td>{{ $inventario->perfume->concentracion ?? 'Sin Nombre' }}</td>
-                                    <td>{{ $inventario->perfume->marca->nombre ?? 'Sin marca' }}</td>
-                                    <td>{{ $inventario->perfume->genero ?? 'Sin genero' }}</td>
-                                    <td>{{ $inventario->perfume->tipo ?? 'Sin tipo' }}</td>
-                                    <td>{{ $inventario->perfume->categoria ?? 'Sin categoria' }}</td>
-                                    <td>{{ $inventario->usuario->usuario ?? 'Sin usuario' }}</td>
+                                    <td>{{ $inventarios->decant->inventario->perfume->nombre ?? 'Sin Nombre' }}</td>
+                                    <td>{{ $inventarios->precios_decants->ml ?? 'Sin contenido' }}ml</td>
+                                    <td>{{ $inventarios->stock ?? 'Sin stock'}}</td>
+                                    <td>${{ number_format($inventarios->precios_decants->precio, 2, ',', '.') ?? 'Sin precio' }}</td>
+                                    <td>${{ number_format($inventarios->decant->precio_por_ml, 2, ',', '.') ?? 'Sin precio por ML' }}</td>
+                                    <td>{{ $inventarios->decant->perfume->concentracion ?? 'Sin concentracion' }}</td>
+                                    <td>{{ $inventarios->decant->perfume->marca->nombre ?? 'Sin marca' }}</td>
+                                    <td>{{ $inventarios->decant->perfume->genero ?? 'Sin genero' }}</td>
+                                    <td>{{ $inventarios->decant->perfume->categoria ?? 'Sin categoria' }}</td>
+                                    <td>{{ $inventarios->decant->user->usuario ?? 'Sin usuario' }}</td>
                                     <td>
-                                        <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $inventario->id }}">
+                                        <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $inventarios->id }}">
                                             <x-icon name="edit" class="me-1" width="16" height="16"/>
                                         </button>
 
                                         
                                         <!-- Modal Para Editar una Marca-->
-                                        <div class="modal fade modal-fonts" id="edit{{ $inventario->id }}" data-bs-backdrop="static"
+                                        <div class="modal fade modal-fonts" id="edit{{ $inventarios->id }}" data-bs-backdrop="static"
                                             data-bs-keyboard="false" tabindex="-1"
-                                            aria-labelledby="editLabel{{ $inventario->id }}" aria-hidden="true">
+                                            aria-labelledby="editLabel{{ $inventarios->id }}" aria-hidden="true">
 
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content mi-modal">
@@ -192,8 +190,8 @@
                                                     <div class="modal-header mi-header-modal position-relative modal-header-footer">
 
                                                         <div class="w-100">
-                                                            <h5 class="modal-title mb-1 h5-custom" id="editLabel{{ $inventario->id }}">
-                                                                Editar Inventario
+                                                            <h5 class="modal-title mb-1 h5-custom" id="editLabel{{ $inventarios->id }}">
+                                                                Editar Decant 
                                                             </h5>
                                                             <p class="mb-0 small p-custom">
                                                                 Complete la información requerida para el acceso al sistema administrativo de perfumes
@@ -209,7 +207,7 @@
                                                     
     
                                                     <!-- Form -->
-                                                    <form method="POST" action="{{ route('inventario.update', $inventario->id) }}" enctype="multipart/form-data">
+                                                    <form method="POST" action="{{ route('inventario_decants.update', $inventarios->id) }}" enctype="multipart/form-data">
                                                         @csrf
                                                         @method('PUT')
 
@@ -218,16 +216,16 @@
                                                             
                                                         <div class="mb-3">
                                                     
-                                                            <label for="perfume_id" class="form-label label-color">Perfume</label>
+                                                            <label for="perfume_id" class="form-label label-color">Decant</label>
                                                                 <p>
-                                                                    {{ $inventario->perfume->nombre ?? 'Sin nombre' }} -
-                                                                    {{ $inventario->perfume->concentracion ?? '' }} -
-                                                                    {{ $inventario->perfume->contenido ?? '' }}ml -
-                                                                    {{ $inventario->perfume->genero ?? '' }}
+                                                                    {{ $inventarios->decant->perfume->nombre ?? 'Sin nombre' }} -
+                                                                    {{ $inventarios->decant->perfume->concentracion ?? '' }} -
+                                                                    {{ $inventarios->precios_decants->ml ?? '' }}ml -
+                                                                    {{ $inventarios->decant->perfume->genero ?? '' }}
                                                                 </p>                                                            
                                                         </div>
                                                             <!-- 
-                                                             {{ $inventario->perfume->genero ?? 'Sin genero' }}           
+                                                            {{ $inventarios->perfume->genero ?? 'Sin genero' }}           
                                                             <div class="mb-3">
                                                                 <label class="form-label label-color">Perfume</label>
                                                                 <select id="perfume_id" name="perfume_id" class="form-control">
@@ -242,31 +240,12 @@
                                                             </div>
 -->
                                                             <div class="mb-3">
-                                                                <label for="precio_compra" class="form-label label-color">Precio de compra</label>
-                                                                <input type="text"
-                                                                    class="form-control custom-input"
-                                                                    id="precio_compra"
-                                                                    name="precio_compra"
-                                                                    value="{{ $inventario->precio_compra }}"
-                                                                    required>
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="precio_venta" class="form-label label-color">Precio de Venta</label>
-                                                                <input type="text"
-                                                                    class="form-control custom-input"
-                                                                    id="precio_venta"
-                                                                    name="precio_venta"
-                                                                    value=" {{ $inventario->precio_venta}}"
-                                                                    required>
-                                                            </div>
-                                                            <div class="mb-3">
                                                                 <label for="stock" class="form-label label-color">Stock</label>
                                                                 <input type="number"
                                                                     class="form-control custom-input"
                                                                     id="stock"
                                                                     name="stock"
-                                                                    value="{{ $inventario->stock }}"
+                                                                    value="{{ $inventarios->stock }}"
                                                                     required>
                                                             </div>
                                                         </div>
@@ -298,8 +277,8 @@
                                                 </div>
                                             </div>
                                         </div>        
-                                        <form id="delete-form-{{ $inventario->id }}" 
-                                            action="{{ route('inventario.destroy', $inventario->id) }}" 
+                                        <form id="delete-form-{{ $inventarios->id }}" 
+                                            action="{{ route('inventario_decants.destroy', $inventarios->id) }}" 
                                             method="POST" 
                                             style="display:inline;">
                                             @csrf
@@ -307,7 +286,7 @@
                                             
                                             <button type="button" 
                                                     class="btn btn-outline-danger"
-                                                    onclick="confirmDelete({{ $inventario->id }})">
+                                                    onclick="confirmDelete({{ $inventarios->id }})">
                                                 <x-icon name="delete" width="19" height="16"/>
                                             </button>
 
@@ -317,115 +296,14 @@
                             @endforeach
                         </table>
                         <div class="mt-3">
-                            {{ $inventarios->withQueryString()->links() }}
+                            {{ $inventario_decants->withQueryString()->links() }}
                         </div>
                     </div>
                 </div>
             </section>
         </div>
         
-        <!-- Modal Para Agregar Una nueva Marca-->
-        <div class="modal fade modal-fonts" id="dropdownParent" data-bs-backdrop="static"
-            data-bs-keyboard="false" tabindex="-1"
-            aria-labelledby="staticBackdropLabel" aria-hidden="true">
-
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content mi-modal">
-
-                    <!-- Header -->
-                    <div class="modal-header mi-header-modal position-relative modal-header-footer">
-
-                        <div class="w-100">
-                            <h5 class="modal-title mb-1 h5-custom" id="staticBackdropLabel">
-                                Registrar Nuevo Producto para el Inventario
-                            </h5>
-                            <p class="mb-0 small p-custom">
-                                Complete la información requerida para el acceso al sistema administrativo de perfumes
-                            </p>
-                        </div>
-
-                        <button type="button"
-                                class="btn-close position-absolute end-0 top-0 m-3"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-
-                    <!-- Form -->
-                    <form method="POST" action="{{ route('inventario.store') }}">
-                        @csrf
-
-                        <!-- Body -->
-                        <div class="modal-body modal-custom-body">
-
-                            <div class="mb-3">
-                                <label class="form-label label-color">Perfume</label>
-                                <br>
-                                <select id="perfume_id" name="perfume_id" class="form-control">
-                                    <option value="">Seleccionar perfume</option>
-
-                                    @foreach ($perfumes as $perfume)
-                                        <option 
-                                        value="{{ $perfume->id }}">
-                                        {{ $perfume->tipo . '-' . $perfume->nombre . ' - ' . $perfume->concentracion . ' - ' . $perfume->contenido . 'ml' . ' - ' . $perfume->genero }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="precio_compra" class="form-label label-color">Precio de compra</label>
-                                <input type="text"
-                                    class="form-control custom-input"
-                                    id="precio_compra"
-                                    name="precio_compra"
-                                    required>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="precio_venta" class="form-label label-color">Precio de Venta</label>
-                                <input type="text"
-                                    class="form-control custom-input"
-                                    id="precio_venta"
-                                    name="precio_venta"
-                                    required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="stock" class="form-label label-color">Stock</label>
-                                <input type="number"
-                                    class="form-control custom-input"
-                                    id="stock"
-                                    name="stock"
-                                    required>
-                            </div>
-                        </div>
-
-                        <!-- Footer -->
-                        <div class="modal-footer mi-footer-modal modal-header-footer">                            
-<!-- 
-                            <a href="{{ route('login') }}"
-                            class="text-decoration-none">
-                                ¿Ya estás registrado?
-                            </a>
--->
-                            <div>
-                                <button type="button"
-                                        class="btn btn-secondary"
-                                        data-bs-dismiss="modal">
-                                    Cancelar
-                                </button>
-
-                                <button type="submit"
-                                        class="btn btn-primary">
-                                    Guardar Perfume
-                                </button>
-                            </div>
-
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
+        
         <script>
             function confirmDelete(id) {
                 alertify.confirm(

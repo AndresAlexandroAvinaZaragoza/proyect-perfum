@@ -2,14 +2,160 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PrecioDecant;
+use App\Models\Empresa;
+use App\Models\User;
+use App\Models\Perfume;
+use App\Models\Inventario;
 use App\Models\Decant;
+use App\Models\InventarioDecants;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DecantController extends Controller
 {
     public function index()
     {
-        $decants = Decant::all();
-        return view('principal.decant', compact('decants'));
+        $query = Decant::with(['perfume', 'inventario']);
+        $decants = Decant::with(['perfume', 'inventario', 'precios'])->get();
+
+        
+        $inventarios = Inventario::with('perfume')
+            ->where('stock', '>', 0)
+            ->whereHas('perfume', function($q){
+                $q->where('tipo', 'Perfume');
+            })
+            ->get();
+        
+        $decants = $query->get();
+        return view('principal.decant', compact('decants', 'inventarios'));
+    }
+
+
+    public function store(Request $request)
+    {   
+
+        try{
+            $decant = new Decant();
+            // Buscar el inventario
+            $inventario = Inventario::findOrFail($request->inventario_id);
+
+            // Obtener precio de compra desde el inventario de BD   
+            $precioCompra = $inventario->precio_compra;
+            $contenido = $inventario->perfume->contenido;
+            $inventario_id = $inventario->perfume->id;
+
+            $decant->inventario_id = $request->inventario_id;
+            $decant->precio_botella = $precioCompra;
+            $decant->cantidad_restante = $contenido;
+            $decant->perfume_id = $inventario_id;
+            $decant->user_id = auth()->id();
+            $decant->empresa_id = 1;
+            $decant->save();
+
+            // Guardar precios en la tabla precios decants
+
+            // Arreglo de precios desde el form
+            $precios = [
+                1 => $request->precio_1ml,
+                2 => $request->precio_2ml,
+                3 => $request->precio_3ml,
+                5 => $request->precio_5ml,
+                10 => $request->precio_10ml,
+                30 => $request->precio_30ml,
+            ];
+
+            foreach ($precios as $ml => $precio) {
+                if ($precio > 0) {
+                    DB::table('precios_decants')->insert([
+                        'ml' => $ml,
+                        'precio' => $precio,
+                        'decant_id' => $decant->id,
+                        'empresa_id' => 1,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+
+        }catch(\Exception $e){
+            DB::rollBack();
+            Log::error('Error al registrar decant base', ['error' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'No se pudo registrar el decant base.');
+        }
+        
+        return redirect()->back()->with('success', 'Decant registrado exitosamente.');
+    }
+
+    public function generarDecant(Request $request)
+{
+    try {
+
+        // 🔹 Obtener datos del form
+        $decant = Decant::findOrFail($request->decant_id);
+        $ml = (int) $request->tamano_decant;
+        $cantidad = (int) $request->cantidad_generar;
+
+        // Validación
+        if ($ml <= 0 || $cantidad <= 0) {
+            return back()->withErrors('Datos inválidos');
+        }
+
+        // 🔥 Calcular extracción
+        $extraccionTotal = $ml * $cantidad;
+
+        if ($decant->cantidad_restante < $extraccionTotal) {
+            return back()->withErrors('No hay suficiente líquido');
+        }
+
+
+
+        // 🔍 Buscar precio
+        $precioDecant = PrecioDecant::where('decant_id', $decant->id)
+            ->where('ml', $ml)
+            ->firstOrFail();
+
+        // 🔍 Verificar si ya existe
+        $inventarioExistente = InventarioDecants::where('decant_id', $decant->id)
+            ->where('precio_decant_id', $precioDecant->id)
+            ->first();
+
+        if ($inventarioExistente) {
+            // 🔼 SUMAR
+            $inventarioExistente->stock += $cantidad;
+            $inventarioExistente->save();
+        } else {
+            // 🆕 CREAR
+            InventarioDecants::create([
+                'decant_id' => $decant->id,
+                'precio_decant_id' => $precioDecant->id,
+                'stock' => $cantidad,
+                'user_id' => auth()->id(),
+                'empresa_id' => 1
+            ]);
+        }
+
+        return back()->with('success', 'Decants generados correctamente');
+
+    } catch (\Throwable $e) {
+        Log::error('Error al generar inventario de decants', [
+            'error' => $e->getMessage()
+        ]);
+
+        return back()->with('error', $e->getMessage());
+    }
+}
+
+    public function destroy($id)
+    {
+        try {
+            $decant = Decant::findOrFail($id);
+            $decant->delete();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'No se pudo eliminar el decant.');
+        }
+
+        return redirect()->back()->with('success', 'Decant eliminado exitosamente.');
     }
 }
