@@ -246,6 +246,8 @@
                                                                     id="stock"
                                                                     name="stock"
                                                                     value="{{ $inventarios->stock }}"
+                                                                    min="0"
+                                                                    max="1000"
                                                                     required>
                                                             </div>
                                                         </div>

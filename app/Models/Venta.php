@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Venta extends Model
 {
     public function usuario(): BelongsTo
@@ -19,6 +20,12 @@ class Venta extends Model
     'empresa_id'
 ]   ;
     
+    // Relacion con Marca
+    public function marca(): BelongsTo
+    {
+        return $this->belongsTo(Marca::class);
+    }
+
     // Relación con Cliente
     public function cliente()
     {
@@ -26,16 +33,22 @@ class Venta extends Model
     }
 
     // Relación con Perfume a través de Detalle_Venta
-    public function perfume()
+    public function perfume(): BelongsToMany
     {
-        return $this->belongsToMany(Perfume::class, 'detalle_venta', 'venta_id', 'perfume_id')
-                    ->withPivot('cantidad', 'precio', 'subtotal');
+        return $this->belongsToMany(Perfume::class, 'detalle__ventas', 'venta_id', 'perfume_id')
+            ->withPivot('cantidad', 'precio_unitario', 'subtotal');
     }
 
     // Relación con Inventario
-    public function inventario()
+    public function inventario(): BelongsToMany
     {
-        return $this->belongsToMany(Inventario::class, 'detalle_venta', 'venta_id', 'inventario_id')
-                    ->withPivot('cantidad', 'precio', 'subtotal');
+        return $this->belongsToMany(Inventario::class, 'detalle__ventas', 'venta_id', 'inventario_id')
+                    ->withPivot('cantidad', 'precio_unitario', 'subtotal');
     }
+
+    public function detalles(){
+        return $this->hasMany(Detalle_Venta::class);
+    }
+
 }
+

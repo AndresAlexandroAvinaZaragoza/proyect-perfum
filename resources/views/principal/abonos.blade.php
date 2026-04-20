@@ -56,7 +56,7 @@
                     <div class="mb-3">
                         <div class="d-flex flex-column gap-1">
                             <span class="color-custom p-custom">DEUDA TOTAL</span>
-                            <span class="p-custom-2">${{ number_format($deuda->total, 2) }}</span>
+                            <span class="p-custom-2">${{ number_format($deuda->deuda_total, 2) }}</span>
                         </div>
                     </div>
 

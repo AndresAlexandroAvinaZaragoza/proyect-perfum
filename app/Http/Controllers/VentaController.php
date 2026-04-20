@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Marca;
 use Illuminate\Support\Facades\DB;
 use App\Models\Deuda;
 use App\Models\Detalle_Venta;
@@ -11,6 +12,7 @@ use App\Models\Inventario;
 use App\Models\Cliente;
 use App\Models\Venta;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class VentaController extends Controller
 {
@@ -85,6 +87,52 @@ class VentaController extends Controller
             dd($e->getMessage());
         }
 
-        return back()->with('success', 'Venta registrada exitosamente.');
+        //return back()->with('success', 'Venta registrada exitosamente.');
+        return redirect()->route('venta.show', $venta->id)
+            ->with('print_ticket', true);
+    }
+
+    public function historial(Request $request){
+        $ventas = Venta::with(['cliente', 'usuario', 'perfume', 'marca'])->orderBy('created_at', 'desc')->get();
+        $marcas = Marca::orderBy('nombre')->get();
+        return view('principal.historialVenta', compact('ventas', 'marcas'));
+    }
+
+
+    public function show($id)
+    {
+        $venta = Venta::with([
+            'cliente',
+            'usuario',
+            'detalles.perfume' // importante para la tabla
+        ])->findOrFail($id);
+
+        return view('principal.detalle_venta', compact('venta'));
+    }
+
+    public function pdf($id)
+    {
+        $venta = Venta::with([
+            'cliente',
+            'usuario',
+            'detalles.perfume'
+        ])->findOrFail($id);
+
+        $pdf = Pdf::loadView('pdf.venta', compact('venta'));
+
+        return $pdf->download('venta_'.$venta->id.'.pdf');
+    }
+    public function ticket($id)
+    {
+        $venta = Venta::with([
+            'cliente',
+            'usuario',
+            'detalles.perfume'
+        ])->findOrFail($id);
+
+        $pdf = Pdf::loadView('pdf.ticket', compact('venta'))
+                ->setPaper([0,0,226.77,600], 'portrait'); // tamaño ticket
+
+        return $pdf->stream('ticket_'.$venta->id.'.pdf');
     }
 }

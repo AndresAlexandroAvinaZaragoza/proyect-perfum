@@ -15,4 +15,10 @@ class Detalle_Venta extends Model
     'subtotal',
     'empresa_id'
     ];
+
+
+        // DetalleVenta.php
+    public function perfume(){
+        return $this->belongsTo(Perfume::class);
+    }
 }

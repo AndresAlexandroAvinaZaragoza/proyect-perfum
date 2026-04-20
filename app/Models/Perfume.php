@@ -16,4 +16,11 @@ class Perfume extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     } 
+
+
+    public function ventas(): BelongsToMany
+    {
+        return $this->belongsToMany(Venta::class, 'detalle__ventas', 'venta_id')
+            ->withPivot('cantidad', 'precio_unitario', 'subtotal');
+    }
 }

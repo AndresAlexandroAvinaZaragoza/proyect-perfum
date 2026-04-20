@@ -24,6 +24,10 @@ Route::post('decant/generar', [DecantController::class, 'generarDecant'])
     ->middleware(['auth', 'verified'])
     ->name('decant.generar');
 
+Route::get('/ventas/historial', [VentaController::class, 'historial'])
+    ->middleware(['auth', 'verified'])
+    ->name('venta.historial');
+
 Route::resource('inventario_decants', InventarioDecantController::class)->middleware(['auth', 'verified']);
 Route::resource('decant', DecantController::class)->middleware(['auth', 'verified']);
 Route::resource('abonos', RegistrarAbonoController::class)->middleware(['auth', 'verified']);
@@ -48,6 +52,9 @@ Route::post('/usuarios', [UsuarioController::class, 'store'])
     ->name('usuarios.store');
 
 
+Route::get('/venta/{id}/pdf', [VentaController::class, 'pdf'])->name('venta.pdf');
+Route::get('/venta/{id}/ticket', [VentaController::class, 'ticket'])
+    ->name('venta.pdf2');
 
 
 
