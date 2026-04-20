@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetalleVentaDecant;
+use App\Models\InventarioDecants;
 use App\Models\Marca;
 use Illuminate\Support\Facades\DB;
 use App\Models\Deuda;
@@ -25,7 +27,9 @@ class VentaController extends Controller
         
         //cargamos la relacion inventario para mostrar solo los perfumes disponibles
         $inventarios = Inventario::with('perfume')->where('stock', '>', 0)->get();
-        return view('principal.venta', compact('clientes', 'inventarios'));
+        $decants = InventarioDecants::with('decant.perfume', 'precios_decants')->where('stock', '>', 0)->get();
+
+        return view('principal.venta', compact('clientes', 'inventarios', 'decants'));
     }
 
 
@@ -33,7 +37,7 @@ class VentaController extends Controller
         DB::beginTransaction();
 
         try{
-            //Crear venta
+
             $venta = Venta::create([
                 'cliente_id' => $request->cliente_id,
                 'total' => $request->total,
@@ -43,25 +47,61 @@ class VentaController extends Controller
                 'empresa_id' => 1
             ]);
 
-            //Convertir el carrito de JSON a un array
             $carrito = json_decode($request->carrito, true);
 
             foreach($carrito as $item){
-            $inventario = Inventario::find($item['id']);
-                //guardar detalle en la tabla detalle__venta
-                Detalle_Venta::create([
-                    'venta_id' => $venta->id,
-                    'perfume_id' => $inventario->perfume_id,
-                    'precio_unitario' => $item['precio'],
-                    'cantidad' => $item['cantidad'],
-                    'subtotal' => $item['precio'] * $item['cantidad'],
-                    'empresa_id' => 1
-                ]);
 
-                //Actualizar stock en inventario
-                $inventario = Inventario::find($item['id']);
-                $inventario->stock -= $item['cantidad'];
-                $inventario->save();
+                // PERFUMES
+                if($item['tipo'] == 'perfume'){
+
+                    $inventario = Inventario::findOrFail($item['id']);
+
+                    //  VALIDAR STOCK
+                    if($inventario->stock < $item['cantidad']){
+                        throw new \Exception("Stock insuficiente para el perfume: ".$inventario->perfume->nombre);
+                    }
+
+                    Detalle_Venta::create([
+                        'venta_id' => $venta->id,
+                        'perfume_id' => $inventario->perfume_id,
+                        'precio_unitario' => $item['precio'],
+                        'cantidad' => $item['cantidad'],
+                        'subtotal' => $item['precio'] * $item['cantidad'],
+                        'empresa_id' => 1
+                    ]);
+
+                    // descontar stock
+                    $inventario->stock -= $item['cantidad'];
+                    $inventario->save();
+                }
+
+
+    
+                //  DECANTS
+                if($item['tipo'] == 'decant'){
+
+                    $decant = InventarioDecants::findOrFail($item['id']);
+
+                    // VALIDAR STOCK
+                    if($decant->stock < $item['cantidad']){
+                        throw new \Exception("Stock insuficiente para el decant");
+                    }
+
+                    DetalleVentaDecant::create([
+                        'venta_id' => $venta->id,
+                        'decant_id' => $decant->decant_id,
+                        'inventario_decant_id' => $decant->id,
+                        'ml' => $item['ml'],
+                        'cantidad' => $item['cantidad'],
+                        'precio_unitario' => $item['precio'],
+                        'subtotal' => $item['precio'] * $item['cantidad'],
+                        'empresa_id' => 1
+                    ]);
+
+                    // descontar stock
+                    $decant->stock -= $item['cantidad'];
+                    $decant->save();
+                }
             }
 
             //Guardar si es a credito
@@ -104,7 +144,8 @@ class VentaController extends Controller
         $venta = Venta::with([
             'cliente',
             'usuario',
-            'detalles.perfume' // importante para la tabla
+            'detalles.perfume', // importante para la tabla
+            'detallesDecants.decant.perfume' // importante para la tabla
         ])->findOrFail($id);
 
         return view('principal.detalle_venta', compact('venta'));
@@ -115,7 +156,8 @@ class VentaController extends Controller
         $venta = Venta::with([
             'cliente',
             'usuario',
-            'detalles.perfume'
+            'detalles.perfume',
+            'detallesDecants.decant.perfume'
         ])->findOrFail($id);
 
         $pdf = Pdf::loadView('pdf.venta', compact('venta'));
@@ -127,7 +169,9 @@ class VentaController extends Controller
         $venta = Venta::with([
             'cliente',
             'usuario',
-            'detalles.perfume'
+            'detalles.perfume',
+            'detallesDecants.decant.perfume'
+
         ])->findOrFail($id);
 
         $pdf = Pdf::loadView('pdf.ticket', compact('venta'))

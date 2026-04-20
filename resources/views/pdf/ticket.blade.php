@@ -104,16 +104,38 @@ body{
 
     <div class="line"></div>
 
-    @foreach($venta->detalles as $item)
-    <div class="product">
-        <div class="product-name">{{ $item->perfume->nombre }}</div>
-        <div class="product-details">
-            <span>{{ $item->cantidad }} x ${{ number_format($item->precio_unitario,2) }}</span>
-            <span>${{ number_format($item->subtotal,2) }}</span>
-        </div>
-    </div>
-    @endforeach
+    @php
+        $items = collect();
 
+        // perfumes
+        foreach($venta->detalles as $d){
+            $items->push([
+                'nombre' => ($d->perfume->marca->nombre . ' ' . $d->perfume->nombre . ' ' . $d->perfume->concentracion ?? 'Perfume eliminado'),
+                'cantidad' => $d->cantidad,
+                'precio' => $d->precio_unitario,
+                'subtotal' => $d->subtotal
+            ]);
+        }
+
+        // decants
+        foreach($venta->detallesDecants as $d){
+            $items->push([
+                'nombre' => ($d->decant->perfume->marca->marca . ' ' . $d->decant->perfume->nombre . ' ' . $d->decant->perfume->concentracion ?? 'Decant eliminado') . ' ' . $d->ml . 'ml',
+                'cantidad' => $d->cantidad,
+                'precio' => $d->precio_unitario,
+                'subtotal' => $d->subtotal
+            ]);
+        }
+    @endphp
+    @foreach($items as $item)
+        <div class="product">
+            <div class="product-name">{{ $item['nombre'] }}</div>
+            <div class="product-details">
+                <span>{{ $item['cantidad'] }} x ${{ number_format($item['precio'],2) }}</span>
+                <span>${{ number_format($item['subtotal'],2) }}</span>
+            </div>
+        </div>
+    @endforeach
     <div class="line"></div>
 
     <div class="totals">

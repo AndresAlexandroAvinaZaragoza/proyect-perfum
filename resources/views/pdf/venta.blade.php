@@ -110,12 +110,35 @@
         </thead>
 
         <tbody>
-            @foreach($venta->detalles as $item)
+            @php
+                $items = collect();
+
+                // perfumes
+                foreach($venta->detalles as $d){
+                    $items->push([
+                        'nombre' => ($d->perfume->marca->nombre . ' ' . $d->perfume->nombre . ' ' . $d->perfume->concentracion . ' ' ?? 'Perfume eliminado'). ' ' . $d->perfume->contenido . 'ml',
+                        'cantidad' => $d->cantidad,
+                        'precio' => $d->precio_unitario,
+                        'subtotal' => $d->subtotal
+                    ]);
+                }
+
+                // decants
+                foreach($venta->detallesDecants as $d){
+                    $items->push([
+                        'nombre' => ('Decant ' .$d->decant->perfume->marca->marca . ' ' . $d->decant->perfume->nombre . ' ' . $d->decant->perfume->concentracion ?? 'Decant eliminado') . ' ' . $d->ml . 'ml',
+                        'cantidad' => $d->cantidad,
+                        'precio' => $d->precio_unitario,
+                        'subtotal' => $d->subtotal
+                    ]);
+                }
+            @endphp
+            @foreach($items as $item)
             <tr>
-                <td class="stard">{{$item->perfume->tipo . '' . $item->perfume->nombre . ' ' . $item->perfume->concentracion . ' ' . $item->perfume->contenido . ' ' . $item->perfume->genero ?? 'Perfume eliminado' }}</td>
-                <td class="right">{{ $item->cantidad }}</td>
-                <td class="right">${{ number_format($item->precio_unitario,2) }}</td>
-                <td class="right">${{ number_format($item->subtotal,2) }}</td>
+                <td class="stard">{{$item['nombre'] }}</td>
+                <td class="right">{{ $item['cantidad'] }}</td>
+                <td class="right">${{ number_format($item['precio'],2) }}</td>
+                <td class="right">${{ number_format($item['subtotal'],2) }}</td>
             </tr>
             @endforeach
         </tbody>

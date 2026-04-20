@@ -75,7 +75,7 @@
                                     <i class="fa-solid fa-magnifying-glass position-absolute"
                                     style="top: 50%; left: 15px; transform: translateY(-50%); color:#c9a646; z-index: 10;"></i>
             
-                                    <select id="inventario_id" class="form-control w-100 ps-5">
+                                    <select id="selectPerfumes" class="form-control w-100 ps-5">
                                         <option value="">Seleccionar perfume</option>
 
                                         @foreach ($inventarios as $inventario)
@@ -89,6 +89,34 @@
                                                 {{ $inventario->perfume->contenido ?? '' }}ml -
                                                 {{ $inventario->perfume->genero ?? '' }}
                                                 {{ $inventario->perfume->tipo?? 'sin tipo'}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- DECANTS -->
+                    <div class="col-md-6">
+                        <div class="card card-custom rounded-4 h-100">
+                            <div class="card-body">
+
+                                <p>Buscador de Decants</p>
+                                <div class="position-relative">
+                                    <i class="fa-solid fa-spray-can position-absolute"
+                                    style="top: 50%; left: 15px; transform: translateY(-50%); color:#c9a646; z-index: 10;"></i>
+            
+                                    <select id="selectDecants" class="form-control w-100 ps-5">
+                                        <option value="">Selecciona decant</option>
+                                        @foreach($decants as $dec)
+                                            <option value="{{ $dec->id }}"
+                                                data-precio="{{ $dec->precios_decants->precio }}"
+                                                data-ml="{{ $dec->precios_decants->ml }}"
+                                                data-tipo="decant"
+                                                data-stock="{{ $dec->stock }}">
+                                                {{ $dec->decant->perfume->nombre }} - {{ $dec->precios_decants->ml }}ml (Stock: {{ $dec->stock }})
                                             </option>
                                         @endforeach
                                     </select>
@@ -237,8 +265,13 @@
 
          <!-- Scrip para rellenar datos del select2 -->
         <script>
-            $('#inventario_id').select2({
+            $('#selectPerfumes').select2({
                 placeholder: "Buscar perfume...",
+                allowClear: true,
+                minimumResultsForSearch: 0,
+            });
+            $('#selectDecants').select2({
+                placeholder: "Buscar Decants...",
                 allowClear: true,
                 minimumResultsForSearch: 0,
             });
@@ -247,42 +280,92 @@
 
         <script>
             let carrito = [];
+            
+            // INICIALIZAR SELECT2
+            $('#selectPerfumes').select2();
+            $('#selectDecants').select2();
 
-            $('#inventario_id').on('change', function () {
 
-                let selected = $(this).find(':selected');
+            // PERFUMES
+            $('#selectPerfumes').on('change', function(){
 
-                let id = selected.val();
-                let nombre = selected.data('nombre');
-                let precio = selected.data('precio');
-                let stock = selected.data('stock');    
-                if (!id) return;
+                let option = $(this).find(':selected');
 
-                // Ver si ya existe
-                let producto = carrito.find(p => p.id == id);
+                if(!option.val()) return;
 
-                if (producto) {
-                    if(producto.cantidad < producto.stock) {
-                        producto.cantidad +=1;
-                    } else {
-                        alert('No hay suficiente stock disponible');
+                let item = {
+                    id: option.val(),
+                    nombre: option.text(),
+                    tipo: 'perfume',
+                    precio: parseFloat(option.data('precio')),
+                    cantidad: 1,
+                    stock: parseInt(option.data('stock'))
+                };
+                
+            
+
+                agregarAlCarrito(item);
+
+                // reset select
+                $(this).val(null).trigger('change');
+            });
+
+
+            // DECANTS
+            $('#selectDecants').on('change', function(){
+
+                let option = $(this).find(':selected');
+
+                if(!option.val()) return;
+
+                let item = {
+                    id: option.val(),
+                    nombre: option.text(),
+                    tipo: 'decant',
+                    precio: parseFloat(option.data('precio')),
+                    ml: option.data('ml'),
+                    cantidad: 1,
+                    stock: parseInt(option.data('stock'))
+                };
+
+                agregarAlCarrito(item);
+
+                // reset select
+                $(this).val(null).trigger('change');
+            });
+
+
+            // AGREGAR AL CARRITO
+            function agregarAlCarrito(item){
+
+                let existente = carrito.find(p => 
+                    p.id == item.id && p.tipo == item.tipo
+                );
+
+                // SI YA EXISTE
+                if(existente){
+
+                    //  VALIDAR STOCK
+                    if(existente.cantidad >= item.stock){
+                        alert("No hay más stock disponible");
+                        return;
                     }
+
+                    existente.cantidad++;
+
                 } else {
-                    carrito.push({
-                        id: id,
-                        nombre: nombre,
-                        precio: precio,
-                        cantidad: 1,
-                        stock: stock
-                    });
+
+                    //  VALIDAR PRIMER AGREGADO
+                    if(item.stock <= 0){
+                        alert("Sin stock disponible");
+                        return;
+                    }
+
+                    carrito.push(item);
                 }
 
                 renderTabla();
-
-                // limpiar select
-                $('#inventario_id').val(null).trigger('change');
-            });
-
+            }
 
             function renderTabla() {
 
@@ -397,27 +480,27 @@
         </script>
 
 
-<script>
-    const formVenta = document.getElementById('form-venta');
+        <script>
+            const formVenta = document.getElementById('form-venta');
 
-    formVenta.addEventListener('submit', function (event) {
-        if (carrito.length === 0) {
-            alert("El carrito está vacío. Agrega productos para continuar.");
-            event.preventDefault();
-            return;
-        }
+            formVenta.addEventListener('submit', function (event) {
+                if (carrito.length === 0) {
+                    alert("El carrito está vacío. Agrega productos para continuar.");
+                    event.preventDefault();
+                    return;
+                }
 
-        let subtotalFinal = 0;
-        carrito.forEach(item => {
-            subtotalFinal += (item.precio * item.cantidad);
-        });
+                let subtotalFinal = 0;
+                carrito.forEach(item => {
+                    subtotalFinal += (item.precio * item.cantidad);
+                });
 
-        document.getElementById('input_carrito').value = JSON.stringify(carrito);
-        document.getElementById('input_total').value = subtotalFinal;
-        document.getElementById('input_subtotal').value = subtotalFinal;
-        document.getElementById('input_articulos').value = carrito.length;
-    });
-</script>
+                document.getElementById('input_carrito').value = JSON.stringify(carrito);
+                document.getElementById('input_total').value = subtotalFinal;
+                document.getElementById('input_subtotal').value = subtotalFinal;
+                document.getElementById('input_articulos').value = carrito.length;
+            });
+        </script>
 
     @endsection
 

@@ -96,7 +96,37 @@
                     </thead>
 
                     <tbody>
-                        @foreach($venta->detalles as $item)
+                        @php
+                            $items = collect();
+
+                            // perfumes
+                            foreach($venta->detalles as $d){
+                                $items->push([
+                                    'nombre' => $d->perfume->nombre . ' ' . $d->perfume->concentracion . ' ' . ' ' . $d->perfume->genero ?? 'Perfume eliminado',
+                                    'marca' => $d->perfume->marca->nombre ?? 'Marca desconocida',
+                                    'tipo' => $d->perfume->tipo ?? 'Tipo desconocido',
+                                    'ml' => $d->perfume->contenido . ' ml',
+                                    'cantidad' => $d->cantidad,
+                                    'precio' => $d->precio_unitario,
+                                    'subtotal' => $d->subtotal
+                                ]);
+                            }
+
+                            // decants
+                            foreach($venta->detallesDecants as $d){
+                                $items->push([
+                                    'nombre' => $d->decant->perfume->nombre . ' ' . $d->decant->perfume->concentracion . ' ' . ' ' . $d->decant->perfume->genero ?? 'Decant eliminado',
+                                    'marca' => $d->decant->perfume->marca->nombre ?? 'Marca desconocida',
+                                    'tipo' => 'Decant',
+                                    'ml' => $d->ml . ' ml',
+                                    'cantidad' => $d->cantidad,
+                                    'precio' => $d->precio_unitario,
+                                    'subtotal' => $d->subtotal
+                                ]);
+                            }
+                            @endphp
+
+                        @foreach($items as $item)
                         <tr>
                             <td class="d-flex align-items-center gap-3">
 
@@ -105,23 +135,24 @@
                                 -->
                                 <div>
                                     <div class="nombre-perfume">
-                                        {{ $item->perfume->nombre . ' ' . $item->perfume->concentracion . ' ' . $item->perfume->contenido . ' ' . $item->perfume->genero ?? 'Perfume eliminado' }}
+                                        {{ $item['nombre'] }}
                                     </div>
                                     <small class="color-custom">
-                                        {{ $item->perfume->marca->nombre ?? '' }}
+                                        {{ $item['tipo'] }} - {{ $item['marca'] }}
                                     </small>
                                 </div>
 
                             </td>
+                            <td class="text-center">{{ $item['ml'] }}</td>
 
-                            <td class="text-center">{{ $item->cantidad }}</td>
+                            <td class="text-center">{{ $item['cantidad'] }}</td>
 
                             <td class="text-end">
-                                ${{ number_format($item->precio_unitario,2) }}
+                                ${{ number_format($item['precio'],2) }}
                             </td>
 
                             <td class="text-end text-warning fw-bold">
-                                ${{ number_format($item->subtotal,2) }}
+                                ${{ number_format($item['subtotal'],2) }}
                             </td>
                         </tr>
                         @endforeach

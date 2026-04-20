@@ -30,4 +30,7 @@ class Decant extends Model
     {
         return $this->hasMany(PrecioDecant::class);
     }
+    public function detallesDecants(){
+        return $this->hasMany(DetalleVentaDecant::class);
+    }
 }

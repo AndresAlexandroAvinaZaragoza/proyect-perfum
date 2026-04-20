@@ -49,6 +49,9 @@ class Venta extends Model
     public function detalles(){
         return $this->hasMany(Detalle_Venta::class);
     }
+    public function detallesDecants(){
+    return $this->hasMany(DetalleVentaDecant::class);
+    }   
 
 }
 
