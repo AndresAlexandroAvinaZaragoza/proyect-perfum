@@ -1,79 +1,359 @@
- body {
-      overflow-x: hidden;
-    }
-    /* Sidebar */
-    #sidebar {
-      min-width: 220px;
-      max-width: 220px;
-      min-height: 100vh;
-      background: #0d6efd;
-      color: #fff;
-      transition: all 0.3s;
-    }
-    #sidebar.collapsed {
-      margin-left: -220px;
-    }
-    #sidebar .nav-link {
-      color: #fff;
-      font-weight: 500;
-      padding: 12px 20px;
-      border-radius: 0;
-    }
-    #sidebar .nav-link:hover, #sidebar .nav-link.active {
-      background: rgba(255, 255, 255, 0.2);
-    }
 
-    /* Contenido */
-    #content {
-      transition: all 0.3s;
-      padding: 20px;
-      flex-grow: 1;
-    }
-    .toggle-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: #0d6efd;
-      border: none;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 5px;
-    }
-    .toggle-btn:hover {
-      background: #0b5ed7;
-    }
 
-.card {
-  border-radius: 4px;
-  background-color: hsl(0, 0%, 100%);
+h1{
+    color: #fff;
 }
 
-.table-hover tbody tr:hover {
-  background-color: #f8f9fa;
-  transition: 0.2s ease-in-out;
+p{
+    color: #516F89;
 }
 
-.btn-outline-secondary {
-  font-size: 0.9rem;
+.card-body h6{
+    color: #516F89;
 }
 
-body {
-  background-color: #f0f0f0;
+.h6-custom{
+    color: #ffff;
+}
+
+.btn-primary{
+    background-color: #f9c344;
+    color: black;
+    border: #ffb300;
+}
+
+.btn-primary:hover{
+    background-color: #f9c34485;
+    color: rgba(248, 248, 248, 0.801);
+}
+
+.card{
+    background-color: #1A1614;
+
+}
+
+.card-custom {
+    border: 1px solid #2D2621;
+    
+}
+
+.w-25 {
+    width: calc(var(--spacing) * 15) /* 6.25rem = 100px */;
 }
 
 
-    .accordion-item {
-      border-radius: 12px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      margin-bottom: 12px;
-      background-color: #fff;
-    }
-    .accordion-button {
-      background-color: #e9ecef;
-      font-weight: 600;
-      color: #333;
-    }
-    .accordion-button:not(.collapsed) {
-      background-color: #dee2e6;
-      color: #0d6efd;
-    }
+.search-custom {
+    background-color: #242116;
+    color: white;
+    border: 2px solid #3a3525; /* borde normal */
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Placeholder */
+.search-custom::placeholder {
+    color: #516F89;
+}
+
+/* Focus */
+.search-custom:focus {
+    background-color: #242116;
+    color: white;
+    border-color: #ffb300; /* cambia solo el color */
+    box-shadow: none;
+    outline: none;
+}
+
+.form-select {
+    background-color: #120F0D;
+    color: white;
+    border: 1px solid #3a3525;
+}
+
+.form-select:focus {
+    border-color: #ffb300;
+    box-shadow: none;
+}
+
+.btn-outline-gold {
+    background-color: transparent;
+    color: white;
+    border: 2px solid #3a3525;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+    background-color: #8f835e;
+    color: #242116;
+}
+
+/* Tabla personalizada */
+.table-custom {
+    background-color: #2D291D;
+    color: white;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Encabezado */
+.table-custom thead {
+    background-color: #242116;
+    color: #f9c344;
+}
+
+/* Bordes */
+.table-custom th,
+.table-custom td {
+    border-color: #3a3525;
+    vertical-align: middle;
+}
+
+/* Hover */
+.table-custom tbody tr:hover {
+    background-color: #38311c;
+}
+
+/* Quitar fondo blanco default */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: transparent;
+}
+
+.th-custom th {
+    background-color: #120F0D;
+    color: #516F89;
+}
+
+.td-custom td{
+    color: white;
+    background-color: #1A1614;
+}
+
+.table-wrapper {
+    background-color: #2D291D;
+    border-radius: 16px;
+    overflow: hidden; 
+    border: 2px solid #3a3525;
+}
+
+.h1-custom{
+    color: #242116;
+}
+
+.input-group-text {
+    background: transparent !important;
+    border: none !important;
+    color: #c9a646; /* dorado */
+}
+
+/* Decoraicon select2 */
+
+.select2-container .select2-selection--single {
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid #2C2621 !important;
+    background-color: #120F0D !important;
+    padding: 5px;
+    transition: all 0.2s ease;
+}
+
+.select2-dropdown {
+    background-color: #120F0D !important; /* fondo del menú */
+    color: #ffff;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #c9a646;
+    box-shadow: 0 0 0 2px #ffb300;
+}
+
+.select2-results__option--highlighted {
+    background-color: #6366f1 !important;
+}
+
+.select2-container--default .select2-selection--single {
+    color: #e0f2fe !important;
+}
+
+.select2-container--default .select2-selection--single {
+    padding-left: 35px !important; /* espacio para el icono */
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+
+/* Altura del select2 */
+.select2-container--default .select2-selection--single {
+    height: 38px !important; /* igual que Bootstrap */
+    display: flex;
+    align-items: center;
+    border-radius: 0.5rem; /* opcional para que combine con tu card */
+}
+
+/* Texto centrado vertical */
+.select2-container--default .select2-selection__rendered {
+    line-height: normal !important;
+}
+
+/* Flechita alineada */
+.select2-container--default .select2-selection__arrow {
+    height: 100% !important;
+}
+
+.h-custom{
+    height: 34rem;
+}
+
+.h-custom-2{
+    height: 42rem;
+}
+
+
+/* apartado venta */
+
+.card-title-venta{
+    font-size: 30px;
+    color: #fff;
+}
+
+.btn-venta{
+    background-color: #FFC107;
+}
+
+.btn-venta:hover{
+    background-color: #ffe289;
+}
+
+/* From Uiverse.io by gharsh11032000 */ 
+.button {
+    cursor: pointer;
+    position: relative;
+    padding: 10px 24px;
+    font-size: 18px;
+    color: rgb(193, 163, 98);
+    border: 2px solid rgb(193, 163, 98);
+    border-radius: 15px;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    overflow: hidden;
+
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: inherit;
+    scale: 0;
+    z-index: -1;
+    background-color: rgb(193, 163, 98);
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.button:hover::before {
+    scale: 10;
+}
+
+.button:hover {
+    color: #212121;
+    scale: 1.01;
+    box-shadow: 0 0px 20px rgba(193, 163, 98,0.4);
+}
+
+.button:active {
+    scale: 1;
+}
+
+
+.radio-inputs {
+    display: flex;
+    justify-content: center;
+    alaign-items: center;
+    gap: 10px;
+}
+
+.radio-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 217px;
+    min-height: 120px;
+    border-radius: 12px;
+    border: 2px solid #2c2c2c;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+}
+
+/* ICONO */
+.radio-icon i {
+    font-size: 40px;
+    color: #888;
+}
+
+/* TEXTO */
+.radio-label {
+    font-size: 14px;
+    color: #aaa;
+    margin-top: 5px;
+}
+
+/* SELECCIONADO */
+.radio-input:checked + .radio-tile {
+    border-color: #c9a646;
+    background-color: #2a2418;
+}
+
+.radio-input:checked + .radio-tile .radio-icon i {
+    color: #c9a646;
+}
+
+.radio-input:checked + .radio-tile .radio-label {
+    color: #c9a646;
+}
+
+/* HOVER */
+.radio-tile:hover {
+    border-color: #c9a646;
+}
+
+/* OCULTAR RADIO */
+.radio-input {
+    position: absolute;
+    opacity: 0;
+}
+
+.radio-tile {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.radio-input:checked + .radio-tile {
+    border-color: #c9a646;
+    background: linear-gradient(145deg, #2a2418, #1a1a1a);
+    transform: scale(1.05);
+}
+
+
+.bloque-total {
+    border-top: 2px solid #2C2621;
+    border-bottom: 2px solid #2C2621;
+    padding: 10px 0;
+    margin-top: 10px;
+}
+
+.backgroud-custom {
+    background-color: #161311;
+}
+
+.h4-custom {
+    color: #fff;
+}
+
+

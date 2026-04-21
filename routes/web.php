@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\InventarioDecantController;
 use App\Http\Controllers\DecantController;
 use App\Http\Controllers\RegistrarAbonoController;
@@ -28,6 +29,8 @@ Route::get('/ventas/historial', [VentaController::class, 'historial'])
     ->middleware(['auth', 'verified'])
     ->name('venta.historial');
 
+
+Route::resource('pedidos', PedidosController::class)->middleware(['auth', 'verified']);
 Route::resource('inventario_decants', InventarioDecantController::class)->middleware(['auth', 'verified']);
 Route::resource('decant', DecantController::class)->middleware(['auth', 'verified']);
 Route::resource('abonos', RegistrarAbonoController::class)->middleware(['auth', 'verified']);

@@ -46,6 +46,9 @@
                 <a href="{{ route('proovedor.index')}}" class="nav-link"><i class="bi me-2"></i> Provedores </a>
             </li>
             <li>
+                <a href="{{ route('pedidos.index')}}" class="nav-link"><i class="bi me-2"></i> Pedidos </a>
+            </li>
+            <li>
                 <a href="{{ route('usuario.index') }}" class="nav-link"><i class="bi  me-2"></i> Usuarios </a>
             </li>     
             <li>
