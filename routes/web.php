@@ -29,6 +29,11 @@ Route::get('/ventas/historial', [VentaController::class, 'historial'])
     ->middleware(['auth', 'verified'])
     ->name('venta.historial');
 
+Route::get('/pedidos/detallePedidos', [PedidosController::class, 'detallePedidos'])
+    ->middleware(['auth', 'verified'])
+    ->name('pedidos.detallePedidos');
+
+Route::get('/pedidos/edit/{id}', [PedidosController::class, 'edit'])->name('pedidos.edit');
 
 Route::resource('pedidos', PedidosController::class)->middleware(['auth', 'verified']);
 Route::resource('inventario_decants', InventarioDecantController::class)->middleware(['auth', 'verified']);

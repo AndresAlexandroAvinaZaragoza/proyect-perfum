@@ -9,28 +9,32 @@ class Pedidos extends Model
     protected $table = 'pedidos';
 
     protected $fillable = [
-        'nombre',
+        'folio',
         'guia',
+        'precio_envio',
         'paqueteria',
+        'total',
         'proovedor_id',
         'user_id',
-        'empresa_id'
+        'empresa_id',
+        'estado'
     ];
 
     // RELACIONES
 
-    public function detalles()
+public function detalles()
     {
-        return $this->hasMany(DetallePedido::class);
+        return $this->hasMany(DetallePedido::class, 'pedido_id');
     }
 
-    public function proveedor()
+    public function proovedor()
     {
-        return $this->belongsTo(Proveedor::class, 'proovedor_id');
+        return $this->belongsTo(Proovedor::class, 'proovedor_id');
     }
 
     public function usuario()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
 }

@@ -170,7 +170,7 @@ p{
     content: "";
     position: absolute;
     top: 0;
-    bottom: calc(var(--bs-card-spacer-y, 1rem) * -1);
+    bottom: 0;
     left: -1.7rem;
     right: -1.7rem;
     background-color: #171412; 
@@ -199,6 +199,8 @@ h3{
 
 .card-deuda{
     transition: all 0.4s;
+        position: relative;
+    overflow: hidden; /* 🔥 clave */
 }
 
 .background-custom{

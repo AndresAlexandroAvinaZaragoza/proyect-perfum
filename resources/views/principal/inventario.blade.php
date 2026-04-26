@@ -266,6 +266,8 @@
                                                                     class="form-control custom-input"
                                                                     id="stock"
                                                                     name="stock"
+                                                                    min="0"
+                                                                    max="9999"
                                                                     value="{{ $inventario->stock }}"
                                                                     required>
                                                             </div>

@@ -114,7 +114,7 @@
                                     <td>{{ $marca->updated_at->format('d/m/Y H:i') }}</td>
                                     <td>
 
-                                        {{$marca->id}}
+                                    
                                         <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $marca->id }}">
                                             <x-icon name="edit" class="me-1" width="16" height="16"/>
                                         </button>

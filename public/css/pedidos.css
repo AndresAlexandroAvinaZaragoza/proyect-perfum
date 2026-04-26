@@ -206,7 +206,7 @@ p{
 }
 
 .h-custom-2{
-    height: 42rem;
+    height: 43rem;
 }
 
 
@@ -256,7 +256,7 @@ p{
 }
 
 .button:hover::before {
-    scale: 10;
+    scale: 9;
 }
 
 .button:hover {
@@ -269,11 +269,59 @@ p{
     scale: 1;
 }
 
+.btn-cancelar-pedido {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #f3f4f6;
+    background-color: #1a1614;
+    border: 2px solid #516f89;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.btn-cancelar-pedido:hover {
+    color: #ffffff;
+    background-color: #2a241f;
+    border-color: #7f93a6;
+    box-shadow: 0 0 16px rgba(81, 111, 137, 0.35);
+}
+
+.btn-cancelar-pedido:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(81, 111, 137, 0.45);
+}
+
+.acciones-pedido {
+    width: 85%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.acciones-pedido > * {
+    min-width: 0;
+}
+
+.btn-cancelar-pedido {
+    flex: 0 0 calc(40% - 4px);
+    white-space: nowrap;
+}
+
+.btn-confirmar-pedido {
+    flex: 1;
+    white-space: nowrap;
+}
+
 
 .radio-inputs {
     display: flex;
     justify-content: center;
-    alaign-items: center;
+    align-items: center;
     gap: 10px;
 }
 

@@ -18,30 +18,29 @@
         <header class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h1>Nuevo Pedido</h1>   
-                    <p>Registro de un nuevo pedido</p>
+                    <h1>Editar Pedido</h1>   
+                    <p>Modifica la información del pedido</p>
                 </div>
 
-                <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#dropdownParent">
-                    Limpiar Carrito
-                </button>
+                <a href="{{ route('pedidos.detallePedidos') }}" class="btn btn-outline-secondary">
+                    ← Volver
+                </a>
             </div>
-
-               
         </header>
 
-        <form id="form-pedido" method="POST" action="{{ route('pedidos.store') }}">
+        <form id="form-pedido" method="POST" action="{{ route('pedidos.update', $pedido->id) }}">
         @csrf
+        @method('PUT')
 
         <div class="row g-4 ">
 
             <!--  IZQUIERDA -->
             <div class="col-md-8">
 
-                <!--  FILTROS (OCUPAN TODO EL ANCHO) -->
+                <!--  FILTROS -->
                 <div class="row g-3 mb-3">
 
-                    <!-- CLIENTE -->
+                    <!-- TITULO -->
                     <div class="col-md-6">
                         <div class="">
                             <div class="card-body">
@@ -66,18 +65,16 @@
                                         @foreach ($perfumes as $perfume)
                                             <option value="{{ $perfume->id }}"
                                             data-nombre="{{ $perfume->nombre ?? 'Sin nombre' }} - {{ $perfume->concentracion ?? '' }} - {{ $perfume->contenido ?? '' }}ml - {{ $perfume->genero ?? '' }} - {{ $perfume->tipo ?? 'sin tipo' }}"
-        
                                             >
+                                                {{ $perfume->tipo ?? 'sin tipo'}} -
+                                                {{ $perfume->marca->nombre ?? '' }} -
                                                 {{ $perfume->nombre ?? 'Sin nombre' }} -
-                                                {{ $perfume->concentracion ?? '' }} -
                                                 {{ $perfume->contenido ?? '' }}ml -
-                                                {{ $perfume->genero ?? '' }}
-                                                {{ $perfume->tipo ?? 'sin tipo'}}
+                                                {{ $perfume->concentracion ?? '' }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                
 
                             </div>
                         </div>
@@ -101,23 +98,22 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tabla-pedido">
-                                        <tr class= "td-custom">
-
-                                        </tr>
+                                        <tr class="td-custom"></tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
             </div>
+
                 @if(session('success'))
                 <script>
                     alertify.success("{{ session('success') }}");
                 </script>
                 @endif
+
             <!-- DERECHA -->
             <div class="col-md-4">
                 <div class="card card-custom rounded-4 h-custom-2">
@@ -134,8 +130,9 @@
                                     required>
                                     <option value="">Seleccionar Proveedor</option>
                                     @foreach ($proovedores as $proveedor)
-                                        <option value="{{ $proveedor->id }}">
-                                        {{ $proveedor->nombre }}
+                                        <option value="{{ $proveedor->id }}"
+                                            {{ $pedido->proovedor_id == $proveedor->id ? 'selected' : '' }}>
+                                            {{ $proveedor->nombre }}
                                         </option>   
                                     @endforeach
                                 </select>
@@ -146,6 +143,7 @@
                                 <input 
                                     type="text" 
                                     name="numero_guia" 
+                                    value="{{ $pedido->guia }}"
                                     class="form-control custom-input"
                                     style="background-color: #050504;" 
                                     inputmode="numeric"
@@ -161,9 +159,9 @@
                                 <input 
                                     type="text" 
                                     name="paqueteria" 
+                                    value="{{ $pedido->paqueteria }}"
                                     class="form-control custom-input" 
                                     style="background-color: #050504;" 
-
                                     maxlength="49"
                                     required
                                 >
@@ -175,9 +173,9 @@
                                     type="text" 
                                     name="precio_envio" 
                                     id="precio_envio"
+                                    value="{{ $pedido->precio_envio }}"
                                     class="form-control custom-input" 
                                     style="background-color: #050504;" 
-
                                     inputmode="numeric"
                                     pattern="[0-9]*"
                                     maxlength="49"
@@ -189,13 +187,9 @@
                         </div>
                         
                         <hr style="border-color: #fff;">
-                        
 
                         <div class="card-body p-3">
-            
-                            
 
-                            
                             <div class="d-flex justify-content-between mb-1">
                                 <h6 class="h6-custom mb-0">Subtotal:</h6>
                                 <strong class="h6-custom mb-0" id="subtotal_display">$0</strong>
@@ -211,43 +205,38 @@
 
                         <div class="">
                             <div class="d-flex justify-content-between mt-1">
-                                <h4 class="h4-custom p-2">Total a Pedido:</h4>
+                                <h4 class="h4-custom p-2">Total del Pedido:</h4>
                                 <h4 id="total_display" class="h6-custom p-2">$0</h4>
                             </div>
                         </div>
 
-                            <!-- BOTÓN ABAJO -->
-                            <div class="mt-1 d-flex justify-content-center">
+                        <!-- BOTONES -->
+                        <div class="mt-1 d-flex justify-content-center">
 
-                                <input type="hidden" name="carrito" id="input_carrito">
-                                <input type="hidden" name="total" id="input_total">
-                                <input type="hidden" name="subtotal" id="input_subtotal">
-                                <input type="hidden" name="articulos" id="input_articulos">
-                                <input type="hidden" name="envio" id="input_envio">
+                            <input type="hidden" name="carrito" id="input_carrito">
+                            <input type="hidden" name="total" id="input_total">
+                            <input type="hidden" name="subtotal" id="input_subtotal">
+                            <input type="hidden" name="articulos" id="input_articulos">
+                            <input type="hidden" name="envio" id="input_envio">
 
-                                <div class="acciones-pedido">
-                                    <a href="{{ route('pedidos.detallePedidos') }}" class="btn-cancelar-pedido">
-                                        Cancelar Pedido
-                                    </a>
-                                    <button type="submit" class="button btn-finalizar btn-center btn-confirmar-pedido">
-                                        Confirmar Pedido <i class="fa-solid fa-arrow-right"></i>
-                                    </button>
-                                </div>
-            </form>
+                            <div class="acciones-pedido">
+                                <a href="{{ route('pedidos.detallePedidos') }}" class="btn-cancelar-pedido">
+                                    Cancelar
+                                </a>
+                                <button type="submit" class="button btn-finalizar btn-center btn-confirmar-pedido">
+                                    Actualizar Pedido <i class="fa-solid fa-arrow-right"></i>
+                                </button>
                             </div>
-
-
                         </div>
-
 
                     </div>
                 </div>
             </div>
 
         </div>
+        </form>
 
-
-         <!-- Scrip para rellenar datos del select2 -->
+        <!-- Select2 init -->
         <script>
             $('#selectPerfumes').select2({
                 placeholder: "Buscar perfume...",
@@ -256,25 +245,31 @@
             });
         </script>
 
-
         <script>
-            let perfumes = @json($perfumes);
-            let carrito = [];
-            let envio = 0;
+        let perfumes = @json($perfumes);
+
+            let carrito = {!! $pedido->detalles->map(function($d){
+                return [
+                    'id' => $d->perfume_id,
+                    'cantidad' => $d->cantidad,
+                    'precio' => $d->precio_de_compra
+                ];
+            })->values()->toJson() !!};
+
+
+
+            let envio = {{ $pedido->precio_envio ?? 0 }};
             let total = 0;
 
             function getNombre(id) {
                 let p = perfumes.find(x => x.id == id);
                 if (!p) return 'Sin nombre';
-
                 return `${p.nombre} - ${p.concentracion} - ${p.contenido}ml`;
             }
-            
-            // PERFUMES
+
+            // AGREGAR DESDE SELECT2
             $('#selectPerfumes').on('select2:select', function (e) {
-
                 const data = e.params.data;
-
                 if (!data || !data.id) return;
 
                 let item = {
@@ -285,33 +280,22 @@
 
                 agregarAlCarrito(item);
 
-                // Reset visual del Select2 sin volver a disparar la logica de agregado
                 $(this).val(null).trigger('change.select2');
                 $(this).select2('close');
             });
 
-
-
-
             // AGREGAR AL CARRITO
-            function agregarAlCarrito(item){
-
+            function agregarAlCarrito(item) {
                 let existente = carrito.find(p => p.id == item.id);
-
-                // SI YA EXISTE
-                if(existente){
-
+                if (existente) {
                     existente.cantidad++;
                 } else {
                     carrito.push(item);
                 }
-                
-
                 renderTabla();
             }
 
             function renderTabla() {
-
                 let tbody = $('#tabla-pedido');
                 tbody.empty();
 
@@ -320,28 +304,23 @@
 
                     let sub = item.cantidad * (item.precio || 0);
                     subtotal += sub;
+
                     tbody.append(`
                         <tr class="td-custom">
                             <td>${getNombre(item.id)}</td>
                             <td>
                                 <div class="d-flex align-items-center justify-content-center gap-1">
-
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="restar(${index})">-</button>
-
                                     <input 
                                         type="number" 
                                         name="cantidad"
                                         min="1"  
                                         value="${item.cantidad}"    
                                         class="form-control form-control-sm"
-                                        style="background-color: #1A1614; color: #fff ; width:60px;"
+                                        style="background-color: #1A1614; color: #fff; width:60px;"
                                         onchange="cambiarCantidad(${index}, this.value)"
-                                        style="width:60px;"
                                     >
-
                                     <button type="button" class="btn btn-sm btn-outline-secondary" onclick="sumar(${index})">+</button>
-
-
                                 </div>
                             </td>
                             <td>
@@ -349,7 +328,7 @@
                                     type="text" 
                                     name="precio_unitario" 
                                     class="form-control precio-unitario"
-                                    style="background-color: #1A1614; color: #fff; border:none; hover:none; focus:none; width:100px;"
+                                    style="background-color: #1A1614; color: #fff; border:none; width:100px;"
                                     value="${formatoMonedaInput(item.precio || 0)}" 
                                     inputmode="numeric"
                                     maxlength="10"
@@ -368,19 +347,11 @@
                     `);
                 });
 
-                // CALCULOS
-               /* let iva = subtotal * 0.16;
-                let total = subtotal + iva;
-                */
-                let total = subtotal + envio; // Si no se maneja IVA, el total es igual al subtotal
-                // ACTUALIZAR HTML
+                let total = subtotal + envio;
+
                 $('#subtotal_display').text(formatoMoneda(subtotal));
                 $('#envio_display').text(formatoMoneda(envio));
-                //$('#iva_display').text(formatoMoneda(iva));
                 $('#total_display').text(formatoMoneda(total));
-
-                    //para mostrar la cantidad de productos
-                $('#contador2').text(`${carrito.length}`);
             }
 
             function formatoMoneda(num) {
@@ -392,12 +363,9 @@
 
             function parseNumero(valor) {
                 if (valor === null || valor === undefined) return 0;
-
-                // Acepta valores como "$1,234.50" y "1234.50"
                 const limpio = String(valor)
                     .replace(/[^0-9.,]/g, '')
                     .replace(/,/g, '');
-
                 const numero = parseFloat(limpio);
                 return isNaN(numero) ? 0 : numero;
             }
@@ -409,51 +377,37 @@
                 });
             }
 
-                function formatoMonedaInput(num) {
-                    return Number(num || 0).toLocaleString('es-MX', {
-                        style: 'currency',
-                        currency: 'MXN',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                    });
-                }
+            function formatoMonedaInput(num) {
+                return Number(num || 0).toLocaleString('es-MX', {
+                    style: 'currency',
+                    currency: 'MXN',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                });
+            }
 
             function eliminar(index) {
                 carrito.splice(index, 1);
                 renderTabla();
             }
 
-            //funcion para agregar mas cantidad
             function cambiarCantidad(index, nuevaCantidad) {
-
                 nuevaCantidad = parseInt(nuevaCantidad);
-
-                if (isNaN(nuevaCantidad) || nuevaCantidad < 1) {
-                    nuevaCantidad = 1;
-                }
-
+                if (isNaN(nuevaCantidad) || nuevaCantidad < 1) nuevaCantidad = 1;
                 carrito[index].cantidad = nuevaCantidad;
-
                 renderTabla();
             }
 
             function cambiarPrecio(index, nuevoPrecio) {
-
                 nuevoPrecio = parseNumero(nuevoPrecio);
-
-                if (isNaN(nuevoPrecio) || nuevoPrecio < 0) {
-                    nuevoPrecio = 0;
-                }
-
+                if (isNaN(nuevoPrecio) || nuevoPrecio < 0) nuevoPrecio = 0;
                 carrito[index].precio = nuevoPrecio;
-
                 renderTabla();
             }
 
             function sumar(index) {
-                    carrito[index].cantidad++;
-                    renderTabla();
-                
+                carrito[index].cantidad++;
+                renderTabla();
             }
 
             function restar(index) {
@@ -463,11 +417,7 @@
                 }
             }
 
-            function strockmax(index) {
-
-            
-            }
-
+            // CAMPO ENVIO
             const inputEnvio = document.getElementById('precio_envio');
 
             if (inputEnvio) {
@@ -492,63 +442,59 @@
 
             $(document).on('blur', '.precio-unitario', function () {
                 const numero = parseNumero(this.value);
-               this.value = formatoMonedaInput(numero);
+                this.value = formatoMonedaInput(numero);
             });
-        </script>
 
+            // INIT — cargar carrito precargado al abrir la vista
+            renderTabla();
+        </script>
 
         <script>
             const formVenta = document.getElementById('form-pedido');
 
             if (formVenta) {
-            formVenta.addEventListener('submit', function (event) {
-                
-                if (carrito.length === 0) {
-                    alert("El pedido está vacío. Agrega productos para continuar.");
-                    event.preventDefault();
-                    return;
-                }
+                formVenta.addEventListener('submit', function (event) {
 
-                carrito = carrito.map(item => ({
-                    id: parseInt(item.id),
-                    cantidad: parseInt(item.cantidad),
-                    precio: parseFloat(item.precio || 0)
-                }));
-
-                const indexSinPrecio = carrito.findIndex(item => !item.precio || Number(item.precio) <= 0);
-                if (indexSinPrecio !== -1) {
-                    alert("Debes capturar un precio de compra mayor a 0 para todos los productos.");
-                    event.preventDefault();
-
-                    const inputsPrecio = document.querySelectorAll('.precio-unitario');
-                    if (inputsPrecio[indexSinPrecio]) {
-                        inputsPrecio[indexSinPrecio].focus();
-                        inputsPrecio[indexSinPrecio].select();
+                    if (carrito.length === 0) {
+                        alert("El pedido está vacío. Agrega productos para continuar.");
+                        event.preventDefault();
+                        return;
                     }
-                    return;
-                }
 
-                let subtotalFinal = 0;
-                carrito.forEach(item => {
-                    subtotalFinal += (item.precio * item.cantidad);
+                    carrito = carrito.map(item => ({
+                        id: parseInt(item.id),
+                        cantidad: parseInt(item.cantidad),
+                        precio: parseFloat(item.precio || 0)
+                    }));
+
+                    const indexSinPrecio = carrito.findIndex(item => !item.precio || Number(item.precio) <= 0);
+                    if (indexSinPrecio !== -1) {
+                        alert("Debes capturar un precio de compra mayor a 0 para todos los productos.");
+                        event.preventDefault();
+
+                        const inputsPrecio = document.querySelectorAll('.precio-unitario');
+                        if (inputsPrecio[indexSinPrecio]) {
+                            inputsPrecio[indexSinPrecio].focus();
+                            inputsPrecio[indexSinPrecio].select();
+                        }
+                        return;
+                    }
+
+                    let subtotalFinal = 0;
+                    carrito.forEach(item => {
+                        subtotalFinal += (item.precio * item.cantidad);
+                    });
+
+                    const totalFinal = subtotalFinal + envio;
+
+                    document.getElementById('precio_envio').value = envio;
+                    document.getElementById('input_carrito').value = JSON.stringify(carrito);
+                    document.getElementById('input_total').value = totalFinal;
+                    document.getElementById('input_subtotal').value = subtotalFinal;
+                    document.getElementById('input_articulos').value = carrito.length;
+                    document.getElementById('input_envio').value = envio;
                 });
-
-                const totalFinal = subtotalFinal + envio;
-
-                document.getElementById('precio_envio').value = envio;
-                document.getElementById('input_carrito').value = JSON.stringify(carrito);
-                document.getElementById('input_total').value = totalFinal;
-                document.getElementById('input_subtotal').value = subtotalFinal;
-                document.getElementById('input_articulos').value = carrito.length;
-                document.getElementById('input_envio').value = envio;
-                document.getElementById('input_total').value = totalFinal;
-            });
             }
         </script>
 
     @endsection
-
-
-
-
-

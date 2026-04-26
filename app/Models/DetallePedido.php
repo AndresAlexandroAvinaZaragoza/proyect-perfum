@@ -16,17 +16,19 @@ class DetallePedido extends Model
         'empresa_id'
     ];
 
-    public function pedido()
-    {
-        return $this->belongsTo(Pedido::class);
-    }
+
 
     public function perfume()
     {
         return $this->belongsTo(Perfume::class);
     }
+
     public function proovedor()
     {
-        return $this->belongsTo(Proveedor::class, 'proovedor_id');
+        return $this->belongsTo(Proovedor::class, 'proovedor_id');
+    }
+    public function pedido()
+    {
+        return $this->belongsTo(Pedidos::class, 'pedido_id');
     }
 }

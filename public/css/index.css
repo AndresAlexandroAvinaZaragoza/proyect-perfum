@@ -1,68 +1,88 @@
+/* Reset básico */
 body {
-      overflow-x: hidden;
-    }
-body {
+    overflow-x: hidden;
     font-family: 'Manrope', sans-serif;
 }
-    /* Sidebar */
-    #sidebar {
-      min-width: 270px;
-      max-width: 220px;
-      min-height: 100vh;
-      /*
-      background: #0d6efd;
-      */
 
-      background: #1B180E;
-      color: #fff;
-      transition: all 0.3s;
-    }
+/* =========================
+   SIDEBAR
+========================= */
+#sidebar {
+    width: 250px; /* corregido */
+    min-height: 100vh;
+    background: #1B180E;
+    color: #fff;
+    transition: all 0.3s;
+}
 
+/* Sidebar colapsado */
+#sidebar.collapsed {
+    margin-left: -250px;
+}
 
-    #sidebar.collapsed {
-      margin-left: -220px;
-    }
-    #sidebar .nav-link {
-      color: #fff;
-      font-weight: 500;
-      padding: 12px 20px;
-      border-radius: 0;
-    }
-    #sidebar .nav-link:hover, #sidebar .nav-link.active {
-      background: #483A19;
-      color: #F0BC41;
-    }
+/* Links del menú */
+#sidebar .nav-link {
+    color: #5B6A7D;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+}
 
-    /* Contenido */
-    #content {
-      transition: all 0.3s;
-      padding: 20px;
-      flex-grow: 1;
-      background: #0A0908;
-    }
-    .toggle-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: #0d6efd;
-      border: none;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 5px;
-    }
-    .toggle-btn:hover {
-      background: #0b5ed7;
-    }
+/* Hover y activo */
+#sidebar .nav-link:hover,
+#sidebar .nav-link.active {
+    background: #483A19;
+    color: #F0BC41;
+}
 
-    #sidebar .nav-link {
-      color: #5B6A7D;
-      font-family: 'Manrope', sans-serif;
-      font-weight: 500;
-    }
-
-  #sidebar h4, h5 {
+/* Títulos */
+#sidebar h4,
+#sidebar h5 {
     font-weight: 700;
 }
-  #sidebar h6 {
+
+#sidebar h6 {
     color: #F0BC41;
-  }
+}
+
+/* Iconos */
+#sidebar i {
+    width: 20px;
+    text-align: center;
+}
+
+/* =========================
+   CONTENIDO
+========================= */
+#content {
+    transition: all 0.3s;
+    padding: 20px;
+    flex-grow: 1;
+    background: #0A0908;
+}
+
+/* =========================
+   BOTÓN TOGGLE
+========================= */
+.toggle-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #0d6efd;
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.toggle-btn:hover {
+    background: #0b5ed7;
+}
+#sidebar .nav-link.active {
+    border-left: 3px solid #F0BC41;
+}

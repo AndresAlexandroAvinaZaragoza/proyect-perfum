@@ -28,46 +28,107 @@
     <body class="d-flex">
     <!-- Sidebar -->
     <nav id="sidebar" class="d-flex flex-column p-3">
-        <h4 class="text-center mb-4"><i class="bi"></i> Mi Panel</h4>
+        <h4 class="text-center mb-4"><i class="bi" style="padding-top: 10px;"></i>Perfum Intense</h4>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto color-a">
 
-        <ul class="nav nav-pills flex-column mb-auto color-a  ">
-            <li class="nav-item">
-                <a href="{{ route('dashboard') }}" class="nav-link"><i class="bi me-2"></i> Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ route('marca.index') }}" class="nav-link active"><i class="bi me-2"></i> Marcas</a>
-            </li>
-            <li>
-                <a href="{{ route('perfume.index')}}" class="nav-link"><i class="bi  me-2"></i> Perfumes </a>
-            </li>
-            <li>
-                <a href="{{ route('cliente.index') }}" class="nav-link"><i class="bi  me-2"></i> Clientes </a>
-            </li>
-            <li>
-                <a href="{{ route('proovedor.index')}}" class="nav-link"><i class="bi me-2"></i> Provedores </a>
-            </li>
-            <li>
-                <a href="{{ route('pedidos.index')}}" class="nav-link"><i class="bi me-2"></i> Pedidos </a>
-            </li>
-            <li>
-                <a href="{{ route('usuario.index') }}" class="nav-link"><i class="bi  me-2"></i> Usuarios </a>
-            </li>     
-            <li>
-                <a href="{{ route('inventario.index') }}" class="nav-link"><i class="bi  me-2"></i> Inventario </a>
-            </li>   
-            <li>
-                <a href="{{ route('inventario_decants.index') }}" class="nav-link"><i class="bi  me-2"></i> Inventario Decants </a>
-            </li>
-            <li>
-                <a href="{{ route('venta.index') }}" class="nav-link"><i class="bi  me-2"></i> Ventas </a>
-            </li>  
-            <li>
-                <a href="{{ route('venta.historial') }}" class="nav-link">Historial de Ventas</a>
-            </li>
-            <li>
-                <a href="{{ route('deuda.index') }}" class="nav-link"><i class="bi  me-2"></i> Deuda </a>
-            </li>
-        </ul>
+        <li class="nav-item">
+            <a href="{{ route('dashboard') }}"
+            class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <i class="fa-solid fa-chart-line"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('marca.index') }}"
+            class="nav-link {{ request()->routeIs('marca.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-tags"></i>
+                Marcas
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('perfume.index') }}"
+            class="nav-link {{ request()->routeIs('perfume.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-spray-can"></i>
+                Perfumes
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('cliente.index') }}"
+            class="nav-link {{ request()->routeIs('cliente.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-users"></i>
+                Clientes
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('proovedor.index') }}"
+            class="nav-link {{ request()->routeIs('proovedor.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-truck"></i>
+                Proveedores
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('pedidos.detallePedidos') }}"
+            class="nav-link {{ request()->routeIs('pedidos.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-box"></i>
+                Pedidos
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('usuario.index') }}"
+            class="nav-link {{ request()->routeIs('usuario.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-user"></i>
+                Usuarios
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('inventario.index') }}"
+            class="nav-link {{ request()->routeIs('inventario.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-warehouse"></i>
+                Inventario
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('inventario_decants.index') }}"
+            class="nav-link {{ request()->routeIs('inventario_decants.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-vial"></i>
+                Inventario Decants
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('venta.index') }}"
+            class="nav-link {{ request()->routeIs('venta.index') ? 'active' : '' }}">
+                <i class="fa-solid fa-shopping-cart"></i>
+                Ventas
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('venta.historial') }}"
+            class="nav-link {{ request()->routeIs('venta.historial') ? 'active' : '' }}">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Historial de Ventas
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('deuda.index') }}"
+            class="nav-link {{ request()->routeIs('deuda.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-coins"></i>
+                Deuda
+            </a>
+        </li>
+
+    </ul>
 
         <div class="mt-auto text-center">
             <hr class="text-white-50" />
@@ -91,11 +152,7 @@
     </div>
 
 
-    <nav id="sidebar" class="d-flex flex-column p-3">
-        <div>
-            <h6>Actividad Reciente</h6> 
-        </div>
-    </nav>
+
 
 
     </body>

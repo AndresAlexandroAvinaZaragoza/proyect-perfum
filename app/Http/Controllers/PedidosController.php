@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pedidos;
+use App\Models\DetallePedido;
 use App\Models\DetalleVentaDecant;
 use App\Models\InventarioDecants;
 use App\Models\Marca;
@@ -29,6 +30,172 @@ class PedidosController extends Controller
 
         $pedidos = $query->get();   
         return view('principal.pedidos', compact('pedidos', 'proovedores', 'perfumes'));
+    }
+
+
+
+
+    public function store(Request $request)
+    {
+        //  dd($request->all());
+        // VALIDACIÓN
+        $request->validate([
+            'selectProovedores' => 'required|exists:proovedores,id',
+            'numero_guia' => 'nullable|numeric',
+            'paqueteria' => 'required|string|max:50',
+            'carrito' => 'required'
+        ]);
+
+        // DECODIFICAR CARRITO
+        $carrito = json_decode($request->carrito, true);
+
+        if(empty($carrito)){
+            return back()->with('error', 'El carrito está vacío');
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            // CREAR PEDIDO
+            $pedido = Pedidos::create([
+                'folio' => 'PED-' . str_pad(Pedidos::count() + 1, 5, '0', STR_PAD_LEFT),
+                'guia' => $request->numero_guia,
+                'precio_envio' => is_numeric($request->envio) ? $request->envio : ($request->precio_envio ?? 0),
+                'paqueteria' => $request->paqueteria,
+                'total' => is_numeric($request->total) ? $request->total : 0,
+                'proovedor_id' => $request->selectProovedores,
+                'user_id' => auth()->id(),
+                'empresa_id' => 1
+            ]);
+
+            // DETALLES
+            foreach($carrito as $item){
+
+                // validar seguridad
+                if(!isset($item['id']) || !isset($item['cantidad'])){
+                    continue;
+                }
+
+                DetallePedido::create([
+                    'pedido_id' => $pedido->id,
+                    'perfume_id' => $item['id'],
+                    'cantidad' => $item['cantidad'],
+                    'precio_de_compra' => $item['precio'] ?? 0,
+                    'empresa_id' => 1
+                ]);
+
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('pedidos.index')
+                ->with('success', 'Pedido guardado correctamente');
+
+        } catch (\Exception $e) {
+
+
+            DB::rollBack();
+            dd($e->getMessage());
+            
+        }
+    }
+
+    public function detallePedidos()
+    {
+        $pedidos = Pedidos::with(['detalles.perfume', 'proovedor', 'usuario'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('principal.detallePedidos', compact('pedidos'));
+    }
+
+    public function show($id)
+    {
+        $pedido = Pedidos::with(['detalles.perfume', 'proovedor', 'usuario'])->findOrFail($id);
+        return view('principal.detalleP', compact('pedido'));
+    }
+
+    public function edit($id)
+    {
+        $pedido = Pedidos::with('detalles')->findOrFail($id);
+        $perfumes = Perfume::all();
+        $proovedores = Proovedor::all();
+
+        return view('principal.editarPedido', compact('pedido','perfumes','proovedores'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // VALIDACIÓN
+        $request->validate([
+            'selectProovedores' => 'required|exists:proovedores,id',
+            'numero_guia'       => 'nullable|numeric',
+            'paqueteria'        => 'required|string|max:50',
+            'carrito'           => 'required',
+        ]);
+
+        // DECODIFICAR CARRITO
+        $carrito = json_decode($request->carrito, true);
+
+        if (empty($carrito)) {
+            return back()->with('error', 'El carrito está vacío');
+        }
+
+        DB::beginTransaction();
+
+        try {
+
+            // BUSCAR PEDIDO
+            $pedido = Pedidos::findOrFail($id);
+
+            // ACTUALIZAR DATOS GENERALES
+            $pedido->update([
+                'guia'         => $request->numero_guia,
+                'precio_envio' => is_numeric($request->envio) ? $request->envio : ($request->precio_envio ?? 0),
+                'paqueteria'   => $request->paqueteria,
+                'total'        => is_numeric($request->total) ? $request->total : 0,
+                'proovedor_id' => $request->selectProovedores,
+            ]);
+
+            // ELIMINAR DETALLES ANTERIORES Y RECREAR
+            $pedido->detalles()->delete();
+
+            foreach ($carrito as $item) {
+
+                if (!isset($item['id']) || !isset($item['cantidad'])) {
+                    continue;
+                }
+
+                DetallePedido::create([
+                    'pedido_id'        => $pedido->id,
+                    'perfume_id'       => $item['id'],
+                    'cantidad'         => $item['cantidad'],
+                    'precio_de_compra' => $item['precio'] ?? 0,
+                    'empresa_id'       => 1,
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('pedidos.detallePedidos')
+                ->with('success', 'Pedido actualizado correctamente');
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+            dd($e->getMessage());
+        }
+    }
+
+    public function destroy($id)
+    {
+        $pedido = Pedidos::findOrFail($id);
+        $pedido->delete();
+
+        return back()->with('success', 'Pedido eliminado correctamente');
     }
 }
 
