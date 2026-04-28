@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\DetalleVentaDecant;
 use App\Models\InventarioDecants;
 use App\Models\Marca;
@@ -133,8 +134,61 @@ class VentaController extends Controller
     }
 
     public function historial(Request $request){
-        $ventas = Venta::with(['cliente', 'usuario', 'perfume', 'marca'])->orderBy('created_at', 'desc')->get();
+        $query = Venta::with(['cliente', 'usuario', 'perfume', 'marca'])
+        ->orderBy('created_at', 'desc');
+
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('cliente', function($q2) use ($request) {
+                    $q2->where('nombre', 'like', '%' . $request->search . '%');
+                })
+                ->orWhereHas('perfume', function($q2) use ($request) {
+                    $q2->where('nombre', 'like', '%' . $request->search . '%');
+                });
+            });
+        }
+        
+        if ($request->tipo_venta) {
+            $query->where('tipo_venta', $request->tipo_venta);
+        }
+
+        //Filtro de Rango
+        if ($request->rango) {
+
+            switch ($request->rango) {
+
+                case 'ayer':
+                    $inicio = Carbon::yesterday()->startOfDay();
+                    $fin = Carbon::yesterday()->endOfDay();
+                    break;
+
+                case 'semana':
+                    $inicio = Carbon::now()->subDays(7)->startOfDay();
+                    $fin = Carbon::now()->endOfDay();
+                    break;
+
+                case 'mes':
+                    $inicio = Carbon::now()->subMonth()->startOfDay();
+                    $fin = Carbon::now()->endOfDay();
+                    break;
+
+                case '6meses':
+                    $inicio = Carbon::now()->subMonths(6)->startOfDay();
+                    $fin = Carbon::now()->endOfDay();
+                    break;
+
+                default:
+                    $inicio = null;
+                    $fin = null;
+            }
+
+            if ($inicio && $fin) {
+                $query->whereBetween('created_at', [$inicio, $fin]);
+            }
+        }
+
         $marcas = Marca::orderBy('nombre')->get();
+        $ventas = $query->paginate(10)->withQueryString();
         return view('principal.historialVenta', compact('ventas', 'marcas'));
     }
 

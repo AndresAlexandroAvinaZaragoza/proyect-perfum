@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\InventarioDecantController;
 use App\Http\Controllers\DecantController;
@@ -17,9 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::post('decant/generar', [DecantController::class, 'generarDecant'])
     ->middleware(['auth', 'verified'])
@@ -33,8 +32,11 @@ Route::get('/pedidos/detallePedidos', [PedidosController::class, 'detallePedidos
     ->middleware(['auth', 'verified'])
     ->name('pedidos.detallePedidos');
 
+
+
 Route::get('/pedidos/edit/{id}', [PedidosController::class, 'edit'])->name('pedidos.edit');
 
+Route::resource('dashboard', dashboardController::class)->middleware(['auth', 'verified']);
 Route::resource('pedidos', PedidosController::class)->middleware(['auth', 'verified']);
 Route::resource('inventario_decants', InventarioDecantController::class)->middleware(['auth', 'verified']);
 Route::resource('decant', DecantController::class)->middleware(['auth', 'verified']);

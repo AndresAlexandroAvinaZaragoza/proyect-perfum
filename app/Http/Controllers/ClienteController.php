@@ -13,7 +13,15 @@ class ClienteController extends Controller
         $query = Cliente::with(['usuario']);
         
         if($request->search){
-            $query->where('nombre','like','%'.$request->search.'%');
+            $query->where(function($q) use ($request){
+                $q->where('nombre','like','%'.$request->search.'%')
+                ->orWhere('celular','like','%'.$request->search.'%');
+                
+                // BUSCAR USUARIO POR NOMBRE
+                $q->orWhereHas('usuario', function($q2) use ($request) {
+                    $q2->where('usuario','like','%'.$request->search.'%');
+                });
+            });
         }
 
         $clientes = $query->paginate(10)->withQueryString();

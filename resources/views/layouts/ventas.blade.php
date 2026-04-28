@@ -32,8 +32,8 @@
         <ul class="nav nav-pills flex-column mb-auto color-a">
 
         <li class="nav-item">
-            <a href="{{ route('dashboard') }}"
-            class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.index') }}"
+            class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
                 <i class="fa-solid fa-chart-line"></i>
                 Dashboard
             </a>

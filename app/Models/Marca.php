@@ -9,6 +9,6 @@ class Marca extends Model
 {
     public function usuario(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'usuario_id');
     } 
 }

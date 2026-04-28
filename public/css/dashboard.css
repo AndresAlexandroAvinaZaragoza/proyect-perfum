@@ -1,44 +1,171 @@
- body {
-      overflow-x: hidden;
-    }
-    /* Sidebar */
-    #sidebar {
-      min-width: 220px;
-      max-width: 220px;
-      min-height: 100vh;
-      background: #0d6efd;
-      color: #fff;
-      transition: all 0.3s;
-    }
-    #sidebar.collapsed {
-      margin-left: -220px;
-    }
-    #sidebar .nav-link {
-      color: #fff;
-      font-weight: 500;
-      padding: 12px 20px;
-      border-radius: 0;
-    }
-    #sidebar .nav-link:hover, #sidebar .nav-link.active {
-      background: rgba(255, 255, 255, 0.2);
-    }
+/* SIDEBAR */
 
-    /* Contenido */
-    #content {
-      transition: all 0.3s;
-      padding: 20px;
-      flex-grow: 1;
-    }
-    .toggle-btn {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: #0d6efd;
-      border: none;
-      color: #fff;
-      padding: 8px 12px;
-      border-radius: 5px;
-    }
-    .toggle-btn:hover {
-      background: #0b5ed7;
-    }
+
+
+h1{
+    color: #fff;
+}
+
+p{
+    color: #516F89;
+}
+
+.card-body h6{
+    color: #516F89;
+}
+
+.btn-primary{
+    background-color: #f9c344;
+    color: black;
+    border: #ffb300;
+}
+
+.btn-primary:hover{
+    background-color: #f9c34485;
+    color: rgba(248, 248, 248, 0.801);
+}
+
+.card{
+    background-color: #1A1614;
+
+}
+
+.card-custom {
+    border: 1px solid #434034;
+    
+}
+
+.w-25 {
+    width: calc(var(--spacing) * 15) /* 6.25rem = 100px */;
+}
+
+
+.search-custom {
+    background-color: #120F0D;
+    color: white;
+    border: 1px solid #3a3525; /* borde normal */
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Placeholder */
+.search-custom::placeholder {
+    color: #516F89;
+}
+
+/* Focus */
+.search-custom:focus {
+    background-color: #120F0D;
+    color: white;
+    border-color: #ffb300; /* cambia solo el color */
+    box-shadow: none;
+    outline: none;
+}
+
+.form-select {
+    background-color: #120F0D;
+    color: white;
+    border: 1px solid #3a3525;
+}
+
+.form-select:focus {
+    border-color: #ffb300;
+    box-shadow: none;
+}
+
+.btn-outline-gold {
+    background-color: transparent;
+    color: white;
+    border: 2px solid #3a3525;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+    background-color: #8f835e;
+    color: #242116;
+}
+
+
+/* Tabla personalizada */
+.table-custom {
+    background-color: #1A1614;
+    color: white;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Encabezado */
+.table-custom thead {
+    background-color: #242116;
+    color: #f9c344;
+}
+
+/* Bordes */
+.table-custom th,
+.table-custom td {
+    border-color: #3a3525;
+    vertical-align: middle;
+}
+
+/* Hover */
+.table-custom tbody tr:hover {
+    background-color: #38311c;
+}
+
+/* Quitar fondo blanco default */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: transparent;
+}
+
+.th-custom th {
+    background-color: #120F0D;
+    color: #516F89;
+}
+
+.td-custom td{
+    color: white;
+}
+
+.table-wrapper {
+    background-color: #2D291D;
+    border-radius: 16px;
+    overflow: hidden; /* 🔥 CLAVE para que funcione */
+    border: 2px solid #3a3525;
+}
+
+.h1-custom{
+    color: #242116;
+}
+
+
+.sidebar {
+    width: 220px;
+    min-height: 100vh;
+    background-color: #120F0D;
+    border-right: 2px solid #3a3525;
+}
+
+/* LINKS */
+.sidebar-link {
+    display: block;
+    padding: 10px;
+    margin-bottom: 8px;
+    color: #516F89;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* HOVER */
+.sidebar-link:hover {
+    background-color: #2D291D;
+    color: #f9c344;
+}
+
+/* ACTIVO */
+.sidebar-link.active {
+    background-color: #f9c344;
+    color: black;
+    font-weight: bold;
+}

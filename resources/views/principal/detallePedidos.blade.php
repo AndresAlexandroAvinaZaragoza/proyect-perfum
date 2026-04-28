@@ -55,9 +55,19 @@
                 <div class="">
                     <div class="row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4 " style="width: 35rem;">
                                 <div class="card-body">
-                                    
+                                    <form class="d-flex d-grid gap-3 w-60" method="GET" action="{{ route('pedidos.detallePedidos') }}" id="filtros">
+                                        <!-- Buscador -->
+                                        <input 
+                                            id="search"
+                                            class="form-control me-8 search-custom" 
+                                            type="search" 
+                                            name="search"
+                                            value="{{ request('search') }}"
+                                            placeholder="Buscar marca..." 
+                                        />
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +84,7 @@
             @endif
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
-                    <div class="card-body p-0">
+                    <div id="tabla-pedidos" class="card-body p-0">
                         <table class="table table-hover table-custom m-0 .table-wrapper">
                             <tr class=" th-custom">
                                 <th>Folio P.</th>
@@ -161,6 +171,42 @@
                     }
                 );
             }
+        </script>
+
+                <script>
+            document.querySelectorAll('.auto-submit').forEach(select => {
+                select.addEventListener('change', function () {
+                    document.getElementById('filtros').submit();
+                });
+            });
+        </script>
+
+        <script>
+
+            let timer;
+
+            document.getElementById('search').addEventListener('input', function(){
+
+                clearTimeout(timer)
+
+                timer = setTimeout(() => {
+
+                    const form = document.getElementById('filtros')
+                    const data = new FormData(form)
+                    const params = new URLSearchParams(data)
+
+                    fetch(form.action + '?' + params.toString())
+                    .then(response => response.text())
+                    .then(html => {
+
+                        const parser = new DOMParser()
+                        const doc = parser.parseFromString(html, 'text/html')
+
+                        const nuevaTabla = doc.querySelector('#tabla-pedidos').innerHTML
+                        document.querySelector('#tabla-pedidos').innerHTML = nuevaTabla
+                    })
+                }, 400)
+            })
         </script>
     @endsection
 

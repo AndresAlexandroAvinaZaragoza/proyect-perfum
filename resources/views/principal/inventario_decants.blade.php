@@ -145,7 +145,7 @@
 
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
-                    <div id="tabla-inventario" class="card-body p-0">
+                    <div id="tabla-inventario_decants" class="card-body p-0">
                         <table class="table table-hover table-custom m-0 .table-wrapper">
                             <tr class=" th-custom">
                                 <th>Nombre</th>
@@ -350,8 +350,8 @@
                         const parser = new DOMParser()
                         const doc = parser.parseFromString(html, 'text/html')
 
-                        const nuevaTabla = doc.querySelector('#tabla-inventario').innerHTML
-                        document.querySelector('#tabla-inventario').innerHTML = nuevaTabla
+                        const nuevaTabla = doc.querySelector('#tabla-inventario_decants').innerHTML
+                        document.querySelector('#tabla-inventario_decants').innerHTML = nuevaTabla
                     })
                 }, 400)
             })

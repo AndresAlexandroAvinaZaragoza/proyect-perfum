@@ -23,8 +23,13 @@ class PedidosController extends Controller
 {
     public function index()
     {
+
+
+
         $query = Pedidos::with(['detalles.perfume', 'proovedor', 'usuario']);
         
+
+
         $proovedores = Proovedor::orderBy('nombre')->get();
         $perfumes = Perfume::orderBy('nombre')->get();
 
@@ -102,11 +107,31 @@ class PedidosController extends Controller
         }
     }
 
-    public function detallePedidos()
+    public function detallePedidos(Request $request)
     {
-        $pedidos = Pedidos::with(['detalles.perfume', 'proovedor', 'usuario'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = Pedidos::with(['detalles.perfume', 'proovedor', 'usuario'])
+                        ->orderBy('created_at', 'desc');
+
+        if ($request->search) {
+            $query->where(function($q) use ($request){
+
+                $q->where('folio','like','%'.$request->search.'%')
+                ->orWhere('guia','like','%'.$request->search.'%')
+                ->orWhere('paqueteria','like','%'.$request->search.'%');
+
+                // PROOVEDOR
+                $q->orWhereHas('proovedor', function($q2) use ($request) {
+                    $q2->where('nombre','like','%'.$request->search.'%');
+                });
+
+                // USUARIO
+                $q->orWhereHas('usuario', function($q2) use ($request) {
+                    $q2->where('name','like','%'.$request->search.'%'); // probablemente es 'name'
+                });
+            });
+        }
+
+        $pedidos = $query->paginate(10)->withQueryString();
 
         return view('principal.detallePedidos', compact('pedidos'));
     }

@@ -15,28 +15,40 @@ class InventarioController extends Controller
         
         $query = Inventario::with(['marca', 'usuario', 'perfume']);
 
-        if($request->search){
-            $query->where('nombre','like','%'.$request->search.'%');
+                if($request->search){
+            $query->whereHas('perfume', function($q) use ($request) {
+                $q->where('nombre', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if($request->marca){
+            $query->whereHas('perfume.marca', function($q) use ($request) {
+                $q->where('id', $request->marca);
+            });
         }
 
         if($request->genero){
-            $query->where('genero',$request->genero);
-        } 
-
-        if($request->marca){
-            $query->where('marca_id',$request->marca);
+            $query->whereHas('perfume', function($q) use ($request) {
+                $q->where('genero', $request->genero);
+            });
         }
 
         if($request->tipo){
-            $query->where('tipo',$request->tipo);
+            $query->whereHas('perfume', function($q) use ($request) {
+                $q->where('tipo', $request->tipo);
+            });
         }
 
         if($request->concentracion){
-            $query->where('concentracion',$request->concentracion);
+            $query->whereHas('perfume', function($q) use ($request) {
+                $q->where('concentracion', $request->concentracion);
+            });
         }
 
         if($request->categoria){
-            $query->where('categoria',$request->categoria);
+            $query->whereHas('perfume', function($q) use ($request) {
+                $q->where('categoria', $request->categoria);
+            });
         }
 
         

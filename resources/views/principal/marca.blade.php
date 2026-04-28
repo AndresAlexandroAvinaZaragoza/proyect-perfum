@@ -55,29 +55,18 @@
                 <div class="">
                     <div class="row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4 " style="width: 35rem;">
                                 <div class="card-body">
-                                    <form class="d-flex d-grid gap-3 w-60" method="GET" action="{{ route('marca.index') }}">
+                                    <form class="d-flex d-grid gap-3 w-60" method="GET" action="{{ route('marca.index') }}" id="filtros">
                                         <!-- Buscador -->
                                         <input 
+                                            id="search"
                                             class="form-control me-8 search-custom" 
                                             type="search" 
                                             name="search"
                                             value="{{ request('search') }}"
-                                            placeholder="Buscar..." 
+                                            placeholder="Buscar marca..." 
                                         />
-                                        <!-- Ordenamiento por nombre, fecha, pais o vocal -->
-                                        <select class="form-select w-auto" name="filter">
-                                            <option value="">Filtrar por</option>
-                                            <option value="nombre" {{ request('filter') == 'nombre' ? 'selected' : '' }}>Nombre</option>
-                                            <option value="pais_origen" {{ request('filter') == 'pais_origen' ? 'selected' : '' }}>País</option>
-                                            <option value="fecha" {{ request('filter') == 'fecha' ? 'selected' : '' }}>Fecha</option>
-                                        </select>
-
-                                        <button class="btn btn-sm btn-outline-gold w-25" name="orden" value="az">
-                                            Ordenar A-Z
-                                        </button>
-
                                     </form>
                                 </div>
                             </div>
@@ -95,7 +84,7 @@
             @endif
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
-                    <div class="card-body p-0">
+                    <div id="tabla-marcas" class="card-body p-0">
                         <table class="table table-hover table-custom m-0 .table-wrapper">
                             <tr class=" th-custom">
                                 <th>Nombre</th>
@@ -109,8 +98,8 @@
                                 <tr class="td-custom">
                                     <td>{{ $marca->nombre }}</td>
                                     <td>{{ $marca->pais_origen }}</td>
-                                    <td>{{ $marca->usuario_id}}</td>
-                                    <td>{{ $marca->created_at->format('d/m/Y H:i')}}</td>
+                                    <td>{{ $marca->usuario->usuario ?? 'Sin usuario' }}</td>
+                                    <td>{{ $marca->created_at->format('d/m/Y H:i') }}</td>
                                     <td>{{ $marca->updated_at->format('d/m/Y H:i') }}</td>
                                     <td>
 
@@ -322,6 +311,42 @@
                     }
                 );
             }
+        </script>
+
+        <script>
+            document.querySelectorAll('.auto-submit').forEach(select => {
+                select.addEventListener('change', function () {
+                    document.getElementById('filtros').submit();
+                });
+            });
+        </script>
+
+        <script>
+
+            let timer;
+
+            document.getElementById('search').addEventListener('input', function(){
+
+                clearTimeout(timer)
+
+                timer = setTimeout(() => {
+
+                    const form = document.getElementById('filtros')
+                    const data = new FormData(form)
+                    const params = new URLSearchParams(data)
+
+                    fetch(form.action + '?' + params.toString())
+                    .then(response => response.text())
+                    .then(html => {
+
+                        const parser = new DOMParser()
+                        const doc = parser.parseFromString(html, 'text/html')
+
+                        const nuevaTabla = doc.querySelector('#tabla-marcas').innerHTML
+                        document.querySelector('#tabla-marcas').innerHTML = nuevaTabla
+                    })
+                }, 400)
+            })
         </script>
     @endsection
 

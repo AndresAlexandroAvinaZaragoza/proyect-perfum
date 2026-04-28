@@ -60,18 +60,17 @@
                 <div class="">
                     <div class="row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4" style="width: 35rem;">
                                 <div class="card-body">
-                                    <form class="d-flex d-grid gap-3 w-60" role="search" >
-                                        <input class="form-control me-8 search-custom" type="search" placeholder="Buscar el usuario por nombre o  correo" aria-label="Search"/>
-                                        <select class="form-select w-auto">
-                                            <option selected>Filtrar por</option>
-                                            <option value="nombre">Nombre</option>
-                                            <option value="nombre">Usuario</option>
-                                            <option value="correo">Correo</option>
-                                            <option value="fecha">Fecha</option>
-                                        </select>
-                                        <button class="btn btn-sm btn-outline-gold w-25" type="submit">Ordenar A-Z</button>
+                                    <form class="d-flex d-grid gap-3 w-60" method="GET" action="{{ route('usuario.index') }}" id="filtros" >
+                                        <input 
+                                            id="search"
+                                            class="form-control me-8 search-custom" 
+                                            type="search" 
+                                            name="search"
+                                            value="{{ request('search') }}"
+                                            placeholder="Buscar el usuario por nombre o  correo" 
+                                            />
                                     </form>
                                 </div>
                             </div>
@@ -89,7 +88,7 @@
 
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
-                    <div class="card-body p-0">
+                    <div id="tabla-usuario" class="card-body p-0">
                         <table class="table table-hover table-custom m-0 .table-wrapper">
                             <tr class=" th-custom">
                                 <th>Nombre</th>
@@ -103,7 +102,7 @@
                                     <td>{{ $usuario->email }}</td>
                                     <td>{{ $usuario->created_at }}</td>
                                     <td>
-                                        {{$usuario->id}}
+                                        
                                         <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $usuario->id }}">
                                             <x-icon name="edit" class="me-1" width="16" height="16"/>
                                         </button>
@@ -385,6 +384,41 @@
                     }
                 );
             }
+        </script>
+                <script>
+            document.querySelectorAll('.auto-submit').forEach(select => {
+                select.addEventListener('change', function () {
+                    document.getElementById('filtros').submit();
+                });
+            });
+        </script>
+
+        <script>
+
+            let timer;
+
+            document.getElementById('search').addEventListener('input', function(){
+
+                clearTimeout(timer)
+
+                timer = setTimeout(() => {
+
+                    const form = document.getElementById('filtros')
+                    const data = new FormData(form)
+                    const params = new URLSearchParams(data)
+
+                    fetch(form.action + '?' + params.toString())
+                    .then(response => response.text())
+                    .then(html => {
+
+                        const parser = new DOMParser()
+                        const doc = parser.parseFromString(html, 'text/html')
+
+                        const nuevaTabla = doc.querySelector('#tabla-usuario').innerHTML
+                        document.querySelector('#tabla-usuario').innerHTML = nuevaTabla
+                    })
+                }, 400)
+            })
         </script>
 
 @endSection

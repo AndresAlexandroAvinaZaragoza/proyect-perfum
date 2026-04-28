@@ -14,18 +14,55 @@ use Illuminate\Http\Request;
 
 class InventarioDecantController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
         $query = InventarioDecants::with(['decant', 'marca', 'inventario', 'perfume', 'precios_decants']);
         
+        if($request->search){
+            $query->whereHas('decant.perfume', function($q) use ($request) {
+                $q->where('nombre', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        if($request->marca){
+            $query->whereHas('decant.perfume.marca', function($q) use ($request) {
+                $q->where('id', $request->marca);
+            });
+        }
+
+        if($request->genero){
+            $query->whereHas('decant.perfume', function($q) use ($request) {
+                $q->where('genero', $request->genero);
+            });
+        }
+
+        if($request->tipo){
+            $query->whereHas('decant.perfume', function($q) use ($request) {
+                $q->where('tipo', $request->tipo);
+            });
+        }
+
+        if($request->concentracion){
+            $query->whereHas('decant.perfume', function($q) use ($request) {
+                $q->where('concentracion', $request->concentracion);
+            });
+        }
+
+        if($request->categoria){
+            $query->whereHas('decant.perfume', function($q) use ($request) {
+                $q->where('categoria', $request->categoria);
+            });
+        }
+
+
         $decants = Decant::with(['perfume', 'inventario'])->get();
 
         $marcas = Marca::orderBy('nombre','asc')->get();
 
         $perfumes = Perfume::with('marca')->orderBy('nombre')->get();
         
-        $inventario_decants = $query->paginate(10);
+        $inventario_decants = $query->paginate(10)->withQueryString();
         
         return view('principal.inventario_decants', compact('inventario_decants', 'perfumes', 'marcas', 'decants')   );
     }

@@ -67,9 +67,9 @@
                 <div class="">
                     <div class="row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4" style="width: 35rem;">
                                 <div class="card-body">
-                                    <form id="filtros" method="GET" action="{{ route('venta.index') }}" class="d-flex gap-3 flex-wrap">
+                                    <form id="filtros" method="GET" action="{{ route('venta.historial') }}" class="d-flex gap-3 flex-wrap">
 
                                         <!-- Buscador -->
                                         <input 
@@ -81,50 +81,24 @@
                                             placeholder="Buscar en el inventario..."
                                         />
 
-                                        <!-- Genero -->
-                                        <select class="form-select w-auto auto-submit" name="genero">
-                                            <option value="">Genero</option>
-                                            <option value="Caballero" {{ request('genero') == 'Caballero' ? 'selected' : '' }}>Caballero</option>
-                                            <option value="Dama" {{ request('genero') == 'Dama' ? 'selected' : '' }}>Dama</option>
+                                        <!-- Tipo de Venta -->
+                                        <select class="form-select w-auto auto-submit" name="tipo_venta">
+                                            <option value="">Tipo de Venta</option>
+                                            <option value="contado" {{ request('tipo_venta') == 'contado' ? 'selected' : '' }}>Contado</option>
+                                            <option value="credito" {{ request('tipo_venta') == 'credito' ? 'selected' : '' }}>Crédito</option>
                                         </select>
 
-                                        <!-- Marca -->
-                                        <select class="form-select w-auto auto-submit" name="marca">
-                                            <option value="">Marca</option>
-                                            @foreach ($marcas as $marca)
-                                                <option value="{{ $marca->id }}" {{ request('marca') == $marca->id ? 'selected' : '' }}>
-                                                    {{ $marca->nombre }}
-                                                </option>
-                                            @endforeach
+                                        <!-- Ultimas ventas -->
+                                        <select class="form-select w-auto auto-submit" name="rango">
+                                                <option value="">Ventas</option>
+                                                <option value="ayer" {{ request('rango') == 'ayer' ? 'selected' : '' }}>Ayer</option>
+                                                <option value="semana" {{ request('rango') == 'semana' ? 'selected' : '' }}>Últimos 7 días</option>
+                                                <option value="mes" {{ request('rango') == 'mes' ? 'selected' : '' }}>Último mes</option>
+                                                <option value="6meses" {{ request('rango') == '6meses' ? 'selected' : '' }}>Últimos 6 meses</option>
                                         </select>
 
-                                        <!-- Tipo -->
-                                        <select class="form-select w-auto auto-submit" name="tipo">
-                                            <option value="">Tipo</option>
-                                            <option value="Perfume" {{ request('tipo') == 'Perfume' ? 'selected' : '' }}>Perfume</option>
-                                            <option value="Set" {{ request('tipo') == 'Set' ? 'selected' : '' }}>Set</option>
-                                            <option value="Body" {{ request('tipo') == 'Body' ? 'selected' : '' }}>Body</option>
-                                        </select>
 
-                                        <!-- Concentracion -->
-                                        <select class="form-select w-auto auto-submit" name="concentracion">
-                                            <option value="">Concentracion</option>
-                                            <option value="EDT">EDT</option>
-                                            <option value="EDP">EDP</option>
-                                            <option value="Parfum">Parfum</option>
-                                            <option value="Extrait">Extrait</option>
-                                            <option value="Elixir">Elixir</option>
-                                        </select>
-
-                                        <!-- Categoria -->
-                                        <select class="form-select w-auto auto-submit" name="categoria">
-                                            <option value="">Categoria</option>
-                                            <option value="Diseñador">Diseñador</option>
-                                            <option value="Nicho">Nicho</option>
-                                            <option value="Arabe">Arabe</option>
-                                        </select>
-
-                                        <a href="{{ route('venta.index') }}" class="btn btn-outline-secondary">
+                                        <a href="{{ route('venta.historial') }}" class="btn btn-outline-secondary">
                                             Limpiar
                                         </a>
 
@@ -144,7 +118,7 @@
                 @endif
 
                 <div class="card card-custom rounded-4">
-                    <div id="tabla-inventario" class="card-body p-0">
+                    <div id="tabla-historialVenta" class="card-body p-0">
                         <table class="table table-hover table-custom m-0 .table-wrapper">
                             <tr class="th-custom">  
                                 <th>CLIENTES</th>
@@ -172,8 +146,47 @@
                                 </tr>
                                 @endforeach
                         </table>
+                        <div class="mt-3">
+                            {{ $ventas->withQueryString()->links() }}
+                        </div>
                     </div>
                 </div>
 
             </section>
+
+                    <script>
+            document.querySelectorAll('.auto-submit').forEach(select => {
+                select.addEventListener('change', function () {
+                    document.getElementById('filtros').submit();
+                });
+            });
+        </script>
+
+        <script>
+
+            let timer;
+
+            document.getElementById('search').addEventListener('input', function(){
+
+                clearTimeout(timer)
+
+                timer = setTimeout(() => {
+
+                    const form = document.getElementById('filtros')
+                    const data = new FormData(form)
+                    const params = new URLSearchParams(data)
+
+                    fetch(form.action + '?' + params.toString())
+                    .then(response => response.text())
+                    .then(html => {
+
+                        const parser = new DOMParser()
+                        const doc = parser.parseFromString(html, 'text/html')
+
+                        const nuevaTabla = doc.querySelector('#tabla-historialVenta').innerHTML
+                        document.querySelector('#tabla-historialVenta').innerHTML = nuevaTabla
+                    })
+                }, 400)
+            })
+        </script>
     @endsection

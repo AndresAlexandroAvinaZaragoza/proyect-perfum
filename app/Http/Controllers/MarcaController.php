@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Marca;
 use App\MOdels\Perfume;
 use Illuminate\Http\Request;
@@ -11,23 +13,31 @@ class MarcaController extends Controller
 
     public function index(Request $request)
     {
-        $query = Marca::query();
+        $query = Marca::with('usuario')->orderBy('nombre','asc');
 
-        //if para el buscador 
-        if ($request->filled('search') && $request->filled('filter')) {
+        $query = Marca::with('usuario')->orderBy('nombre','asc');
 
-            if ($request->filter == 'fecha') {
-                $query->whereDate('created_at', $request->search);
-            } else {
-                $query->where($request->filter, 'like', '%' . $request->search . '%');
-            }
-        }
+        if ($request->search) {
+            $query->where(function($q) use ($request) {
 
-        //Ordenamiento por nombre, fecha, pais o vocal
-        if ($request->orden == 'az') {
-            $query->orderBy('nombre', 'asc');
-        } else {
-            $query->orderBy('id', 'desc');
+                $q->where('nombre','like','%'.$request->search.'%')
+                ->orWhere('pais_origen','like','%'.$request->search.'%');
+
+                // BUSCAR FECHA
+                try {
+                    $fecha = Carbon::createFromFormat('d/m/Y', $request->search)->format('Y-m-d');
+
+                    $q->orWhereDate('created_at', $fecha);
+                } catch (\Exception $e) {
+                    // si no es fecha válida, no hace nada
+                }
+
+                // BUSCAR USUARIO POR NOMBRE
+                $q->orWhereHas('usuario', function($q2) use ($request) {
+                    $q2->where('usuario','like','%'.$request->search.'%');
+                });
+
+            });
         }
 
         $marcas = $query->paginate(10)->withQueryString();

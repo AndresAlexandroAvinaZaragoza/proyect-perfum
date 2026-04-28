@@ -14,9 +14,19 @@ use Illuminate\View\View;
 
 class UsuarioController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $usuarios = User::all();
+        $query = User::query();
+
+        if($request->search){
+            $query->where(function($q) use ($request){
+                $q->where('name','like','%'.$request->search.'%')
+                ->orWhere('usuario','like','%'.$request->search.'%')
+                ->orWhere('email','like','%'.$request->search.'%');
+            });
+        }
+
+        $usuarios = $query->paginate(10)->withQueryString();
         return view('principal.usuario', compact('usuarios'));
     }
 

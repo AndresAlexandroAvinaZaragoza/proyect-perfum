@@ -13,7 +13,16 @@ class ProovedorController extends Controller
         $query = Proovedor::with(['usuario']);
 
         if($request->search){
-            $query->where('nombre','like','%'.$request->search.'%');
+            $query->where(function($q) use ($request){
+                $q->where('nombre','like','%'.$request->search.'%')
+                ->orWhere('celular','like','%'.$request->search.'%')
+                ->orWhere('correo','like','%'.$request->search.'%');
+                
+                // BUSCAR USUARIO POR NOMBRE
+                $q->orWhereHas('usuario', function($q2) use ($request) {
+                    $q2->where('usuario','like','%'.$request->search.'%');
+                });
+            });
         }
 
         $proovedores = $query->paginate(10)->withQueryString();
@@ -64,6 +73,6 @@ class ProovedorController extends Controller
         $proovedor = Proovedor::findOrFail($id);
 
         $proovedor->delete();
-        return redirect()->back()->with('success', 'MProovedor eliminada correctamente');
+        return redirect()->back()->with('success', 'Proveedor eliminado correctamente');
     }
 }
