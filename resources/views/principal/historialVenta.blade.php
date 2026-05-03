@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="">
-                        <a href="{{ route('venta.index') }}" class="btn btn-primary btn-lg">
+                        <a href="{{ route('venta.index') }}" class="btn btn-outline-warning btn-lg">
                             + Hacer Venta
                         </a>
                     </div>

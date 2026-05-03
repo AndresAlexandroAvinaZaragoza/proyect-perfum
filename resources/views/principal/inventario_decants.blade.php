@@ -16,10 +16,10 @@
         <!-- Select2 JS -->
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <header class="mb-4">
-                <div class="d-flex align-items-center gap-custom flex-wrap justify-content-start">
+                <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1>Gestion de Inventario de Decants</h1>
-                        <p>Directorio Global de Fabricantes</p>
+                        <p>Directorio Global de Fabricantes</p>`
                     </div>
 
                     <div class="d-flex gap-4 ">

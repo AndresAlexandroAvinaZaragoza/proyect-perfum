@@ -17,6 +17,7 @@ use App\Models\Cliente;
 use App\Models\Venta;
 use App\Models\Proovedor;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class PedidosController extends Controller
@@ -63,16 +64,32 @@ class PedidosController extends Controller
         try {
 
             // CREAR PEDIDO
-            $pedido = Pedidos::create([
-                'folio' => 'PED-' . str_pad(Pedidos::count() + 1, 5, '0', STR_PAD_LEFT),
-                'guia' => $request->numero_guia,
-                'precio_envio' => is_numeric($request->envio) ? $request->envio : ($request->precio_envio ?? 0),
-                'paqueteria' => $request->paqueteria,
-                'total' => is_numeric($request->total) ? $request->total : 0,
-                'proovedor_id' => $request->selectProovedores,
-                'user_id' => auth()->id(),
-                'empresa_id' => 1
-            ]);
+            $pedido = null;
+            $maxAttempts = 3;
+
+            for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+                try {
+                    $pedido = Pedidos::create([
+                        'folio' => $this->generateNextFolio(),
+                        'guia' => $request->numero_guia,
+                        'precio_envio' => is_numeric($request->envio) ? $request->envio : ($request->precio_envio ?? 0),
+                        'paqueteria' => $request->paqueteria,
+                        'total' => is_numeric($request->total) ? $request->total : 0,
+                        'proovedor_id' => $request->selectProovedores,
+                        'user_id' => auth()->id(),
+                        'empresa_id' => 1
+                    ]);
+
+                    break;
+                } catch (QueryException $e) {
+                    $isDuplicateFolio = $e->getCode() === '23000'
+                        && str_contains($e->getMessage(), 'pedidos_folio_unique');
+
+                    if (!$isDuplicateFolio || $attempt === $maxAttempts) {
+                        throw $e;
+                    }
+                }
+            }
 
             // DETALLES
             foreach($carrito as $item){
@@ -215,12 +232,42 @@ class PedidosController extends Controller
         }
     }
 
+    public function estado(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|in:pendiente,enviado,recibido,cancelado'
+        ]);
+
+        $pedido = Pedidos::findOrFail($id);
+        $pedido->estado = $request->estado;
+        $pedido->save();
+
+        return back()->with('success', 'Estado del pedido actualizado correctamente');
+    }
+
+
+
     public function destroy($id)
     {
         $pedido = Pedidos::findOrFail($id);
         $pedido->delete();
 
         return back()->with('success', 'Pedido eliminado correctamente');
+    }
+
+    private function generateNextFolio(): string
+    {
+        $lastFolio = Pedidos::where('folio', 'like', 'PED-%')
+            ->lockForUpdate()
+            ->orderByDesc('folio')
+            ->value('folio');
+
+        $lastNumber = 0;
+        if ($lastFolio) {
+            $lastNumber = (int) str_replace('PED-', '', $lastFolio);
+        }
+
+        return 'PED-' . str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
     }
 }
 

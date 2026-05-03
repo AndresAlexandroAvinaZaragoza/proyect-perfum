@@ -47,3 +47,22 @@
 .h3-custom{
     color: #ffffff8a;
 }
+
+/* Placeholder */
+
+.custom-input::placeholder {
+    color: #ffffff;
+    opacity: 1;
+}
+
+.custom-input::-webkit-input-placeholder {
+    color: #ffffff;
+}
+
+.custom-input:-ms-input-placeholder {
+    color: #ffffff;
+}
+
+.custom-input::-ms-input-placeholder {
+    color: #ffffff;
+}

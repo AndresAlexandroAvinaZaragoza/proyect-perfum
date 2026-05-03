@@ -16,10 +16,6 @@ use App\Http\Controllers\PerfumeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-
-
-
-
 Route::post('decant/generar', [DecantController::class, 'generarDecant'])
     ->middleware(['auth', 'verified'])
     ->name('decant.generar');
@@ -32,6 +28,7 @@ Route::get('/pedidos/detallePedidos', [PedidosController::class, 'detallePedidos
     ->middleware(['auth', 'verified'])
     ->name('pedidos.detallePedidos');
 
+Route::put('/pedidos/estado/{id}', [PedidosController::class, 'estado'])->name('pedidos.estado')->middleware(['auth', 'verified']);
 
 
 Route::get('/pedidos/edit/{id}', [PedidosController::class, 'edit'])->name('pedidos.edit');

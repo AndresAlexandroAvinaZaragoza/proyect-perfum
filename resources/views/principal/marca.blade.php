@@ -12,7 +12,7 @@
                         <p>Directorio Global de Fabricantes</p>
                     </div>
 
-                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#agregarMarca">
+                    <button class="btn btn-outline-warning btn-lg" data-bs-toggle="modal" data-bs-target="#agregarMarca">
                         + Agregar Marca
                     </button>
                 </div>

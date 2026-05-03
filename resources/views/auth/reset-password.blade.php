@@ -1,41 +1,108 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Restablecer Contraseña</title>
 
-@section('content')
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+    <!-- Tu CSS -->
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+</head>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+<body style="background: radial-gradient(circle at center, #1A150D, #000000 80%);">
+
+<div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh;">
+
+    <!-- LOGO -->
+    <div class="text-center mb-4">
+        <h2 style="color:#C5A059; font-weight:bold;">PERFUM INTENSE</h2>
+    </div>
+
+    <!-- CARD -->
+    <div class="custom-card p-4" style="width: 100%; max-width: 420px;">
+
+        <!-- TÍTULO -->
+        <div class="text-center mb-4">
+            <h4 class="text-warning fw-bold">Nueva contraseña</h4>
+            <p class="h3-custom small">
+                Ingresa tu nueva contraseña para recuperar tu acceso.
+            </p>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <!-- FORM -->
+        <form method="POST" action="{{ route('password.store') }}">
+            @csrf
+
+            <!-- TOKEN -->
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+            <!-- EMAIL -->
+            <div class="mb-3">
+                <label class="form-label text-warning">Correo Electrónico</label>
+                <input 
+                    type="email"
+                    name="email"
+                    value="{{ old('email', $request->email) }}"
+                    class="form-control custom-input"
+                    required
+                >
+
+                @error('email')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="mb-3">
+                <label class="form-label text-warning">Nueva contraseña</label>
+                <input 
+                    type="password"
+                    name="password"
+                    class="form-control custom-input"
+                    required
+                >
+
+                @error('password')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <!-- CONFIRM PASSWORD -->
+            <div class="mb-3">
+                <label class="form-label text-warning">Confirmar contraseña</label>
+                <input 
+                    type="password"
+                    name="password_confirmation"
+                    class="form-control custom-input"
+                    required
+                >
+
+                @error('password_confirmation')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+            <!-- BOTÓN -->
+            <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-gold">
+                    Restablecer contraseña
+                </button>
+            </div>
+
+        </form>
+
+        <!-- VOLVER -->
+        <div class="text-center mt-4">
+            <a href="{{ route('login') }}" class="link-gold small">
+                ← Volver al inicio de sesión
+            </a>
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+    </div>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+</div>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-@endsection
+</body>
+</html>

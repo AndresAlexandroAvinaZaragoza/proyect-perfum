@@ -31,6 +31,10 @@
                 <i class="bi bi-cart"></i> Hacer venta
             </a>
 
+            <a href="{{ route('decant.index') }}" class="btn btn-outline-warning">
+                Decants
+            </a>
+
             <a href="{{ route('inventario.index') }}" class="btn btn-outline-warning">
                 Inventario
             </a>
@@ -146,11 +150,11 @@
         <!-- VENTAS POR USUARIOS -->
         <div class="col-md-4">
             <div class="card card-custom shadow p-3" style="height: 350px; overflow-y: auto;">
-                <h6>Ventas por usuario</h6>
+                <h6 style="color: #fff;">Ventas por usuario</h6>
                 @if(count($ventasUsuarios) > 0)
-                    <table class="table table-custom">
+                    <table class="table table-hover table-custom m-0">
                         <thead>
-                            <tr>
+                            <tr class="th-custom">
                                 <th>Usuario</th>
                                 <th>Ventas</th>
                                 <th>Ingresos</th>
@@ -159,7 +163,7 @@
 
                         <tbody>
                             @foreach($ventasUsuarios as $v)
-                            <tr>
+                            <tr class="td-custom">
                                 <td>{{ $v->usuario }}</td>
                                 <td>{{ $v->total_ventas }}</td>
                                 <td>${{ number_format($v->total_ingresos) }}</td>

@@ -3,7 +3,7 @@
 @section('content')
 
 <link rel="stylesheet" href="{{ asset('css/detalle_venta.css') }}">
-
+<link rel="stylesheet" href="{{ asset('css/modal.css') }}">
 <div class="container-fluid py-4">
 
     <!-- HEADER -->
@@ -20,7 +20,7 @@
 
         <div class="d-flex gap-2">
             <button class="btn btn-outline-gold btn-sm">Imprimir PDF</button>
-            <button class="btn btn-warning btn-sm fw-bold">Actualizar Estado</button>
+            <button class="btn btn-warning btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#actualizarPedido{{ $pedido->id }}">Actualizar Estado</button>
         </div>
     </div>
 
@@ -189,5 +189,81 @@
     </div>
 
 </div>
+
+
+        <!-- Modal Para Agregar actusalizar estado del pedido-->
+        <div class="modal fade modal-fonts" id="actualizarPedido{{ $pedido->id }}" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="editLabel{{ $pedido->id }}" aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content mi-modal">
+
+                    <!-- Header -->
+                    <div class="modal-header mi-header-modal position-relative modal-header-footer">
+
+                        <div class="w-100">
+                            <h5 class="modal-title mb-1 h5-custom" id="editLabel{{ $pedido->id }}">
+                                Actualizar Estado del Pedido
+                            </h5>
+                            <p class="mb-0 small p-custom">
+                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                            </p>
+                        </div>
+
+                        <button type="button"
+                                class="btn-close position-absolute end-0 top-0 m-3"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+
+                    </div>
+
+                    <!-- Form -->
+                    <form method="POST" action="{{ route('pedidos.estado', $pedido->id) }}">
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Body -->
+                        <div class="modal-body modal-custom-body">
+
+                            <div class="mb-3">
+                                <label for="estado" class="form-label label-color">Estado del Pedido</label>
+                                <select class="form-select" id="estado" name="estado" required>
+                                    <option value="" disabled selected>Seleccione un estado</option>
+                                    <option value="pendiente" {{ $pedido->estado == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                                    <option value="enviado" {{ $pedido->estado == 'enviado' ? 'selected' : '' }}>Enviado</option>
+                                    <option value="recibido" {{ $pedido->estado == 'recibido' ? 'selected' : '' }}> Recibido</option>
+                                    <option value="cancelado" {{ $pedido->estado == 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="modal-footer mi-footer-modal modal-header-footer">                            
+<!-- 
+                            <a href="{{ route('login') }}"
+                            class="text-decoration-none">
+                                ¿Ya estás registrado?
+                            </a>
+-->
+                            <div>
+                                <button type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+
+                                <button type="submit"
+                                        class="btn btn-primary">
+                                    Guardar Estado
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
 
 @endsection

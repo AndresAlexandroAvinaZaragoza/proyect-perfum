@@ -12,7 +12,7 @@
                         <p>Directorio Global de Clientes</p>
                     </div>
 
-                    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#agregarCliente">
+                    <button class="btn btn-outline-warning btn-lg" data-bs-toggle="modal" data-bs-target="#agregarCliente">
                         + Agregar Cliente
                     </button>
                 </div>
