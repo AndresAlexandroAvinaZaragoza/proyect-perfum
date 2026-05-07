@@ -16,38 +16,6 @@
                         Agregar Pedido
                     </a>
                 </div>
-
-                <div class="row g-4 mb-4">  <!-- g-4 agrega espacio -->
-                    <div class="col-md-4">
-                        <div class="card card-custom rounded-4 h-100">
-                            <div class="card-body">
-                                <h6 class="card-title">Total de Marcas</h6>
-                                <p class="card-text">Lorem</p>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card card-custom rounded-4 h-100">
-                            <div class= "card-body">
-                                <h6 class="card-title">Nuevas Tiendas</h6>
-                                <p class="card-text">Lorem </p>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card card-custom rounded-4 h-100">
-                            <div class="card-body">
-                                <h6 class="card-title">Special title treatment</h6>
-                                <p class="card-text">Lorem </p>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </header>
 
             <!-- Buscador -->

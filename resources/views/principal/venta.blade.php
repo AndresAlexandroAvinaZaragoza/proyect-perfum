@@ -144,7 +144,7 @@
                             </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover table-custom m-0">
+                                <table class="table table-hover table-custom m-0 table-wrapper">
                                     <thead>
                                         <tr class="th-custom">
                                             <th>Producto</th>
@@ -199,7 +199,7 @@
                         
 
 
-                        <div class="bloque-total backgroud-custom">
+                        <div class="bloque-total">
                             <div class="d-flex justify-content-between mt-1">
                                 <h4 class="h4-custom p-2">Total a Pagar:</h4>
                                 <h4 id="total_display" class="h6-custom p-2">$0</h4>

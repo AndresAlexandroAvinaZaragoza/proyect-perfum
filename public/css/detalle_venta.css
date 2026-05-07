@@ -318,12 +318,17 @@ body{
 
 /* TABLA */
 .table-dark{
-    background-color: transparent;
+    background-color: rgba(13, 13, 13, 0.18);
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: transparent;
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+    --bs-table-border-color: rgba(255, 255, 255, 0.08);
 }
 
 .table-dark th{
     font-size: 11px;
     color: #8A817C;
+    background-color: rgba(13, 13, 13, 0.34);
 }
 
 /* PERFUME */
@@ -343,9 +348,7 @@ body{
 }
 
 /* TOTAL */
-.total-box{
-    background-color: #0d0d0d;
-}
+
 
 .total-final{
     border-top: 1px solid #333;

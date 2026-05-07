@@ -1,5 +1,8 @@
-
 h1{
+    color: #fff;
+}
+
+h3{
     color: #fff;
 }
 
@@ -11,6 +14,10 @@ p{
     color: #516F89;
 }
 
+/* =========================
+   BOTONES
+========================= */
+
 .btn-primary{
     background-color: #f9c344;
     color: black;
@@ -20,67 +27,6 @@ p{
 .btn-primary:hover{
     background-color: #f9c34485;
     color: rgba(248, 248, 248, 0.801);
-}
-
-.card{
-    background-color: #1A1614;
-}
-
-.card-search{
-    width: 82rem;
-}
-
-.card-deuda {
-    background-color: #1A1614;
-    width: 39.5rem;
-
-}
-
-.gap-custom {
-    gap: 3rem; /* 24px */
-}
-
-.card-custom {
-    border: 1px solid #434034;
-    
-}
-
-.w-25 {
-    width: calc(var(--spacing) * 15) /* 6.25rem = 100px */;
-}
-
-
-.search-custom {
-    background-color: #1A1614;
-    color: white;
-    border: 1px solid #3a3525; /* borde normal */
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-/* Placeholder */
-.search-custom::placeholder {
-    color: #516F89;
-}
-
-/* Focus */
-.search-custom:focus {
-    background-color: #1A1614;
-    color: white;
-    border-color: #ffb300; /* cambia solo el color */
-    box-shadow: none;
-    outline: none;
-}
-
-.form-select {
-    background-color: #1A1614;
-    color: white;
-    border: 1px solid #3a3525;
-}
-
-.form-select:focus {
-    border-color: #ffb300;
-    box-shadow: none;
 }
 
 .btn-outline-gold {
@@ -95,128 +41,246 @@ p{
     color: #242116;
 }
 
+/* =========================
+   CARDS GLASS
+========================= */
 
-/* Tabla personalizada */
-.table-custom {
-    background-color: #2D291D;
-    color: white;
-    border-collapse: separate;
-    border-spacing: 0;
+.card{
+    background: rgba(255,255,255,0.05) !important;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border: 1px solid rgba(255,255,255,0.08) !important;
+
+    overflow: hidden;
+
+    border-radius: 18px;
 }
 
-/* Encabezado */
-.table-custom thead {
-    background-color: #242116;
-    color: #f9c344;
+.card-body{
+    background: transparent !important;
 }
 
-/* Bordes */
-.table-custom th,
-.table-custom td {
-    border-color: #3a3525;
-    vertical-align: middle;
-}
-
-/* Hover */
-.table-custom tbody tr:hover {
-    background-color: #38311c;
-}
-
-/* Quitar fondo blanco default */
-.table {
-    --bs-table-bg: transparent;
-    --bs-table-striped-bg: transparent;
-}
-
-.th-custom th {
-    background-color: #282519;
-    color: #516F89;
-}
-
-.td-custom td{
-    color: white;
-}
-
-.table-wrapper {
-    background-color: #2D291D;
-    border-radius: 16px;
-    overflow: hidden; 
-    border: 2px solid #3a3525;
-}
-
-.h1-custom{
-    color: #242116;
-}
-
-
-.card-deuda {
-    position: relative;
-}
-
-
-
-.bloque-total {
-    position: relative;
-    padding: 15px 0.3rem 8px 1rem;  /* Aumenta top padding */
-    margin-top: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 0;
-    
-}
-/* Fondo de toda la sección */
-.bloque-total::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -1.7rem;
-    right: -1.7rem;
-    background-color: #171412; 
-    z-index: -1;
-    border-radius: 0 0 1rem 1rem; 
-    
-}
-
-
-
-.bloque-total::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -1.8rem;
-    right: -1.8rem;
-    height: 1px;
-    background-color: #ebe7e4;
-    z-index: 1;
-    
-}
-
-h3{
-    color: #fff;
+.card-search{
+    width: 82rem;
 }
 
 .card-deuda{
-    transition: all 0.4s;
-        position: relative;
-    overflow: hidden; /* 🔥 clave */
-}
+    width: 39.5rem;
 
-.background-custom{
-    background-color: #171412;
+    background: rgba(255,255,255,0.04) !important;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    position: relative;
+
+    transition: all 0.4s;
+
+    overflow: hidden;
 }
 
 .card-deuda:hover {
     border-radius: 15px;
     cursor: pointer;
     transform: scale(1.03);
-    box-shadow: 0px 0px 5px 1px  rgba(165, 116, 10, 0.705);
+    box-shadow: 0px 0px 10px rgba(165, 116, 10, 0.45);
 }
 
 .card-deuda:hover h3{
     color: #f9c344;
 }
+
+.card-custom {
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================
+   SEARCH INPUTS
+========================= */
+
+.search-custom {
+    background: rgba(255,255,255,0.05);
+
+    color: white;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 10px;
+
+    transition: all 0.3s ease;
+
+    backdrop-filter: blur(10px);
+}
+
+.search-custom::placeholder {
+    color: #516F89;
+}
+
+.search-custom:focus {
+    background: rgba(255,255,255,0.08);
+
+    color: white;
+
+    border-color: #ffb300;
+
+    box-shadow: 0 0 10px rgba(255,179,0,0.2);
+
+    outline: none;
+}
+
+/* =========================
+   SELECT
+========================= */
+
+.form-select {
+    background: rgba(255,255,255,0.05);
+
+    color: white;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(10px);
+}
+
+.form-select:focus {
+    border-color: #ffb300;
+    box-shadow: none;
+}
+
+.form-select option{
+    background: #171412;
+    color: white;
+}
+
+/* =========================
+   TABLAS
+========================= */
+
+.table-custom {
+    background: rgba(255,255,255,0.03);
+
+    color: white;
+
+    border-collapse: separate;
+
+    border-spacing: 0;
+
+    backdrop-filter: blur(10px);
+}
+
+.table-custom thead {
+    background: rgba(0,0,0,0.35);
+
+    color: #f9c344;
+}
+
+.table-custom th,
+.table-custom td {
+    border-color: rgba(255,255,255,0.08);
+
+    vertical-align: middle;
+}
+
+.table-custom tbody tr:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: transparent;
+}
+
+.th-custom th {
+    background: rgba(0,0,0,0.35);
+
+    color: #516F89;
+}
+
+.td-custom td{
+    color: white;
+
+    background: rgba(255,255,255,0.02);
+}
+
+.table-wrapper {
+    background: rgba(255,255,255,0.04);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(14px);
+}
+
+/* =========================
+   BLOQUE INFERIOR CARD
+========================= */
+
+.bloque-total {
+    position: relative;
+
+    padding: 15px 0.3rem 8px 1rem;
+
+    margin-top: 10px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    z-index: 0;
+
+    background: transparent !important;
+}
+
+.bloque-total::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+    left: -1.7rem;
+    right: -1.7rem;
+
+    background: rgba(0,0,0,0.15);
+
+    backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
+
+    border-radius: 0 0 1rem 1rem;
+
+    z-index: -1;
+}
+
+.bloque-total::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: -1.8rem;
+    right: -1.8rem;
+
+    height: 1px;
+
+    background-color: rgba(255,255,255,0.15);
+
+    z-index: 1;
+}
+
+/* =========================
+   COLORES
+========================= */
 
 .color-custom{
     color: #8A817C;
@@ -232,39 +296,56 @@ h3{
 
 .bg-custom{
     color: #F2C107;
-    background-color: #312813;
-    border: 1px solid #ca9f0f; /* borde normal */
-    border-radius: 3px;
-}
-/* BASE (ya lo tienes) */
-.bg-custom{
-    color: #F2C107;
-    background-color: #312813;
+
+    background: rgba(242,193,7,0.12);
+
     border: 1px solid #ca9f0f;
+
     border-radius: 3px;
 }
 
-/* PAGADA */
 .bg-custom-Pagada{
     color: #28a745;
+
     border-color: #28a745;
-    background-color: #171412;
+
+    background: rgba(40,167,69,0.12);
 }
 
-/* PENDIENTE */
 .bg-custom-Pendiente{
     color: #F2C107;
+
     border-color: #ca9f0f;
 }
 
-/* CANCELADA */
 .bg-custom-Cancelada{
     color: #dc3545;
+
     border-color: #dc3545;
-    background-color: #171412;
+
+    background: rgba(220,53,69,0.12);
 }
-.bg-deudaF{
-    background-color: #1A1614;
+
+/* =========================
+   OTROS
+========================= */
+
+.background-custom{
+    background: rgba(0,0,0,0.20);
+
+    backdrop-filter: blur(8px);
+}
+
+.gap-custom {
+    gap: 3rem;
+}
+
+.w-25 {
+    width: calc(var(--spacing) * 15);
+}
+
+.h1-custom{
+    color: #242116;
 }
 
 .p-custom{
@@ -275,6 +356,3 @@ h3{
     font-size: 2rem;
     color: #F2C107;
 }
-
-
-

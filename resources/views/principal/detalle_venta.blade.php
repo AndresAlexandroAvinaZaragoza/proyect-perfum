@@ -21,8 +21,11 @@
             <a href="{{ route('venta.pdf', $venta->id) }}" class="btn btn-outline-gold btn-sm">
                 Descargar PDF
             </a>
-            <a href="{{ route('venta.pdf2', $venta->id) }}" class="btn btn-outline-gold btn-sm">
-                Imprimir Ticket
+            <a 
+                href="{{ route('venta.pdf2', $venta->id) }}" 
+                target="_blank"
+                class="btn btn-outline-gold btn-sm">
+                    Imprimir Ticket
             </a>
 
 

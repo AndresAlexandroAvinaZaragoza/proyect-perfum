@@ -63,6 +63,7 @@ Route::get('/venta/{id}/pdf', [VentaController::class, 'pdf'])->name('venta.pdf'
 Route::get('/venta/{id}/ticket', [VentaController::class, 'ticket'])
     ->name('venta.pdf2');
 
+Route::get('/pedidos/{id}/pdf', [PedidosController::class, 'pdf'])->name('pedidos.pdf');
 
 
 require __DIR__.'/auth.php';

@@ -87,7 +87,7 @@
                     <div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table table-hover table-custom m-0">
+                                <table class="table table-hover table-custom m-0 table-wrapper">
                                     <thead>
                                         <tr class="th-custom">
                                             <th>Producto</th>

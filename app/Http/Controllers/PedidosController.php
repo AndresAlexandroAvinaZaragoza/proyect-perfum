@@ -269,5 +269,12 @@ class PedidosController extends Controller
 
         return 'PED-' . str_pad($lastNumber + 1, 5, '0', STR_PAD_LEFT);
     }
+
+    public function pdf($id)
+    {
+        $pedido = Pedidos::with(['detalles.perfume', 'proovedor', 'usuario'])->findOrFail($id);
+        $pdf = Pdf::loadView('pdf.pedido', compact('pedido'));
+        return $pdf->download('pedido_' . $pedido->folio . '.pdf');
+    }
 }
 

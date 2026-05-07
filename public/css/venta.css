@@ -89,7 +89,7 @@ p{
 
 /* Tabla personalizada */
 .table-custom {
-    background-color: #2D291D;
+    background-color: rgba(45, 41, 29, 0.22);
     color: white;
     border-collapse: separate;
     border-spacing: 0;
@@ -120,20 +120,22 @@ p{
 }
 
 .th-custom th {
-    background-color: #120F0D;
+    background-color: rgba(18, 15, 13, 0.72);
     color: #516F89;
 }
 
 .td-custom td{
     color: white;
-    background-color: #1A1614;
+    background-color: rgba(26, 22, 20, 0.45);
 }
 
 .table-wrapper {
-    background-color: #2D291D;
+    background-color: rgba(45, 41, 29, 0.22);
     border-radius: 16px;
     overflow: hidden; 
     border: 2px solid #3a3525;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
 .h1-custom{
@@ -152,7 +154,7 @@ p{
     height: 42px;
     border-radius: 12px;
     border: 1px solid #2C2621 !important;
-    background-color: #120F0D !important;
+    
     padding: 5px;
     transition: all 0.2s ease;
 }
@@ -348,9 +350,7 @@ p{
     margin-top: 10px;
 }
 
-.backgroud-custom {
-    background-color: #161311;
-}
+
 
 .h4-custom {
     color: #fff;

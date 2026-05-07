@@ -19,7 +19,7 @@
         </div>
 
         <div class="d-flex gap-2">
-            <button class="btn btn-outline-gold btn-sm">Imprimir PDF</button>
+            <button class="btn btn-outline-gold btn-sm" onclick="window.location.href='{{ route('pedidos.pdf', $pedido->id) }}'">Descargar PDF</button>
             <button class="btn btn-warning btn-sm fw-bold" data-bs-toggle="modal" data-bs-target="#actualizarPedido{{ $pedido->id }}">Actualizar Estado</button>
         </div>
     </div>
