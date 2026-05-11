@@ -74,15 +74,6 @@ class MarcaController extends Controller
         return redirect()->back()->with('success', 'Marca registrada correctamente');
     }
 
-    public function show($id)
-    {
-        
-    }
-
-    public function edit($id)
-    {
-        //
-    }
 
     public function update(Request $request, $id)
 

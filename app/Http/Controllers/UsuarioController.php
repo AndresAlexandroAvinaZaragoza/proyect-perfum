@@ -55,17 +55,6 @@ class UsuarioController extends Controller
             return back()->with('success', 'Usuario creado correctamente');
     }
 
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($usuarios)
-    {
-        
-    }
-
     public function update(Request $request, $id)
     {
         $usuario = User::findOrFail($id);

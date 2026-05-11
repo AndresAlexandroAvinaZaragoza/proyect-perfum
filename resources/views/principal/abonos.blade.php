@@ -25,7 +25,7 @@
 
     <div class="row g-4 p-3"> 
 
-        <!-- 🔹 COLUMNA IZQUIERDA -->
+        <!--  COLUMNA IZQUIERDA -->
         <div class="col-md-4 col-lg-4 d-flex flex-column gap-3">
 
             <div class="card card-custom rounded-4">
@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            <!-- 🔹 MOVIMIENTOS -->
+            <!--  MOVIMIENTOS -->
             <div class="card card-custom card-custom-mov rounded-4 p-4">
                 <div class="d-flex align-items-center gap-2 py-2">
                     <i class="fa-regular fa-calendar-check" style="color: #8A817C"></i>
@@ -92,7 +92,7 @@
 
         </div>
 
-        <!-- 🔹 COLUMNA DERECHA -->
+        <!--  COLUMNA DERECHA -->
         <div class="col-md-8 col-lg-8">
 
             <form action="{{ route('abonos.store') }}" method="POST">

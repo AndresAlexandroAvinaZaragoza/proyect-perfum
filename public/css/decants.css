@@ -138,6 +138,17 @@ p{
     -webkit-backdrop-filter: blur(14px);
 }
 
+.table-wrapper-decants {
+    overflow: visible !important;
+}
+
+.table-wrapper-decants.card,
+.table-wrapper-decants .card,
+.table-wrapper-decants .card-body,
+.table-wrapper-decants .table-responsive {
+    overflow: visible !important;
+}
+
 .h1-custom{
     color: #242116;
 }

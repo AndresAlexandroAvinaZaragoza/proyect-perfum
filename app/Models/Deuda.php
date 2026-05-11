@@ -19,7 +19,6 @@ class Deuda extends Model
     
     public function ultimoAbono()
     {
-        // Cambia 'deuda_id' y 'fecha_abono' por los nombres reales de tus columnas
         return $this->hasOne(AbonoRegistro::class, 'deuda_id')->latestOfMany('created_at');
     }
 

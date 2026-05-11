@@ -45,18 +45,13 @@
                 flex-direction: column;
             }
 
-            /* ── CORRECCIÓN del bloque-total ─────────────────────────────
-               Reemplazamos el posicionamiento absoluto negativo por un
-               enfoque flex: el card crece, el bloque-total siempre queda
-               pegado al fondo y usa el borde superior + fondo del card.
-            ─────────────────────────────────────────────────────────────── */
+
             .card-deuda .card-content {
                 flex: 1;
                 display: flex;
                 flex-direction: column;
             }
 
-            /* Neutralizamos los pseudo-elementos del CSS original */
             .bloque-total::before,
             .bloque-total::after {
                 display: none !important;

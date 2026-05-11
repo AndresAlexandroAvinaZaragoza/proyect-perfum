@@ -151,6 +151,17 @@
 
     </div>
 
+    <!-- Mover modales al body para evitar problemas de stacking context -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.modal').forEach(function(modal) {
+                if (modal.parentElement !== document.body) {
+                    document.body.appendChild(modal);
+                }
+            });
+        });
+    </script>
+
 
 
 

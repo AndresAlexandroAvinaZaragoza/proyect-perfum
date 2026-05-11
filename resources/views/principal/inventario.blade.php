@@ -450,11 +450,23 @@
         
         <!-- Scrip para rellenar datos del select2 -->
         <script>
-            $('#perfume_id').select2({
-                placeholder: "Buscar perfume...",
-                allowClear: true,
-                minimumResultsForSearch: 0,
-                dropdownParent: $('#dropdownParent') 
+            $(document).ready(function() {
+                // Inicializar select2 cuando el modal se abre
+                $('#dropdownParent').on('show.bs.modal', function() {
+                    // Destruir si ya existe
+                    if ($('#perfume_id').hasClass('select2-hidden-accessible')) {
+                        $('#perfume_id').select2('destroy');
+                    }
+                    
+                    // Reinicializar
+                    $('#perfume_id').select2({
+                        placeholder: "Buscar perfume...",
+                        allowClear: true,
+                        minimumResultsForSearch: 0,
+                        dropdownParent: $('#dropdownParent').find('.modal-content'),
+                        width: '100%'
+                    });
+                });
             });
         </script>
     @endsection

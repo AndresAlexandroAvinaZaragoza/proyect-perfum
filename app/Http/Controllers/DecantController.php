@@ -18,7 +18,7 @@ class DecantController extends Controller
     public function index()
     {
         $query = Decant::with(['perfume', 'inventario']);
-        $decants = Decant::with(['perfume', 'inventario', 'precios'])->get();
+        $decants = $query->paginate(8)->withQueryString();
 
         
         $inventarios = Inventario::with('perfume')
@@ -27,8 +27,7 @@ class DecantController extends Controller
                 $q->where('tipo', 'Perfume');
             })
             ->get();
-        
-        $decants = $query->get();
+
         return view('principal.decant', compact('decants', 'inventarios'));
     }
 
@@ -92,7 +91,7 @@ class DecantController extends Controller
 {
     try {
 
-        // 🔹 Obtener datos del form
+        //  Obtener datos del form
         $decant = Decant::findOrFail($request->decant_id);
         $ml = (int) $request->tamano_decant;
         $cantidad = (int) $request->cantidad_generar;
@@ -102,7 +101,7 @@ class DecantController extends Controller
             return back()->withErrors('Datos inválidos');
         }
 
-        // 🔥 Calcular extracción
+        //  Calcular extracción
         $extraccionTotal = $ml * $cantidad;
 
         if ($decant->cantidad_restante < $extraccionTotal) {
@@ -111,22 +110,22 @@ class DecantController extends Controller
 
 
 
-        // 🔍 Buscar precio
+        //  Buscar precio
         $precioDecant = PrecioDecant::where('decant_id', $decant->id)
             ->where('ml', $ml)
             ->firstOrFail();
 
-        // 🔍 Verificar si ya existe
+        //  Verificar si ya existe
         $inventarioExistente = InventarioDecants::where('decant_id', $decant->id)
             ->where('precio_decant_id', $precioDecant->id)
             ->first();
 
         if ($inventarioExistente) {
-            // 🔼 SUMAR
+            // SUMAR
             $inventarioExistente->stock += $cantidad;
             $inventarioExistente->save();
         } else {
-            // 🆕 CREAR
+            //  CREAR
             InventarioDecants::create([
                 'decant_id' => $decant->id,
                 'precio_decant_id' => $precioDecant->id,

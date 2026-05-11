@@ -47,64 +47,8 @@
                     alertify.success("{{ session('success') }}");
                 </script>
                 @endif
-        <div class="row g-4">
-            <div class="col-md-8">
-                <div class="row g-4 mb-4">
-                    <div class="col-md-4">
-                        <div class="card card-custom rounded-4 h-100">
-                            <div class="card-body">
-                                <h6 class="card-title">Total de Marcas</h6>
-                                <p class="card-text">Lorem</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-custom rounded-4 h-100">
-                            <div class="card-body">
-                                <h6 class="card-title">Nuevas Tiendas</h6>
-                                <p class="card-text">Lorem</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-custom rounded-4 h-100">
-                            <div class="card-body">
-                                <h6 class="card-title">Special title treatment</h6>
-                                <p class="card-text">Lorem</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row g-2 mb-4">
-                    <div class="col-12">
-                        <div class="card card-custom rounded-4 w-100">
-                            <div class="card-body">
-                                <form class="d-flex gap-3 w-100 flex-wrap" method="GET" action="">
-                                    <input 
-                                        class="form-control search-custom flex-grow-1" 
-                                        type="search" 
-                                        name="search"
-                                        style="width: 10rem;"
-                                        value=""
-                                        placeholder="Buscar..." 
-                                    />
-                                    <select class="form-select w-auto" name="filter">
-                                        <option value="">Filtrar por</option>
-                                        <option value="name">Nombre</option>
-                                        <option value="date">Fecha</option>
-                                        <option value="country">País</option>
-                                    </select>
-
-                                    <button type="button" class="btn btn-outline-warning w-auto" data-bs-toggle="modal" data-bs-target="#agregarBotellaDecant">
-                                       <i class="fa-solid fa-plus"></i> Agregar Botella 
-                                    </button>
-                                </form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="row g-4">   
 
                 <!-- Modal Para Agregar Una nueva Marca-->
                 <div class="modal fade modal-fonts" id="agregarBotellaDecant" data-bs-backdrop="static"
@@ -247,8 +191,33 @@
                     </div>
                 </div>
 
-                <!--  TABLA -->
-                <div class="card card-custom rounded-4  ">
+                <div class="col-md-8">
+                    <div class="card card-custom rounded-4 w-100 mb-4">
+                        <div class="card-body">
+                            <form class="d-flex gap-3 w-100 flex-wrap" method="GET" action="">
+                                <input 
+                                    class="form-control search-custom flex-grow-1" 
+                                    type="search" 
+                                    name="search"
+                                    style="width: 10rem;"
+                                    value=""
+                                    placeholder="Buscar..." 
+                                />
+                                <select class="form-select w-auto" name="filter">
+                                    <option value="">Filtrar por</option>
+                                    <option value="name">Nombre</option>
+                                    <option value="date">Fecha</option>
+                                    <option value="country">País</option>
+                                </select>
+
+                                <button type="button" class="btn btn-outline-warning w-auto" data-bs-toggle="modal" data-bs-target="#agregarBotellaDecant">
+                                   <i class="fa-solid fa-plus"></i> Agregar Botella 
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                <div class="card card-custom rounded-4 table-wrapper-decants">
                     <div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
@@ -306,148 +275,6 @@
                                                     <button class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#edit{{ $decant->id }}" type="button">
                                                         <i class="fa-solid fa-pen-to-square"></i>
                                                     </button>
-
-                                                    <!-- Modal Para Editar Una nueva Marca-->
-                                                    <div class="text-start modal fade modal-fonts" id="edit{{ $decant->id }}" data-bs-backdrop="static"
-                                                        data-bs-keyboard="false" tabindex="-1"
-                                                        aria-labelledby="editLabel{{ $decant->id }}" aria-hidden="true">
-
-                                                        <div class="modal-dialog modal-dialog-centered">
-                                                            <div class="modal-content mi-modal">
-
-                                                                <!-- Header -->
-                                                                <div class="modal-header mi-header-modal position-relative modal-header-footer">
-
-                                                                    <div class="w-100">
-                                                                        <h5 class="modal-title mb-1 h5-custom" id="editLabel {{ $decant->id }}">
-                                                                            Registrar Nuevo Producto para el Inventario
-                                                                        </h5>
-                                                                        <p class="mb-0 small p-custom">
-                                                                            Complete la información requerida para el acceso al sistema administrativo de perfumes
-                                                                        </p>
-                                                                    </div>
-
-                                                                    <button type="button"
-                                                                            class="btn-close position-absolute end-0 top-0 m-3"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Close"></button>
-                                                                </div>
-                                                                @php
-                                                                    $preciosMap = $decant->precios->keyBy('ml');
-                                                                @endphp
-                                                                <!-- Form -->
-                                                                <form method="POST" action="{{ route('decant.update', $decant->id) }}" class="mi-formulario">
-                                                                    @csrf
-                                                                    @method('PUT')
-
-                                                                    <!-- Body -->
-                                                                    <div class="modal-body modal-custom-body">
-
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label label-color">Perfume</label>
-                                                                            <br>
-                                                                            <div class="position-relative">
-                                                                                <div class="mb-3">
-                                                                                    <label class="form-label label-color">{{ $decant->perfume->nombre ?? 'N/A' }}</label>
-                                                                                </div>     
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="precio_1ml" class="form-label label-color">Precio para 1ml</label>
-                                                                                <input type="number"
-                                                                                    class="form-control custom-input"
-                                                                                    id="precio_1ml"
-                                                                                    name="precio_1ml"
-                                                                                    min="1"
-                                                                                    max="9999"
-                                                                                    value="{{ $preciosMap[1]->precio ?? '' }}"
-                                                                                    required>
-                                                                            </div>                                       
-                                                                            <div class="mb-3">
-                                                                                <label for="precio_2ml" class="form-label label-color">Precio para 2ml</label>
-                                                                                <input type="number"
-                                                                                    class="form-control custom-input"
-                                                                                    id="precio_2ml"
-                                                                                    name="precio_2ml"
-                                                                                    min="1"
-                                                                                    max="9999"
-                                                                                    value="{{ $preciosMap[2]->precio ?? '' }}"
-                                                                                    required>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="precio_3ml" class="form-label label-color">Precio para 3ml</label>
-                                                                                <input type="number"
-                                                                                    class="form-control custom-input"
-                                                                                    id="precio_3ml"
-                                                                                    name="precio_3ml"
-                                                                                    min="1"
-                                                                                    max="9999"
-                                                                                    value="{{ $preciosMap[3]->precio ?? '' }}"
-                                                                                    required>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="precio_5ml" class="form-label label-color">Precio para 5ml</label>
-                                                                                <input type="number"
-                                                                                    class="form-control custom-input"
-                                                                                    id="precio_5ml"
-                                                                                    name="precio_5ml"
-                                                                                    min="1"
-                                                                                    max="9999"
-                                                                                    value="{{ $preciosMap[5]->precio ?? '' }}"
-                                                                                    required>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="precio_10ml" class="form-label label-color">Precio para 10ml</label>
-                                                                                <input type="number"
-                                                                                    class="form-control custom-input"
-                                                                                    id="precio_10ml"
-                                                                                    name="precio_10ml"
-                                                                                    min="1"
-                                                                                    max="9999"
-                                                                                    value="{{ $preciosMap[10]->precio ?? '' }}"
-                                                                                    required>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="precio_30ml" class="form-label label-color">Precio para 30ml</label>
-                                                                                <input type="number"
-                                                                                    class="form-control custom-input"
-                                                                                    id="precio_30ml"
-                                                                                    name="precio_30ml"
-                                                                                    min="1"
-                                                                                    max="9999"
-                                                                                    value="{{ $preciosMap[30]->precio ?? '' }}"
-                                                                                    required>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <!-- Footer -->
-                                                                    <div class="modal-footer mi-footer-modal modal-header-footer">                            
-                                            <!-- 
-                                                                        <a href="{{ route('login') }}"
-                                                                        class="text-decoration-none">
-                                                                            ¿Ya estás registrado?
-                                                                        </a>
-                                            -->
-                                                                        <div>
-                                                                            <button type="button"
-                                                                                    class="btn btn-secondary"
-                                                                                    data-bs-dismiss="modal">
-                                                                                Cancelar
-                                                                            </button>
-
-                                                                            <button type="submit"
-                                                                                    class="btn btn-primary">
-                                                                                Guardar Perfume
-                                                                            </button>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </form>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
                                                     <!-- Eliminar Botella -->
                                                     <form id="delete-form-{{ $decant->id }}" 
                                                         action="{{ route('decant.destroy', $decant->id) }}" 
@@ -469,6 +296,153 @@
                                 </table>
                             </div>
                         </div>
+
+                        <div class="d-flex justify-content-center mt-3">
+                            {{ $decants->withQueryString()->links() }}
+                        </div>
+
+                        @foreach ($decants as $decant)
+                            <!-- Modal Para Editar Una nueva Marca-->
+                            <div class="text-start modal fade modal-fonts" id="edit{{ $decant->id }}" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1"
+                                aria-labelledby="editLabel{{ $decant->id }}" aria-hidden="true">
+
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content mi-modal">
+
+                                        <!-- Header -->
+                                        <div class="modal-header mi-header-modal position-relative modal-header-footer">
+
+                                            <div class="w-100">
+                                                <h5 class="modal-title mb-1 h5-custom" id="editLabel {{ $decant->id }}">
+                                                    Registrar Nuevo Producto para el Inventario
+                                                </h5>
+                                                <p class="mb-0 small p-custom">
+                                                    Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                                </p>
+                                            </div>
+
+                                            <button type="button"
+                                                    class="btn-close position-absolute end-0 top-0 m-3"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        @php
+                                            $preciosMap = $decant->precios->keyBy('ml');
+                                        @endphp
+                                        <!-- Form -->
+                                        <form method="POST" action="{{ route('decant.update', $decant->id) }}" class="mi-formulario">
+                                            @csrf
+                                            @method('PUT')
+
+                                            <!-- Body -->
+                                            <div class="modal-body modal-custom-body">
+
+                                                <div class="mb-3">
+                                                    <label class="form-label label-color">Perfume</label>
+                                                    <br>
+                                                    <div class="position-relative">
+                                                        <div class="mb-3">
+                                                            <label class="form-label label-color">{{ $decant->perfume->nombre ?? 'N/A' }}</label>
+                                                        </div>     
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="precio_1ml" class="form-label label-color">Precio para 1ml</label>
+                                                        <input type="number"
+                                                            class="form-control custom-input"
+                                                            id="precio_1ml"
+                                                            name="precio_1ml"
+                                                            min="1"
+                                                            max="9999"
+                                                            value="{{ $preciosMap[1]->precio ?? '' }}"
+                                                            required>
+                                                    </div>                                       
+                                                    <div class="mb-3">
+                                                        <label for="precio_2ml" class="form-label label-color">Precio para 2ml</label>
+                                                        <input type="number"
+                                                            class="form-control custom-input"
+                                                            id="precio_2ml"
+                                                            name="precio_2ml"
+                                                            min="1"
+                                                            max="9999"
+                                                            value="{{ $preciosMap[2]->precio ?? '' }}"
+                                                            required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="precio_3ml" class="form-label label-color">Precio para 3ml</label>
+                                                        <input type="number"
+                                                            class="form-control custom-input"
+                                                            id="precio_3ml"
+                                                            name="precio_3ml"
+                                                            min="1"
+                                                            max="9999"
+                                                            value="{{ $preciosMap[3]->precio ?? '' }}"
+                                                            required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="precio_5ml" class="form-label label-color">Precio para 5ml</label>
+                                                        <input type="number"
+                                                            class="form-control custom-input"
+                                                            id="precio_5ml"
+                                                            name="precio_5ml"
+                                                            min="1"
+                                                            max="9999"
+                                                            value="{{ $preciosMap[5]->precio ?? '' }}"
+                                                            required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="precio_10ml" class="form-label label-color">Precio para 10ml</label>
+                                                        <input type="number"
+                                                            class="form-control custom-input"
+                                                            id="precio_10ml"
+                                                            name="precio_10ml"
+                                                            min="1"
+                                                            max="9999"
+                                                            value="{{ $preciosMap[10]->precio ?? '' }}"
+                                                            required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="precio_30ml" class="form-label label-color">Precio para 30ml</label>
+                                                        <input type="number"
+                                                            class="form-control custom-input"
+                                                            id="precio_30ml"
+                                                            name="precio_30ml"
+                                                            min="1"
+                                                            max="9999"
+                                                            value="{{ $preciosMap[30]->precio ?? '' }}"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Footer -->
+                                            <div class="modal-footer mi-footer-modal modal-header-footer">                            
+                            <!-- 
+                                                <a href="{{ route('login') }}"
+                                                class="text-decoration-none">
+                                                    ¿Ya estás registrado?
+                                                </a>
+                            -->
+                                                <div>
+                                                    <button type="button"
+                                                            class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Cancelar
+                                                    </button>
+
+                                                    <button type="submit"
+                                                            class="btn btn-primary">
+                                                        Guardar Perfume
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
 
                     </div>
                 </div>
@@ -613,7 +587,6 @@
             </div>
         </div> 
 
-
     <!-- Scrip para rellenar datos del select2 -->
         <script>
         
@@ -722,6 +695,28 @@
                     }
                 );
             }
+        </script>
+
+        <!-- Script para inicializar Select2 en modal de agregar botella decant -->
+        <script>
+            $(document).ready(function() {
+                // Inicializar select2 cuando el modal se abre
+                $('#agregarBotellaDecant').on('show.bs.modal', function() {
+                    // Destruir si ya existe
+                    if ($('#inventario_id').hasClass('select2-hidden-accessible')) {
+                        $('#inventario_id').select2('destroy');
+                    }
+                    
+                    // Reinicializar
+                    $('#inventario_id').select2({
+                        placeholder: "Buscar perfume...",
+                        allowClear: true,
+                        minimumResultsForSearch: 0,
+                        dropdownParent: $('#agregarBotellaDecant').find('.modal-content'),
+                        width: '100%'
+                    });
+                });
+            });
         </script>
         
 @endsection
