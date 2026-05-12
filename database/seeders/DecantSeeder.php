@@ -28,6 +28,7 @@ class DecantSeeder extends Seeder
             $precioPorMl = $precioBotella / $ml;
 
             // 🔹 crear decant
+            
             $decantId = DB::table('decants')->insertGetId([
                 'cantidad_restante' => $ml,
                 'precio_por_ml' => $precioPorMl,

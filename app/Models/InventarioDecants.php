@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\PrecioDecant;
+use App\Models\Decant;
 
 class InventarioDecants extends Model
 {
@@ -15,6 +17,15 @@ class InventarioDecants extends Model
         'user_id',
         'empresa_id',
     ];
+
+    public function precioDecant()
+    {
+        return $this->belongsTo(
+            PrecioDecant::class,
+            'precio_decant_id'
+        );
+    }
+
 
     public function decant()
     {

@@ -204,33 +204,42 @@
                 </div>
 
                 <div class="col-md-8">
-                    <div class="card card-custom rounded-4 w-100 mb-4">
-                        <div class="card-body">
-                            <form class="d-flex gap-3 w-100 flex-wrap" method="GET" action="">
-                                <input 
-                                    class="form-control search-custom flex-grow-1" 
-                                    type="search" 
-                                    name="search"
-                                    style="width: 10rem;"
-                                    value=""
-                                    placeholder="Buscar..." 
-                                />
-                                <select class="form-select w-auto" name="filter">
-                                    <option value="">Filtrar por</option>
-                                    <option value="name">Nombre</option>
-                                    <option value="date">Fecha</option>
-                                    <option value="country">País</option>
-                                </select>
+                    <div class="row g-4 mb-4 justify-content-start">
+                        <div class="col-12">
+                            <div class="card card-custom rounded-4 h-100" style="max-width: 35rem; width: 100%;">
+                                <div class="card-body">
+                                    <form method="GET"
+                                        action="{{ route('decant.index') }}"
+                                        id="filtros"
+                                        class="d-flex gap-3 align-items-center flex-nowrap">
 
-                                <button type="button" class="btn btn-outline-warning w-auto" data-bs-toggle="modal" data-bs-target="#agregarBotellaDecant">
-                                   <i class="fa-solid fa-plus"></i> Agregar Botella 
-                                </button>
-                            </form>
+                                        <input type="search"
+                                            name="search"
+                                            id="search"
+                                            value="{{ request('search') }}"
+                                            class="form-control search-custom flex-grow-1"
+                                            placeholder="Buscar perfume...">
+
+                                        <select name="porcentaje"
+                                                class="form-select auto-submit"
+                                            style="min-width: 10rem; width: 10rem; flex-shrink: 0;">
+
+                                            <option value="">Todos</option>
+                                            <option value="25">0% - 25%</option>
+                                            <option value="50">26% - 50%</option>
+                                            <option value="75">51% - 75%</option>
+                                            <option value="100">76% - 100%</option>
+
+                                        </select>
+
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                 <div class="card card-custom rounded-4 table-wrapper-decants">
-                    <div>
+                    <div id="tabla-decants">
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover table-custom m-0">
@@ -249,6 +258,20 @@
                                                 $restante = (float) ($decant->cantidad_restante ?? 0);
 
                                                 $porcentaje = $total > 0 ? min(max(($restante / $total) * 100, 0), 100) : 0;
+
+                                                if ($porcentaje <= 25) {
+                                                    $colorStock = 'bg-danger';
+                                                    $textoStock = '#dc3545';
+                                                } elseif ($porcentaje <= 50) {
+                                                    $colorStock = 'bg-warning';
+                                                    $textoStock = '#ffc107';
+                                                } elseif ($porcentaje <= 75) {
+                                                    $colorStock = 'bg-info';
+                                                    $textoStock = '#0dcaf0';
+                                                } else {
+                                                    $colorStock = 'bg-success';
+                                                    $textoStock = '#198754';
+                                                }
                                             @endphp
                                             <tr class= "td-custom">
                                                 <td>
@@ -260,12 +283,12 @@
                                                 <td> {{ $decant->perfume->genero }} </td>
                                                 <td>
                                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                                        <span class=" " style="color: #FFC107; font-size: 12px;">{{ $decant->cantidad_restante}}ml</span>
+                                                        <span class="fw-semibold" style="color: {{ $textoStock }}; font-size: 12px;">{{ $decant->cantidad_restante }}ml</span>
                                                         <span style="color: #47525E; font-size: 10px;" >{{ $decant->perfume->contenido}}ml</span>
                                                     </div>
                                                     <div class="progress mb-3" style="height: 10px; background-color: #3a3525;">
                                                         <div
-                                                            class="progress-bar bg-warning" 
+                                                            class="progress-bar {{ $colorStock }}" 
                                                             role="progressbar" 
                                                             style="width: {{ $porcentaje }}%; min-width: {{ $porcentaje > 0 ? '8px' : '0' }};" 
                                                             aria-valuenow="{{ round($porcentaje) }}"
@@ -283,6 +306,17 @@
                                                         data-total="{{ $decant->perfume->contenido }}"
                                                         type="button">
                                                         <i class="fa-regular fa-square-plus"></i>
+                                                    </button>
+                                                    <!-- Rellenar Button -->
+                                                    @php
+                                                        $availableBottles = \App\Models\Inventario::where('perfume_id', $decant->perfume->id)->sum('stock');
+                                                    @endphp
+                                                    <button class="btn btn-outline-success ms-1"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#rellenar{{ $decant->id }}"
+                                                        type="button"
+                                                        {{ $availableBottles <= 0 ? 'disabled' : '' }}>
+                                                        <i class="fa-solid fa-fill-drip"></i>
                                                     </button>
                                                     <button class="btn btn-outline-primary " data-bs-toggle="modal" data-bs-target="#edit{{ $decant->id }}" type="button">
                                                         <i class="fa-solid fa-pen-to-square"></i>
@@ -454,6 +488,42 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <!-- Modal Rellenar -->
+                            <div class="modal fade modal-fonts" id="rellenar{{ $decant->id }}" tabindex="-1" aria-labelledby="rellenarLabel{{ $decant->id }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content mi-modal">
+                                        <div class="modal-header mi-header-modal position-relative modal-header-footer">
+                                            <div class="w-100">
+                                                <h5 class="modal-title mb-1 h5-custom" id="rellenarLabel{{ $decant->id }}">Rellenar Decant</h5>
+                                                <p class="mb-0 small p-custom">Transferir frascos del inventario al decant (se añadirá el contenido por frasco).</p>
+                                            </div>
+                                            <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ route('decant.rellenar') }}" method="POST" class="mi-formulario">
+                                            @csrf
+                                            <input type="hidden" name="decant_id" value="{{ $decant->id }}">
+                                            <div class="modal-body modal-custom-body">
+                                                @php
+                                                    $availableBottles = \App\Models\Inventario::where('perfume_id', $decant->perfume->id)->sum('stock');
+                                                @endphp
+                                                <p class="small">Perfume: <strong>{{ $decant->perfume->nombre }}</strong></p>
+                                                <p class="small">Botes disponibles en inventario: <strong>{{ $availableBottles }}</strong></p>
+
+                                                <div class="mb-3">
+                                                    <label for="botellas_{{ $decant->id }}" class="form-label label-color">Cantidad de frascos a usar</label>
+                                                    <input type="number" id="botellas_{{ $decant->id }}" name="botellas" min="1" max="{{ $availableBottles }}" value="1" class="form-control" {{ $availableBottles <= 0 ? 'disabled' : '' }} required>
+                                                </div>
+                                                <p class="small text-muted">Cada frasco contiene <strong>{{ $decant->perfume->contenido }}ml</strong>. Se añadirá esa cantidad por frasco al decant.</p>
+                                            </div>
+                                            <div class="modal-footer mi-footer-modal modal-header-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <button type="submit" class="btn btn-success" {{ $availableBottles <= 0 ? 'disabled' : '' }}>Rellenar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
 
                     </div>
@@ -611,7 +681,6 @@
         </script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const botones = document.querySelectorAll('.btn-select-perfume');
                 const formCrearDecant = document.getElementById('form-crear-decant');
 
                 if (formCrearDecant) {
@@ -631,28 +700,34 @@
                     });
                 }
 
-                botones.forEach(boton => {
-                    boton.addEventListener('click', function() {
-                        // 1. Obtener datos del botón
-                        const nombre = this.getAttribute('data-nombre');
-                        const marca = this.getAttribute('data-marca');
-                        const stock = this.getAttribute('data-stock');
-                        const total = this.getAttribute('data-total');
-                        const idDecant = this.getAttribute('data-id'); 
-                        document.getElementById('input-decant-id').value = idDecant;
-                        // 2. Insertar en el panel derecho
-                        document.getElementById('display-nombre').innerText = nombre;
-                        document.getElementById('display-marca').innerText = marca.toUpperCase();
-                        document.getElementById('display-stock').innerText = stock + 'ml';
-                        document.getElementById('display-total').innerText = total;
+                document.addEventListener('click', function(event) {
+                    const boton = event.target.closest('.btn-select-perfume');
 
-                        document.getElementById('display-antes').innerText = stock + 'ml'; // Para el pie de la barra
-                        actualizarCalculos(); // <--- Llamada clave
+                    if (!boton) {
+                        return;
+                    }
 
-                        // 3. Opcional: Reiniciar el spinner de unidades a 1 al cambiar de perfume
-                        const inputCant = document.querySelector('input[name="cantidad_generar"]');
-                        if(inputCant) inputCant.value = 1;
-                    });
+                    // 1. Obtener datos del botón
+                    const nombre = boton.getAttribute('data-nombre');
+                    const marca = boton.getAttribute('data-marca');
+                    const stock = boton.getAttribute('data-stock');
+                    const total = boton.getAttribute('data-total');
+                    const idDecant = boton.getAttribute('data-id');
+
+                    document.getElementById('input-decant-id').value = idDecant;
+
+                    // 2. Insertar en el panel derecho
+                    document.getElementById('display-nombre').innerText = nombre;
+                    document.getElementById('display-marca').innerText = marca.toUpperCase();
+                    document.getElementById('display-stock').innerText = stock + 'ml';
+                    document.getElementById('display-total').innerText = total;
+
+                    document.getElementById('display-antes').innerText = stock + 'ml'; // Para el pie de la barra
+                    actualizarCalculos(); // <--- Llamada clave
+
+                    // 3. Opcional: Reiniciar el spinner de unidades a 1 al cambiar de perfume
+                    const inputCant = document.querySelector('input[name="cantidad_generar"]');
+                    if (inputCant) inputCant.value = 1;
                 });
             });
 
@@ -737,6 +812,72 @@
                     }
                 });
             });
+        </script>
+
+        <script>
+
+            // =========================
+            // FUNCIÓN FILTRAR
+            // =========================
+            function filtrarDecants() {
+
+                const form = document.getElementById('filtros');
+
+                const data = new FormData(form);
+
+                const params = new URLSearchParams(data);
+
+                fetch(form.action + '?' + params.toString())
+
+                .then(response => response.text())
+
+                .then(html => {
+
+                    const parser = new DOMParser();
+
+                    const doc = parser.parseFromString(html, 'text/html');
+
+                    const nuevaTabla =
+                        doc.querySelector('#tabla-decants').innerHTML;
+
+                    document.querySelector('#tabla-decants').innerHTML =
+                        nuevaTabla;
+
+                });
+            }
+
+            // =========================
+            // SEARCH INPUT
+            // =========================
+            let timer;
+
+            document.getElementById('search')
+            .addEventListener('input', function(){
+
+                clearTimeout(timer);
+
+                timer = setTimeout(() => {
+
+                    filtrarDecants();
+
+                }, 400);
+
+            });
+
+            // =========================
+            // SELECTS
+            // =========================
+            document.querySelectorAll('.auto-submit')
+            .forEach(select => {
+
+                select.addEventListener('change', function () {
+
+                    filtrarDecants();
+
+                });
+
+            });
+
         </script>
         
 @endsection

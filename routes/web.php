@@ -20,6 +20,10 @@ Route::post('decant/generar', [DecantController::class, 'generarDecant'])
     ->middleware(['auth', 'verified'])
     ->name('decant.generar');
 
+Route::post('decant/rellenar', [DecantController::class, 'rellenar'])
+    ->middleware(['auth', 'verified'])
+    ->name('decant.rellenar');
+
 Route::get('/ventas/historial', [VentaController::class, 'historial'])
     ->middleware(['auth', 'verified'])
     ->name('venta.historial');

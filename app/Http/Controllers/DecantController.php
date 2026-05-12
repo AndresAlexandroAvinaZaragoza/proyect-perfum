@@ -15,12 +15,96 @@ use Illuminate\Support\Facades\Log;
 
 class DecantController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $query = Decant::with(['perfume', 'inventario']);
+
+        // =========================
+        // BUSCADOR
+        // =========================
+        if ($request->filled('search')) {
+
+            $search = $request->search;
+
+            $query->whereHas('perfume', function ($q) use ($search) {
+
+                $q->where('nombre', 'like', '%' . $search . '%');
+
+            });
+        }
+
+        // =========================
+        // FILTRO POR PORCENTAJE
+        // =========================
+        if ($request->filled('porcentaje')) {
+
+            $porcentaje = (int) $request->porcentaje;
+
+            $query->whereHas('perfume', function ($q) use ($porcentaje) {
+
+                // contenido original del perfume
+                $q->select('id', 'contenido');
+
+            });
+
+            if ($porcentaje == 25) {
+
+                $query->whereRaw('
+                    (
+                        (cantidad_restante * 100) /
+                        (
+                            SELECT perfumes.contenido
+                            FROM perfumes
+                            WHERE perfumes.id = decants.perfume_id
+                        )
+                    ) BETWEEN 0 AND 25
+                ');
+
+            } elseif ($porcentaje == 50) {
+
+                $query->whereRaw('
+                    (
+                        (cantidad_restante * 100) /
+                        (
+                            SELECT perfumes.contenido
+                            FROM perfumes
+                            WHERE perfumes.id = decants.perfume_id
+                        )
+                    ) BETWEEN 26 AND 50
+                ');
+
+            } elseif ($porcentaje == 75) {
+
+                $query->whereRaw('
+                    (
+                        (cantidad_restante * 100) /
+                        (
+                            SELECT perfumes.contenido
+                            FROM perfumes
+                            WHERE perfumes.id = decants.perfume_id
+                        )
+                    ) BETWEEN 51 AND 75
+                ');
+
+            } elseif ($porcentaje == 100) {
+
+                $query->whereRaw('
+                    (
+                        (cantidad_restante * 100) /
+                        (
+                            SELECT perfumes.contenido
+                            FROM perfumes
+                            WHERE perfumes.id = decants.perfume_id
+                        )
+                    ) BETWEEN 76 AND 100
+                ');
+            }
+        }
+
+        // PAGINACIÓN
         $decants = $query->paginate(8)->withQueryString();
 
-        
+        // INVENTARIOS
         $inventarios = Inventario::with('perfume')
             ->where('stock', '>', 0)
             ->whereHas('perfume', function($q){
@@ -200,7 +284,11 @@ class DecantController extends Controller
         //  Buscar precio
         $precioDecant = PrecioDecant::where('decant_id', $decant->id)
             ->where('ml', $ml)
-            ->firstOrFail();
+            ->first();
+
+        if (!$precioDecant) {
+            return back()->with('error', 'No existe un precio configurado para ese tamaño de decant.');
+        }
 
         //  Verificar si ya existe
         $inventarioExistente = InventarioDecants::where('decant_id', $decant->id)
@@ -232,6 +320,61 @@ class DecantController extends Controller
         return back()->with('error', $e->getMessage());
     }
 }
+
+    public function rellenar(Request $request)
+    {
+        try {
+            $request->validate([
+                'decant_id' => 'required|exists:decants,id',
+                'botellas' => 'required|integer|min:1'
+            ]);
+
+            $decant = Decant::findOrFail($request->decant_id);
+
+            $botellas = (int) $request->botellas;
+
+            // total disponibles en inventario para ese perfume
+            $totalDisponibles = Inventario::where('perfume_id', $decant->perfume_id)->sum('stock');
+
+            if ($totalDisponibles < $botellas) {
+                return back()->with('error', 'No hay suficientes frascos en inventario para rellenar.');
+            }
+
+            // descontar botellas del inventario (desde los registros más antiguos)
+            $restar = $botellas;
+            $inventarios = Inventario::where('perfume_id', $decant->perfume_id)
+                ->where('stock', '>', 0)
+                ->orderBy('id', 'asc')
+                ->get();
+
+            foreach ($inventarios as $inv) {
+                if ($restar <= 0) break;
+
+                if ($inv->stock <= $restar) {
+                    $restar -= $inv->stock;
+                    $inv->stock = 0;
+                } else {
+                    $inv->stock -= $restar;
+                    $restar = 0;
+                }
+
+                $inv->save();
+            }
+
+            // sumar ml al decant
+            $mlPorBotella = $decant->perfume->contenido ?? 0;
+            $mlSumar = $mlPorBotella * $botellas;
+
+            $decant->cantidad_restante = ($decant->cantidad_restante ?? 0) + $mlSumar;
+            $decant->save();
+
+            return back()->with('success', 'Decant rellenado correctamente. Se consumieron ' . $botellas . ' frascos del inventario.');
+
+        } catch (\uThrowable $e) {
+            Log::error('Error al rellenar decant', ['error' => $e->getMessage()]);
+            return back()->with('error', 'Ocurrió un error al intentar rellenar.');
+        }
+    }
 
     public function destroy($id)
     {
