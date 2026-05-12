@@ -232,6 +232,14 @@
 
                                         </select>
 
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-warning"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#agregarBotellaDecant">
+                                            Agregar Perfume
+                                        </button>
+
                                     </form>
                                 </div>
                             </div>
