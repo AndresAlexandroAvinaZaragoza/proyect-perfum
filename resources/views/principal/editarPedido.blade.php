@@ -1,5 +1,25 @@
 @extends('layouts.ventas')
     @section('contentVenta')
+
+
+            @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif  
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
+        
         <link rel="stylesheet" href="{{ asset('css/pedidos.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
@@ -162,7 +182,9 @@
                                     value="{{ $pedido->paqueteria }}"
                                     class="form-control custom-input" 
                                     style="background-color: #050504;" 
-                                    maxlength="49"
+                                    maxlength="20"
+                                    onkeypress="if(this.value.length >= 20) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,20), 0);"
                                     required
                                 >
                             </div>
@@ -178,7 +200,9 @@
                                     style="background-color: #050504;" 
                                     inputmode="numeric"
                                     pattern="[0-9]*"
-                                    maxlength="49"
+                                    maxlength="6"
+                                    onkeypress="if(this.value.length >= 6) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,6), 0);"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                     required
                                 >

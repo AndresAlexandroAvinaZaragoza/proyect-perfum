@@ -16,6 +16,8 @@ use App\Models\Cliente;
 use App\Models\Venta;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Decant;
+use App\Models\AbonoRegistro;
 
 class VentaController extends Controller
 {
@@ -40,6 +42,7 @@ class VentaController extends Controller
         try{
 
             $venta = Venta::create([
+                'folio' => 'VTA-' . str_pad((Venta::max('id') ?? 0) + 1, 5, '0', STR_PAD_LEFT),
                 'cliente_id' => $request->cliente_id,
                 'total' => $request->total,
                 'tipo_venta' => $request->metodo_pago,
@@ -133,13 +136,113 @@ class VentaController extends Controller
             ->with('print_ticket', true);
     }
 
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            // obtener venta
+            $venta = Venta::with([
+                'detalles',
+                'detallesDecants'
+            ])->findOrFail($id);
+
+            // =====================================================
+            // DEVOLVER STOCK DE PERFUMES
+            // =====================================================
+            
+            foreach ($venta->detalles as $detalle) {
+                $inventario = Inventario::where('perfume_id', $detalle->perfume_id)
+                    ->first();
+                if ($inventario) {
+                    $inventario->increment('stock', $detalle->cantidad);
+                }
+            }
+
+            // =====================================================
+            // DEVOLVER STOCK DE DECANTS
+            // =====================================================
+
+            foreach ($venta->detallesDecants as $detalleDecant) {
+
+                // devolver stock al inventario_decants
+                $inventarioDecant = InventarioDecants::find(
+                    $detalleDecant->inventario_decant_id
+                );
+
+                if ($inventarioDecant) {
+
+                    $inventarioDecant->increment(
+                        'stock',
+                        $detalleDecant->cantidad
+                    );
+                }
+
+                // devolver líquido al decant
+                $decant = Decant::find($detalleDecant->decant_id);
+
+                if ($decant) {
+
+                    $decant->increment(
+                        'cantidad_restante',
+                        $detalleDecant->ml * $detalleDecant->cantidad
+                    );
+                }
+            }
+
+            // =====================================================
+            // ELIMINAR DEUDA SI EXISTE
+            // =====================================================
+
+            $deuda = Deuda::where('venta_id', $venta->id)->first();
+
+            if ($deuda) {
+
+                // eliminar abonos
+                AbonoRegistro::where('deuda_id', $deuda->id)->delete();
+
+                $deuda->delete();
+            }
+
+            // =====================================================
+            // ELIMINAR DETALLES
+            // =====================================================
+
+            $venta->detalles()->delete();
+            $venta->detallesDecants()->delete();
+
+            // =====================================================
+            // ELIMINAR VENTA
+            // =====================================================
+
+            $venta->delete();
+
+            DB::commit();
+
+            return redirect()
+                ->route('venta.historial')
+                ->with('success', 'Venta eliminada y stock restaurado correctamente.');
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return redirect()
+                ->back()
+                ->with('error', 'Error al eliminar venta: ' . $e->getMessage());
+        }
+    }
+
     public function historial(Request $request){
         $query = Venta::with(['cliente', 'usuario', 'perfume', 'marca'])
         ->orderBy('created_at', 'desc');
 
-        if ($request->search) {
-            $query->where(function($q) use ($request) {
-                $q->whereHas('cliente', function($q2) use ($request) {
+if ($request->search) {
+
+        $query->where(function($q) use ($request) {
+                $q->where('folio', 'like', '%' . $request->search . '%')
+                ->orWhereHas('cliente', function($q2) use ($request) {
                     $q2->where('nombre', 'like', '%' . $request->search . '%');
                 })
                 ->orWhereHas('perfume', function($q2) use ($request) {

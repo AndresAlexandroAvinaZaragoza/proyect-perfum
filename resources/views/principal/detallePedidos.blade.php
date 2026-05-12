@@ -1,6 +1,24 @@
 @extends('layouts.app')
     @section('content')
 
+        @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif  
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
+
         <link rel="stylesheet" href="{{ asset('css/marca.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">

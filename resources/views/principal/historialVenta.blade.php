@@ -1,6 +1,24 @@
 @extends('layouts.ventas')
     @section('contentVenta')
 
+        @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
+
          <link rel="stylesheet" href="{{ asset('css/decants.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
@@ -79,16 +97,13 @@
             </section>
                 
             <section>
-                @if(session('success'))
-                <script>
-                    alertify.success("{{ session('success') }}");
-                </script>
-                @endif
+
 
                 <div class="card card-custom rounded-4">
                     <div id="tabla-historialVenta" class="card-body p-0">
                         <table class="table table-hover table-custom m-0 .table-wrapper">
-                            <tr class="th-custom">  
+                            <tr class="th-custom"> 
+                                <th>Folio</th> 
                                 <th>CLIENTES</th>
                                 <th>ARTICULOS</th>
                                 <th>TOTAL</th>
@@ -99,6 +114,7 @@
                             </tr>
                             @foreach ($ventas as $venta)
                                 <tr class="td-custom">
+                                    <td>{{ $venta->folio }}</td>
                                     <td>{{ $venta->cliente->nombre }}</td>
                                     <td>{{ $venta->articulos }}</td>
                                     <td>{{ $venta->total }}</td>
@@ -110,6 +126,20 @@
                                         class="btn btn-outline-warning btn-sm">
                                         Ver Detalles
                                         </a> <!-- Agrega más acciones según sea necesario -->
+
+                                        <form id="delete-form-{{ $venta->id }}" 
+                                            action="{{ route('venta.destroy', $venta->id) }}" 
+                                            method="POST" 
+                                            style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="button" 
+                                                    class="btn btn-outline-danger"
+                                                    onclick="confirmDelete({{ $venta->id }})">
+                                                <x-icon name="delete" width="16" height="16"/>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -122,7 +152,22 @@
 
             </section>
 
-                    <script>
+         <script>
+            function confirmDelete(id) {
+                alertify.confirm(
+                    'Eliminar la Venta',
+                    '¿Estás seguro de que deseas eliminar esta venta?, se eliminarán también los detalles de la venta y se devolverá el stock de los productos vendidos.',
+                    function() {
+                        document.getElementById('delete-form-' + id).submit();
+                    },
+                    function() {
+                        alertify.error('Cancelado');
+                    }
+                );
+            }
+        </script>
+
+        <script>
             document.querySelectorAll('.auto-submit').forEach(select => {
                 select.addEventListener('change', function () {
                     document.getElementById('filtros').submit();

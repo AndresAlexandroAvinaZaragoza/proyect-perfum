@@ -1,6 +1,25 @@
 @extends('layouts.app')
     @section('content')
 
+        @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif  
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
+
+
         <link rel="stylesheet" href="{{ asset('css/marca.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
@@ -23,7 +42,7 @@
                 <div class="">
                     <div class="row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4 h-100" style="width: 65.9rem;">
                                 <div class="card-body">
                                     <form id="filtros" method="GET" action="{{ route('perfume.index') }}" class="d-flex gap-3 flex-wrap">
 
@@ -93,11 +112,7 @@
             </section>
                 
             <section>
-                @if(session('success'))
-                <script>
-                    alertify.success("{{ session('success') }}");
-                </script>
-                @endif
+
 
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
@@ -172,24 +187,31 @@
                                                         <div class="modal-body modal-custom-body">
 
                                                             <div class="mb-3">
-                                                                <label for="nombre" class="form-label label-color">Agregar Marca</label>
+                                                                <label for="nombre" class="form-label label-color">Agregar El nombre de la Fragancia</label>
                                                                 <input type="text"
                                                                     class="form-control custom-input"
                                                                     id="nombre"
                                                                     name="nombre"
                                                                     value="{{ $perfume->nombre }}"
+                                                                    onkeypress="if(this.value.length >= 100) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
                                                                     required>
                                                             </div>
 
                                                             <div class="mb-3">
-                                                                <label for="contenido" class="form-label label-color">Pais de Origen</label>
-                                                                <input type="text"
+                                                                <label for="contenido" class="form-label label-color">Cantidad de la Fragancia (Mililitros)</label>
+                                                                <input type="number"
                                                                     class="form-control custom-input"
                                                                     id="contenido"
                                                                     name="contenido"
                                                                     value="{{ $perfume->contenido }}"
+                                                                    min="0"
+                                                                    max="999999"
+                                                                    onkeypress="if(this.value.length >= 6) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,6), 0);"
                                                                     required>
                                                             </div>
+
                                                             <div class="mb-3">
                                                                 <label for="marca_id" class="form-label label-color">Selecciona la Marca</label>
                                                                 <select name="marca_id" class="form-select">
@@ -334,15 +356,21 @@
                                     class="form-control custom-input"
                                     id="nombre"
                                     name="nombre"
+                                    onkeypress="if(this.value.length >= 100) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
                                     required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="contenido" class="form-label label-color">Cantidad de la Fragancia (Mililitros)</label>
-                                <input type="text"
+                                <input type="number"
                                     class="form-control custom-input"
                                     id="contenido"
                                     name="contenido"
+                                    min="0"
+                                    max="999999"
+                                    onkeypress="if(this.value.length >= 6) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,6), 0);"
                                     required>
                             </div>
                             <div class="mb-3">
@@ -470,6 +498,11 @@
 
                         const nuevaTabla = doc.querySelector('#tabla-perfumes').innerHTML
                         document.querySelector('#tabla-perfumes').innerHTML = nuevaTabla
+
+                        // FIX: Reposiciona modales al body para que DataTables no los destruya
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            document.body.appendChild(modal);
+                        });
                     })
                 }, 400)
             })

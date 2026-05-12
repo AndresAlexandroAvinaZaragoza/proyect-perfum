@@ -1,6 +1,24 @@
 @extends('layouts.app')
     @section('content')
 
+                @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif  
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
+
         <link rel="stylesheet" href="{{ asset('css/marca.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
@@ -45,11 +63,7 @@
             </section>
                 
             <section>
-            @if(session('success'))
-            <script>
-                alertify.success("{{ session('success') }}");
-            </script>
-            @endif
+
 
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
@@ -99,7 +113,7 @@
                                                     </div>
 
                                                     <!-- Form -->
-                                                    <form method="POST" action="{{ route('usuario.update', $usuario->id) }}" enctype="multipart/form-data" >
+                                                    <form method="POST" action="{{ route('usuario.update', $usuario->id) }}" enctype="multipart/form-data" class="form-editar-usuario">
                                                         @csrf
                                                         @method('PUT')
                                                         <!-- Body -->
@@ -112,6 +126,10 @@
                                                                     id="name"
                                                                     name="name"
                                                                     value="{{ $usuario->name }}"
+                                                                    maxlength="255"
+                                                                    oninput="this.value=this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g,'').slice(0,255)"
+                                                                    onkeypress="if(this.value.length >=255) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,255), 0);"
                                                                     required>
                                                             </div>
 
@@ -122,17 +140,27 @@
                                                                     id="usuario"
                                                                     name="usuario"
                                                                     value="{{ $usuario->usuario }}"
+                                                                    maxlength="50"
+                                                                    onkeypress="if(this.value.length >=50) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,50), 0);"
                                                                     required>
                                                             </div>
 
                                                             <div class="mb-3">
                                                                 <label for="email" class="form-label label-color">Correo electrónico</label>
                                                                 <input type="email"
-                                                                    class="form-control custom-input"
+                                                                    class="form-control custom-input email-input"
                                                                     id="email"
                                                                     name="email"
                                                                     value="{{ $usuario->email }}"
+                                                                    maxlength="255"
+                                                                    onkeypress="if(this.value.length >=255) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,255), 0);"
                                                                     required>
+
+                                                                    <input type="hidden"
+                                                                        class="email-original"
+                                                                        value="{{ $usuario->email }}">
                                                             </div>
 
                                                             <div class="mb-3">
@@ -163,7 +191,7 @@
                                                                     <option value="empleado" {{ $usuario->rol == 'empleado' ? 'selected' : '' }}>Empleado</option>
                                                                     <option value="admin" {{ $usuario->rol == 'admin' ? 'selected' : '' }}>Administrador</option>
                                                                 </select>
-                                                            </div> -
+                                                            </div> 
 
                                                         </div>
 
@@ -194,6 +222,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if(auth()->user()->rol === 'admin')
                                         <form id="delete-form-{{ $usuario->id }}" 
                                             action="{{ route('usuario.destroy', $usuario->id) }}" 
                                             method="POST" 
@@ -207,6 +236,7 @@
                                                 <x-icon name="delete" width="16" height="16"/>
                                             </button>
                                         </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -251,11 +281,16 @@
 
                             <div class="mb-3">
                                 <label for="name" class="form-label label-color">Nombre completo</label>
+                                <!-- Nombre -->
                                 <input type="text"
                                     class="form-control custom-input"
                                     id="name"
                                     name="name"
+                                    maxlength="255"
+                                    oninput="this.value=this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ ]/g,'').slice(0,255)"
                                     required>
+
+                                <x-input-error :messages="$errors->get('name')" class="mt-2 text-danger" />
                             </div>
 
                             <div class="mb-3">
@@ -264,6 +299,9 @@
                                     class="form-control custom-input"
                                     id="usuario"
                                     name="usuario"
+                                    maxlength="50"
+                                    onkeypress="if(this.value.length >= 50) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,50), 0);"
                                     required>
                             </div>
 
@@ -273,6 +311,9 @@
                                     class="form-control custom-input"
                                     id="email"
                                     name="email"
+                                    maxlength="255"
+                                    onkeypress="if(this.value.length >= 255) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,255), 0);"
                                     required>
                             </div>
 
@@ -283,6 +324,7 @@
                                     id="password"
                                     name="password"
                                     required>
+
                             </div>
 
                             <div class="mb-3">
@@ -296,15 +338,23 @@
                                     required>
                             </div>
 
+                            @if(auth()->user()->rol === 'admin')
                             <div class="mb-3">
                                 <label for="rol" class="form-label label-color">Rol</label>
                                 <select name="rol"
                                         id="rol"
                                         class="form-select">
-                                    <option value="empleado">Empleado</option>
-                                    <option value="admin">Administrador</option>
+                                    <option value="empleado"
+                                        {{ $usuario->rol == 'empleado' ? 'selected' : '' }}>
+                                        Empleado
+                                    </option>
+                                    <option value="admin"
+                                        {{ $usuario->rol == 'admin' ? 'selected' : '' }}>
+                                        Administrador
+                                    </option>
                                 </select>
                             </div>
+                            @endif
 
                         </div>
 
@@ -360,6 +410,39 @@
 
         <script>
 
+            document.querySelectorAll('.form-editar-usuario').forEach(form => {
+
+                form.addEventListener('submit', function(e){
+
+                    const emailOriginal = form.querySelector('.email-original').value;
+                    const emailNuevo = form.querySelector('.email-input').value;
+
+                    if(emailOriginal !== emailNuevo){
+
+                        e.preventDefault();
+
+                        alertify.confirm(
+                            'Cambiar correo',
+                            'Por seguridad, al cambiar el correo tendrás que volver a iniciar sesión. ¿Deseas continuar?',
+                            
+                            function(){
+                                form.submit();
+                            },
+
+                            function(){
+                                alertify.warning('Cambio cancelado');
+                            }
+                        );
+                    }
+
+                });
+
+            });
+
+            </script>
+
+        <script>
+
             let timer;
 
             document.getElementById('search').addEventListener('input', function(){
@@ -381,6 +464,11 @@
 
                         const nuevaTabla = doc.querySelector('#tabla-usuario').innerHTML
                         document.querySelector('#tabla-usuario').innerHTML = nuevaTabla
+
+                        // FIX: Reposiciona modales al body para que DataTables no los destruya
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            document.body.appendChild(modal);
+                        });
                     })
                 }, 400)
             })

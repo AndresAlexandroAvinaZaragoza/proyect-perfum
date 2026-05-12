@@ -41,4 +41,10 @@ class Deuda extends Model
     {
         return $this->hasMany(AbonoRegistro::class, 'deuda_id');
     }
+
+    public function venta()
+    {
+        return $this->belongsTo(Venta::class);
+    }
+
 }

@@ -2,6 +2,20 @@
 
 @section('content')
 
+
+        @if(session('error'))
+        <script>
+            alertify.error("{{ session('error') }}");
+        </script>
+        @endif
+
+        @if($errors->any())
+        <script>
+            alertify.error("{{ $errors->first() }}");
+        </script>
+        @endif
+      
+        
 <link rel="stylesheet" href="{{ asset('css/abonos.css') }}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=edit" />
 
@@ -113,7 +127,7 @@
                                     <i class="fa-solid fa-dollar-sign position-absolute fs-4"
                                        style="top: 50%; left: 15px; transform: translateY(-50%); color:#F39D0B;"></i>
 
-                                    <input type="number" name="pago" min="1" placeholder="0.00" max="{{ $deuda->faltante }}" step="0.01"
+                                    <input type="number" name="pago" min="1" max="9999999" placeholder="0.00" max="{{ $deuda->faltante }}" step="0.01"
                                            class="form-control form-control-lg custom-input ps-5" required>
                                 </div>
                             </div>

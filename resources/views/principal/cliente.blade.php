@@ -1,6 +1,24 @@
 @extends('layouts.app')
     @section('content')
 
+        @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
+
         <link rel="stylesheet" href="{{ asset('css/marca.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
@@ -21,9 +39,9 @@
             <!-- Buscador -->
             <section>
                 <div class="">
-                    <div class="row g-4 mb-4">
+                    <div class="buscador-row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4 h-100" style="width: 35rem;">
                                 <div class="card-body">
                                     <form id="filtros" method="GET" action="{{ route('cliente.index') }}" class="d-flex gap-3 flex-wrap">
 
@@ -50,12 +68,6 @@
             </section>
                 
             <section>
-                @if(session('success'))
-                <script>
-                    alertify.success("{{ session('success') }}");
-                </script>
-                @endif
-
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
                     <div id="tabla-clientes" class="card-body p-0">
@@ -73,6 +85,10 @@
                                     <td>{{ $cliente->usuario->usuario ?? 'Sin usuario' }}</td>
 
                                     <td>
+                                        <a href="{{ route('cliente.show', $cliente->id) }}" class="btn btn-outline-success">
+                                            <i class="fa-solid fa-hand-holding-dollar"></i>
+                                        </a>
+
                                         <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $cliente->id }}">
                                             <x-icon name="edit" class="me-1" width="16" height="16"/>
                                         </button>
@@ -120,6 +136,9 @@
                                                                     id="nombre"
                                                                     name="nombre"
                                                                     value="{{ $cliente->nombre }}"
+                                                                    maxlength="100"
+                                                                    onkeypress="if(this.value.length >= 100) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
                                                                     required>
                                                             </div>
 
@@ -130,6 +149,10 @@
                                                                     id="celular"
                                                                     name="celular"
                                                                     value="{{ $cliente->celular }}"
+                                                                    maxlength="15"
+                                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                                    onkeypress="if(this.value.length >= 15) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,15), 0);"
                                                                     required>
                                                             </div>
                                                         </div>
@@ -226,6 +249,9 @@
                                     class="form-control custom-input"
                                     id="nombre"
                                     name="nombre"
+                                    maxlength="100"
+                                    onkeypress="if(this.value.length >= 100) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
                                     required>
                             </div>
 
@@ -235,6 +261,10 @@
                                     class="form-control custom-input"
                                     id="celular"
                                     name="celular"
+                                    maxlength="15"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    onkeypress="if(this.value.length >= 15) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,15), 0);"
                                     required>
                             </div>
                         </div>
@@ -312,6 +342,11 @@
 
                         const nuevaTabla = doc.querySelector('#tabla-clientes').innerHTML
                         document.querySelector('#tabla-clientes').innerHTML = nuevaTabla
+
+                        // FIX: Reposiciona modales al body para que DataTables no los destruya
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            document.body.appendChild(modal);
+                        });
                     })
                 }, 400)
             })

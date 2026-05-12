@@ -54,30 +54,53 @@ class MarcaController extends Controller
 
    public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required|max:100',
-            'pais_origen' => 'required|max:30',
-        ]);
 
-        $marca = new Marca();
+        try {
 
-        $marca->nombre = $request->nombre;
-        $marca->pais_origen = $request->pais_origen;
+            if (!auth()->check()) {
+                return redirect()->back()->with('error', 'Debes iniciar sesión para registrar una marca');
+            }
 
-        // Nombres correctos segun la migracion
-        $marca->usuario_id = auth()->id();
-        $marca->empresa_id = 1; // si existe en users
-        $marca->registro_fecha = now();
 
-        $marca->save();
 
-        return redirect()->back()->with('success', 'Marca registrada correctamente');
+            $request->validate([
+                'nombre' => 'required|max:100|unique:marcas,nombre',
+                'pais_origen' => 'required|max:30',
+            ],[
+                'nombre.unique' => 'Ya existe una marca con ese nombre',
+            ]);
+            
+            
+
+            $marca = new Marca();
+
+            $marca->nombre = $request->nombre;
+            $marca->pais_origen = $request->pais_origen;
+
+            // Nombres correctos segun la migracion
+            $marca->usuario_id = auth()->id();
+            $marca->empresa_id = 1; // si existe en users
+            $marca->registro_fecha = now();
+
+            $marca->save();
+
+            return redirect()->back()->with('success', 'Marca registrada correctamente');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al registrar la marca: ' . $e->getMessage());
+        }
     }
 
 
     public function update(Request $request, $id)
 
     {
+
+        $request->validate([
+            'nombre' => 'required|max:100|unique:marcas,nombre,' . $id,
+            'pais_origen' => 'required|max:30',
+        ],[
+            'nombre.unique' => 'Ya existe una marca con ese nombre',
+        ]);
         $marca = Marca::find($id);
         $marca->nombre = $request->nombre;
         $marca->pais_origen = $request->pais_origen;

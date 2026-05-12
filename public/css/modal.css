@@ -85,6 +85,33 @@
     z-index: 9990 !important;
     background-color: rgba(0,0,0,0.65) !important;
 }
+
+/* Alertify debe quedar por encima de los modales de Bootstrap */
+.alertify,
+.alertify .ajs-dimmer,
+.alertify .ajs-modal {
+    z-index: 1000000 !important;
+}
+
+.alertify .ajs-dialog {
+    z-index: 1000001 !important;
+}
+
+/* Fix z-index para modales Bootstrap */
+.modal {
+    z-index: 999999 !important;
+}
+
+.modal-backdrop {
+    z-index: 999990 !important;
+}
+
+/* Fix ancho de selects en filtros de búsqueda */
+.form-select.w-auto {
+    max-width: 200px !important;
+    width: auto !important;
+}
+
 /* Evita bugs por transform */
 .card, .card-deuda, .table-wrapper, #content {
     transform: none !important;

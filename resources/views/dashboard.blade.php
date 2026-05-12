@@ -58,7 +58,7 @@
         <div class="col-md-3">
             <div class="card card-custom shadow">
                 <div class="card-body">
-                    <h6>Ventas del mes</h6>
+                    <h6>Pagos del mes</h6>
                     <h3 class="fw-bold text-success">
                         ${{ number_format($metricas->total_ventas_mes) }}
                     </h3>
@@ -102,6 +102,104 @@
             </div>
         </div>
     </div>
+    <div class="row g-4 mb-4">
+
+        <!-- VENTAS DEL MES -->
+        <div class="col-md-3">
+            <div class="card card-custom shadow">
+                <div class="card-body">
+
+                    <h6>Ventas del mes</h6>
+
+                    <h2 class="fw-bold text-success">
+                        ${{ number_format($ventasMes->total_ingresos) }}
+                    </h2>
+
+                    <p class="mb-0">
+                        {{ $ventasMes->total_ventas }} ventas registradas
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- RESUMEN SEMANAL -->
+        <div class="col-md-3">
+            <div class="card card-custom shadow">
+                <div class="card-body">
+
+                    <h6>Ventas semanales</h6>
+
+                    <h2 class="fw-bold text-warning">
+                        {{ collect($ventasSemanales)->sum('total_ventas') }}
+                    </h2>
+
+                    <p class="mb-0">
+                        ${{ number_format(collect($ventasSemanales)->sum('total_ingresos')) }}
+                        generados esta semana
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        @if(auth()->user()->rol == 'admin')
+            <div class="col-md-3">
+                <div class="card card-custom shadow">
+                    <div class="card-body">
+
+                        <h6>Ganancia mensual</h6>
+
+                        <h3 class="fw-bold text-success">
+                            ${{ number_format($ganancias->ganancia_real) }}
+                        </h3>
+
+                        <p class="mb-0">
+                            Ingresos:
+                            ${{ number_format($ganancias->ingresos_totales) }}
+                        </p>
+
+                        <p class="mb-0">
+                            Costos:
+                            ${{ number_format($ganancias->costo_total) }}
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="card card-custom shadow">
+                    <div class="card-body">
+                        <h6>Ganancia semanal</h6>
+                        <h3 class="fw-bold text-success">
+                            $
+                            {{ number_format(
+                                collect($gananciasSemanales)
+                                ->sum('ganancia_real')
+                            ) }}
+                        </h3>
+                        <p class="mb-0">
+                            Ingresos:
+                            $
+                            {{ number_format(
+                                collect($gananciasSemanales)
+                                ->sum('ingresos_totales')
+                            ) }}
+                        </p>
+                        <p class="mb-0">
+                            Costos:
+                            $
+                            {{ number_format(
+                                collect($gananciasSemanales)
+                                ->sum('costos_totales')
+                            ) }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+
     <form method="GET" class="mb-4 d-flex gap-2" style="max-width: 400px;">
 
         <input type="date" name="inicio" 
@@ -115,75 +213,146 @@
         <button class="btn btn-primary">Filtrar</button>
     </form>
     
-    <div class="row mt-4">
-        
-        <!-- GRÁFICA DE VENTAS -->
-        <div class="col-md-8">
-            @php
-                $fechas = collect($reporte)->pluck('fecha');
-                $ingresos = collect($reporte)->pluck('total_ingresos');
-            @endphp
-            <div class="card card-custom shadow p-3" style="height: 350px; overflow: hidden;">
 
-                <div class="d-flex justify-content-between align-items-center mb-2">
+    @php
 
-                    <h5 class="mb-0" style="color: #fff;">
-                        Ventas semanales
-                    </h5>
+        // VENTAS
+        $fechasVentas = collect($reporteVentas)->pluck('fecha');
+
+        $ingresosVentas = collect($reporteVentas)
+            ->pluck('total_ingresos');
+
+        // ABONOS
+        $fechasAbonos = collect($reporteAbonos)
+            ->pluck('fecha');
+
+        $ingresosAbonos = collect($reporteAbonos)
+            ->pluck('total_ingresos');
+
+    @endphp
     
-                    <span style="color: #516F89; font-size: 13px;">
-                        Mostrando del {{ $inicio }} al {{ $fin }}
-                    </span>
+    <div class="row mt-4">
 
-                </div>
+    <!-- IZQUIERDA -->
+    <div class="col-md-8">
 
-                <div style="position: relative; height: 280px; width: 100%;">
-                    <canvas id="graficaVentas"></canvas>
-                </div>
+        <!-- 📈 VENTAS -->
+        <div class="card card-custom shadow p-3 mb-4"
+             style="height: 320px; overflow: hidden;">
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+
+                <h5 class="mb-0" style="color: #fff;">
+                    Ventas semanales
+                </h5>
+
+                <span style="color: #516F89; font-size: 13px;">
+                    {{ $inicio }} - {{ $fin }}
+                </span>
 
             </div>
-        </div>
-        
 
-        <br>
-
-        <!-- VENTAS POR USUARIOS -->
-        <div class="col-md-4">
-            <div class="card card-custom shadow p-3" style="height: 350px; overflow-y: auto;">
-                <h6 style="color: #fff;">Ventas por usuario</h6>
-                @if(count($ventasUsuarios) > 0)
-                    <table class="table table-hover table-custom m-0">
-                        <thead>
-                            <tr class="th-custom">
-                                <th>Usuario</th>
-                                <th>Ventas</th>
-                                <th>Ingresos</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach($ventasUsuarios as $v)
-                            <tr class="td-custom">
-                                <td>{{ $v->usuario }}</td>
-                                <td>{{ $v->total_ventas }}</td>
-                                <td>${{ number_format($v->total_ingresos) }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                @else
-
-                    <p class="text-center mt-4" style="color: #fff;">
-                        El usuario no tiene ventas para mostrar.
-                    </p>
-
-                @endif
+            <div style="position: relative; height: 240px;">
+                <canvas id="graficaVentas"></canvas>
             </div>
+
         </div>
 
-        
+        <!-- 💰 ABONOS -->
+        <div class="card card-custom shadow p-3"
+             style="height: 320px; overflow: hidden;">
+
+            <div class="d-flex justify-content-between align-items-center mb-2">
+
+                <h5 class="mb-0" style="color: #fff;">
+                    Abonos semanales
+                </h5>
+
+                <span style="color: #516F89; font-size: 13px;">
+                    {{ $inicio }} - {{ $fin }}
+                </span>
+
+            </div>
+
+            <div style="position: relative; height: 240px;">
+                <canvas id="graficaAbonos"></canvas>
+            </div>
+
+        </div>
+
     </div>
+
+    <!-- DERECHA -->
+    <div class="col-md-4">
+
+        <div class="card card-custom shadow p-3"
+             style="height: 660px; overflow-y: auto;">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h5 class="mb-0" style="color: #fff;">
+                    Ventas por usuario
+                </h5>
+
+                <span style="color: #516F89; font-size: 13px;">
+                    Ranking actual
+                </span>
+
+            </div>
+
+            @if(count($ventasUsuarios) > 0)
+
+                <table class="table table-hover table-custom m-0">
+
+                    <thead>
+
+                        <tr class="th-custom">
+                            <th>Usuario</th>
+                            <th>Ventas</th>
+                            <th>Ingresos</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach($ventasUsuarios as $v)
+
+                        <tr class="td-custom">
+
+                            <td>
+                                {{ $v->usuario }}
+                            </td>
+
+                            <td>
+                                {{ $v->total_ventas }}
+                            </td>
+
+                            <td class="text-success fw-bold">
+                                ${{ number_format($v->total_ingresos) }}
+                            </td>
+
+                        </tr>
+
+                        @endforeach
+
+                    </tbody>
+
+                </table>
+
+            @else
+
+                <p class="text-center mt-4 text-light">
+                    No hay ventas para mostrar.
+                </p>
+
+            @endif
+
+        </div>
+
+    </div>
+
+</div>
 
     
 
@@ -191,44 +360,118 @@
 
 </div>
 <script>
-    const ctx = document.getElementById('graficaVentas');
 
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: @json($fechas),
-            datasets: [{
-                label: 'Ingresos ($)',
-                data: @json($ingresos),
-                borderColor: '#f9c344',
-                backgroundColor: 'rgba(249, 195, 68, 0.2)',
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false, // 🔥 esto hace que respete el height del div
+// 📈 VENTAS
+const ctxVentas = document.getElementById('graficaVentas');
 
-            plugins: {
-                legend: {
-                    labels: {
-                        color: 'white'
-                    }
-                }
-            },
+new Chart(ctxVentas, {
 
-            scales: {
-                x: {
-                    ticks: { color: '#516F89' },
-                    grid: { color: '#3a3525' }
-                },
-                y: {
-                    ticks: { color: '#516F89' },
-                    grid: { color: '#3a3525' }
+    type: 'line',
+
+    data: {
+        labels: @json($fechasVentas),
+
+        datasets: [{
+            label: 'Ventas ($)',
+
+            data: @json($ingresosVentas),
+
+            borderColor: '#f9c344',
+
+            backgroundColor: 'rgba(249, 195, 68, 0.15)',
+
+            tension: 0.4,
+
+            fill: true,
+
+            pointBackgroundColor: '#f9c344',
+
+            pointRadius: 4,
+
+            pointHoverRadius: 6
+        }]
+    },
+
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
                 }
             }
+        },
+
+        scales: {
+            x: {
+                ticks: { color: '#516F89' },
+                grid: { color: '#3a3525' }
+            },
+            y: {
+                ticks: { color: '#516F89' },
+                grid: { color: '#3a3525' }
+            }
         }
-    });
+    }
+});
+
+// 💰 ABONOS
+const ctxAbonos = document.getElementById('graficaAbonos');
+
+new Chart(ctxAbonos, {
+
+    type: 'line',
+
+    data: {
+        labels: @json($fechasAbonos),
+
+        datasets: [{
+            label: 'Abonos ($)',
+
+            data: @json($ingresosAbonos),
+
+            borderColor: '#4ade80',
+
+            backgroundColor: 'rgba(74, 222, 128, 0.12)',
+
+            tension: 0.4,
+
+            fill: true,
+
+            pointBackgroundColor: '#4ade80',
+
+            pointRadius: 4,
+
+            pointHoverRadius: 6
+        }]
+    },
+
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
+                }
+            }
+        },
+
+        scales: {
+            x: {
+                ticks: { color: '#516F89' },
+                grid: { color: '#3a3525' }
+            },
+            y: {
+                ticks: { color: '#516F89' },
+                grid: { color: '#3a3525' }
+            }
+        }
+    }
+});
+
 </script>
 @endsection

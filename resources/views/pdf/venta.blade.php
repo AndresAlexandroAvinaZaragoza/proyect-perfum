@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Venta {{ $venta->id }}</title>
+    <title>Venta {{ $venta->folio }}</title>
 
     <style>
         body {
@@ -86,7 +86,7 @@
     <!-- INFO -->
     <div class="info">
         <div class="box">
-            <strong>Venta #{{ $venta->id }}</strong><br>
+            <strong>Venta #{{ $venta->folio }}</strong><br>
             Fecha: {{ $venta->created_at->format('d/m/Y H:i') }}<br>
             Atendido por: {{ $venta->usuario->usuario }}
         </div>

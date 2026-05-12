@@ -1,6 +1,21 @@
 @extends('layouts.app')
     @section('content')
 
+
+
+        @if(session('error'))
+        <script>
+            alertify.error("{{ session('error') }}");
+        </script>
+        @endif
+
+        @if($errors->any())
+        <script>
+            alertify.error("{{ $errors->first() }}");
+        </script>
+        @endif
+
+
         <link rel="stylesheet" href="{{ asset('css/marca.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
@@ -119,7 +134,16 @@
                                                                     id="nombre"
                                                                     name="nombre"
                                                                     value="{{ $marca->nombre }}"
-                                                                    required>
+                                                                    maxlength="100"
+                                                                    required
+                                                                    onkeypress="if(this.value.length >= 100) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);">
+
+                                                                        @error('nombre')
+                                                                            <div class="text-danger mt-1">
+                                                                                {{ $message }}
+                                                                            </div>
+                                                                        @enderror
                                                             </div>
 
                                                             <div class="mb-3">
@@ -129,7 +153,16 @@
                                                                     id="pais_origen"
                                                                     name="pais_origen"
                                                                     value="{{ $marca->pais_origen }}"
+                                                                    maxlength="30"
+                                                                    onkeypress="if(this.value.length >= 100) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);">
                                                                     required>
+
+                                                                        @error('pais_origen')
+                                                                            <div class="text-danger mt-1">
+                                                                                {{ $message }}
+                                                                            </div>
+                                                                        @enderror
                                                             </div>
                                                         </div>
 
@@ -226,7 +259,15 @@
                                     class="form-control custom-input"
                                     id="nombre"
                                     name="nombre"
+                                    onkeypress="if(this.value.length >= 100) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
                                     required>
+
+                                    @error('nombre')
+                                        <div class="text-danger mt-1">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                             </div>
 
                             <div class="mb-3">
@@ -235,7 +276,15 @@
                                     class="form-control custom-input"
                                     id="pais_origen"
                                     name="pais_origen"
+                                    onkeypress="if(this.value.length >= 30) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,30), 0);"
                                     required>
+
+                                    @error('pais_origen')
+                                        <div class="text-danger mt-1">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                             </div>
                         </div>
 
@@ -312,6 +361,11 @@
 
                         const nuevaTabla = doc.querySelector('#tabla-marcas').innerHTML
                         document.querySelector('#tabla-marcas').innerHTML = nuevaTabla
+
+                        // FIX: Reposiciona modales al body para que DataTables no los destruya
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            document.body.appendChild(modal);
+                        });
                     })
                 }, 400)
             })

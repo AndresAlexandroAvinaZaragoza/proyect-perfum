@@ -480,3 +480,15 @@ p{
     box-shadow: none;
     border-color: #c9a646;
 }
+
+.btn-outline-gold {
+    border: 1px solid #C9A646;
+    color: #C9A646;
+    background-color: transparent;
+    transition: 0.3s;
+}
+
+.btn-outline-gold:hover {
+    background-color: #C9A646;
+    color: #000;
+}

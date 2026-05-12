@@ -36,7 +36,7 @@
     <!-- INFO -->
     <div class="mb-4">
         <span class="badge bg-warning text-dark mb-2">Detalle de Venta</span>
-        <h2 class="venta-id" style="color: #fff;">Venta #{{ $venta->id }}</h2>
+        <h2 class="venta-id" style="color: #fff;">Venta #{{ $venta->folio }}</h2>
         <p class="color-custom">
             {{ $venta->created_at->format('d M Y H:i') }} |
             Registrado por: {{ $venta->usuario->usuario }}
@@ -95,6 +95,7 @@
                             <th class="text-center">Cant.</th>
                             <th class="text-end">Unitario</th>
                             <th class="text-end">Subtotal</th>
+                            <th class="text-end">Total</th>
                         </tr>
                     </thead>
 

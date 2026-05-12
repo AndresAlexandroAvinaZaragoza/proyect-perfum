@@ -36,6 +36,23 @@ class DecantController extends Controller
     {   
 
         try{
+
+            $request->validate([
+                'inventario_id' => 'required|exists:inventarios,id',
+                'precio_1ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_2ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_3ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_5ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_10ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_30ml' => 'required|numeric|min:0|max:9999.99',
+            ]);
+
+            // VALIDAR QUE EL DECANT BASE NO EXISTA PARA EL MISMO PERFUME
+            $existingDecant = Decant::where('perfume_id', $request->inventario_id)->first();
+            if ($existingDecant) {
+                return redirect()->back()->with('error', 'Ya existe un decant base para este perfume.');
+            }
+
             $decant = new Decant();
             // Buscar el inventario
             $inventario = Inventario::findOrFail($request->inventario_id);
@@ -85,6 +102,76 @@ class DecantController extends Controller
         }
         
         return redirect()->back()->with('success', 'Decant registrado exitosamente.');
+    }
+
+    public function update(Request $request, $id)
+    {
+        try {
+
+            DB::beginTransaction();
+
+            // VALIDACIONES
+            $request->validate([
+                'precio_1ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_2ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_3ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_5ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_10ml' => 'required|numeric|min:0|max:9999.99',
+                'precio_30ml' => 'required|numeric|min:0|max:9999.99',
+            ]);
+
+            // BUSCAR DECANT
+            $decant = Decant::findOrFail($id);
+
+            // ACTUALIZAR PRECIOS
+            $precios = [
+                1 => $request->precio_1ml,
+                2 => $request->precio_2ml,
+                3 => $request->precio_3ml,
+                5 => $request->precio_5ml,
+                10 => $request->precio_10ml,
+                30 => $request->precio_30ml,
+            ];
+
+            foreach ($precios as $ml => $precio) {
+
+                $precioExistente = PrecioDecant::where('decant_id', $decant->id)
+                    ->where('ml', $ml)
+                    ->first();
+
+                if ($precioExistente) {
+
+                    // ACTUALIZAR
+                    $precioExistente->precio = $precio;
+                    $precioExistente->updated_at = now();
+                    $precioExistente->save();
+
+                } else {
+
+                    // CREAR SI NO EXISTE
+                    PrecioDecant::create([
+                        'ml' => $ml,
+                        'precio' => $precio,
+                        'decant_id' => $decant->id,
+                        'empresa_id' => 1,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Decant actualizado correctamente.');
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            Log::error('Error al actualizar decant', [
+                'error' => $e->getMessage()
+            ]);
+
+            return redirect()->back()->with('error', 'No se pudo actualizar el decant.');
+        }
     }
 
     public function generarDecant(Request $request)

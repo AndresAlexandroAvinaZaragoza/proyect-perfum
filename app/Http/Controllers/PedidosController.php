@@ -52,6 +52,17 @@ class PedidosController extends Controller
             'carrito' => 'required'
         ]);
 
+        //validar que el numero de guia no se repita con la misma paqueteria
+        if($request->numero_guia){
+            $existeGuia = Pedidos::where('guia', $request->numero_guia)
+                                    ->where('paqueteria', $request->paqueteria)
+                                    ->exists();
+
+            if($existeGuia){
+                return back()->with('error', 'El número de guía ya existe para esta paquetería');
+            }
+        }
+
         // DECODIFICAR CARRITO
         $carrito = json_decode($request->carrito, true);
 
@@ -119,8 +130,11 @@ class PedidosController extends Controller
 
 
             DB::rollBack();
-            dd($e->getMessage());
-            
+
+            return back()->with(
+                'error',
+                'Error al guardar el pedido: ' . $e->getMessage()
+            );
         }
     }
 
@@ -177,6 +191,17 @@ class PedidosController extends Controller
             'paqueteria'        => 'required|string|max:50',
             'carrito'           => 'required',
         ]);
+
+        //validar que el numero de guia no se repita con la misma paqueteria, excepto para el pedido actual
+        if($request->numero_guia){
+            $existeGuia = Pedidos::where('guia', $request->numero_guia)
+                                    ->where('paqueteria', $request->paqueteria)
+                                    ->where('id', '!=', $id)
+                                    ->exists();
+            if($existeGuia){
+                return back()->with('error', 'El número de guía ya existe para esta paquetería');
+            }
+        }
 
         // DECODIFICAR CARRITO
         $carrito = json_decode($request->carrito, true);

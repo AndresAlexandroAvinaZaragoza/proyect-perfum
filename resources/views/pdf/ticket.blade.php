@@ -97,7 +97,7 @@ body{
     <div class="line"></div>
 
     <div class="info">
-        Venta #{{ $venta->id }}<br>
+        Venta #{{ $venta->folio }}<br>
         {{ $venta->created_at->format('d/m/Y H:i') }}<br>
         Atendió: {{ $venta->usuario->usuario }}
     </div>

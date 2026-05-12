@@ -35,7 +35,7 @@
                 <div class="">
                     <div class="row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4 h-100" style="width: 65.9rem;">
                                 <div class="card-body">
                                     <form id="filtros" method="GET" action="{{ route('inventario_decants.index') }}" class="d-flex gap-3 flex-wrap">
 
@@ -215,7 +215,7 @@
                                                                     name="stock"
                                                                     value="{{ $inventarios->stock }}"
                                                                     min="0"
-                                                                    max="1000"
+                                                                    max="99999"
                                                                     required>
                                                             </div>
                                                         </div>
@@ -320,6 +320,11 @@
 
                         const nuevaTabla = doc.querySelector('#tabla-inventario_decants').innerHTML
                         document.querySelector('#tabla-inventario_decants').innerHTML = nuevaTabla
+
+                        // FIX: Reposiciona modales al body para que DataTables no los destruya
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            document.body.appendChild(modal);
+                        });
                     })
                 }, 400)
             })

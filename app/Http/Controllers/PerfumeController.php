@@ -57,8 +57,25 @@ class PerfumeController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'nombre' => 'required|max:100'
+            'nombre' => 'required|max:100',
+            'contenido' => 'required|numeric|min:0|max:999999',
         ]);
+
+        // Verificar si ya existe un perfume con los mismos datos
+        $existe = Perfume::where('nombre', $request->nombre)
+            ->where('contenido', $request->contenido)
+            ->where('marca_id', $request->marca_id)
+            ->where('concentracion', $request->concentracion)
+            ->where('tipo', $request->tipo)
+            ->where('genero', $request->genero)
+            ->where('categoria', $request->categoria)
+            ->exists();
+
+        if($existe){
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Este perfume ya está registrado');
+        }
 
         $perfume = new Perfume();
 
@@ -82,6 +99,30 @@ class PerfumeController extends Controller
     
 
     public function update(Request $request, $id){
+
+
+        $request->validate([
+            'nombre' => 'required|max:100',
+            'contenido' => 'required|numeric|min:0|max:999999',
+        ]);
+
+        // Verificar si ya existe un perfume con los mismos datos (excepto el actual)
+        $existe = Perfume::where('nombre', $request->nombre)
+            ->where('contenido', $request->contenido)
+            ->where('marca_id', $request->marca_id)
+            ->where('concentracion', $request->concentracion)
+            ->where('tipo', $request->tipo)
+            ->where('genero', $request->genero)
+            ->where('categoria', $request->categoria)
+            ->where('id', '!=', $id)
+            ->exists();
+
+        if($existe){
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Este perfume ya está registrado');
+        }
+
         $perfume = Perfume::find($id);
         $perfume->nombre = $request->nombre;
         $perfume->contenido = $request->contenido;
@@ -99,7 +140,7 @@ class PerfumeController extends Controller
         $perfume = Perfume::findOrFail($id);
 
         $perfume->delete();
-        return redirect()->back()->with('success', 'Marca eliminada correctamente');
+        return redirect()->back()->with('success', 'Perfume eliminado correctamente');
     }
 
 }

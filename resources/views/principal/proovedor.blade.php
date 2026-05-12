@@ -1,6 +1,24 @@
 @extends('layouts.app')
     @section('content')
 
+        @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif  
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
+
         <link rel="stylesheet" href="{{ asset('css/marca.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
@@ -23,7 +41,7 @@
                 <div class="">
                     <div class="row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4 h-100" style="width: 35rem;">
                                 <div class="card-body">
                                     <form id="filtros" method="GET" action="{{ route('proovedor.index') }}" class="d-flex gap-3 flex-wrap">
 
@@ -35,6 +53,7 @@
                                             name="search"
                                             value="{{ request('search') }}"
                                             placeholder="Buscar proovedor..."
+                                            
                                         />
 
                                         <a href="{{ route('proovedor.index') }}" class="btn btn-outline-secondary">
@@ -50,11 +69,6 @@
             </section>
                 
             <section>
-                @if(session('success'))
-                <script>
-                    alertify.success("{{ session('success') }}");
-                </script>
-                @endif
 
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
@@ -116,12 +130,16 @@
                                                         <div class="modal-body modal-custom-body">
 
                                                             <div class="mb-3">
-                                                                <label for="nombre" class="form-label label-color">Agregar Proovedor</label>
+                                                                <label for="nombre" class="form-label label-color">Agregar Proveedor</label>
                                                                 <input type="text"
                                                                     class="form-control custom-input"
                                                                     id="nombre"
                                                                     name="nombre"
                                                                     value="{{ $proovedor->nombre }}"
+                                                                    maxlength="100"
+                                                                    onkeypress="if(this.value.length >= 100) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
+                                                                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                                                                     required>
                                                             </div>
 
@@ -132,6 +150,10 @@
                                                                     id="celular"
                                                                     name="celular"
                                                                     value="{{ $proovedor->celular }}"
+                                                                    maxlength="15"
+                                                                    onkeypress="if(this.value.length >= 15) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,15), 0);"
+                                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                                                     required>
                                                             </div>
                                                             <div class="mb-3">
@@ -141,6 +163,9 @@
                                                                     id="correo"
                                                                     name="correo"
                                                                     value="{{ $proovedor->correo }}"
+                                                                    maxlength="100"
+                                                                    onkeypress="if(this.value.length >= 100) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
                                                                     required>
                                                             </div>
                                                         </div>
@@ -162,7 +187,7 @@
 
                                                                 <button type="submit"
                                                                         class="btn btn-primary">
-                                                                    Guardar Proovedor
+                                                                    Guardar Proveedor
                                                                 </button>
                                                             </div>
 
@@ -237,15 +262,23 @@
                                     class="form-control custom-input"
                                     id="nombre"
                                     name="nombre"
+                                    maxlength="100"
+                                    onkeypress="if(this.value.length >= 100) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
+                                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                                     required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="celular" class="form-label label-color">Numero de Celular1</label>
+                                <label for="celular" class="form-label label-color">Numero de Celular</label>
                                 <input type="text"
                                     class="form-control custom-input"
                                     id="celular"
                                     name="celular"
+                                    maxlength="15"
+                                    onkeypress="if(this.value.length >= 15) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,15), 0);"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                     required>
                             </div>
                             <div class="mb-3">
@@ -254,6 +287,9 @@
                                     class="form-control custom-input"
                                     id="correo"
                                     name="correo"
+                                    maxlength="100"
+                                    onkeypress="if(this.value.length >= 100) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
                                     required>
                             </div>
                         </div>
@@ -331,6 +367,11 @@
 
                         const nuevaTabla = doc.querySelector('#tabla-proovedores').innerHTML
                         document.querySelector('#tabla-proovedores').innerHTML = nuevaTabla
+
+                        // FIX: Reposiciona modales al body para que DataTables no los destruya
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            document.body.appendChild(modal);
+                        });
                     })
                 }, 400)
             })

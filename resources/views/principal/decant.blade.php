@@ -1,6 +1,24 @@
 @extends('layouts.decats')
 
 @section('contentDecants')
+
+        @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif  
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
@@ -42,12 +60,6 @@
                 </a>
             </div>
         </header>
-                        @if(session('success'))
-                <script>
-                    alertify.success("{{ session('success') }}");
-                </script>
-                @endif
-
         <div class="row g-4">   
 
                 <!-- Modal Para Agregar Una nueva Marca-->
@@ -107,7 +119,7 @@
                                                 id="precio_1ml"
                                                 name="precio_1ml"
                                                 min="1"
-                                                max="9999"
+                                                max="99999"
                                                 required>
                                         </div>                                       
                                         <div class="mb-3">
@@ -117,7 +129,7 @@
                                                 id="precio_2ml"
                                                 name="precio_2ml"
                                                 min="1"
-                                                max="9999"
+                                                max="99999"
                                                 required>
                                         </div>
                                         <div class="mb-3">
@@ -127,7 +139,7 @@
                                                 id="precio_3ml"
                                                 name="precio_3ml"
                                                 min="1"
-                                                max="9999"
+                                                max="99999"
                                                 required>
                                         </div>
                                         <div class="mb-3">
@@ -137,7 +149,7 @@
                                                 id="precio_5ml"
                                                 name="precio_5ml"
                                                 min="1"
-                                                max="9999"
+                                                max="99999"
                                                 required>
                                         </div>
                                         <div class="mb-3">
@@ -147,7 +159,7 @@
                                                 id="precio_10ml"
                                                 name="precio_10ml"
                                                 min="1"
-                                                max="9999"
+                                                max="99999"
                                                 required>
                                         </div>
                                         <div class="mb-3">
@@ -157,7 +169,7 @@
                                                 id="precio_30ml"
                                                 name="precio_30ml"
                                                 min="1"
-                                                max="9999"
+                                                max="99999"
                                                 required>
                                         </div>
                                     </div>
@@ -225,7 +237,7 @@
                                     <thead>
                                         <tr class="th-custom">
                                             <th>PERFUME</th>
-                                            <TH>GENERO</TH>
+                                            <th>GENERO</th>
                                             <th>VOL.TOTAL</th>
                                             <th class="text-center">ACCIONES</th>
                                         </tr>
@@ -353,7 +365,7 @@
                                                             id="precio_1ml"
                                                             name="precio_1ml"
                                                             min="1"
-                                                            max="9999"
+                                                            max="99999"
                                                             value="{{ $preciosMap[1]->precio ?? '' }}"
                                                             required>
                                                     </div>                                       
@@ -364,7 +376,7 @@
                                                             id="precio_2ml"
                                                             name="precio_2ml"
                                                             min="1"
-                                                            max="9999"
+                                                            max="99999"
                                                             value="{{ $preciosMap[2]->precio ?? '' }}"
                                                             required>
                                                     </div>
@@ -375,7 +387,7 @@
                                                             id="precio_3ml"
                                                             name="precio_3ml"
                                                             min="1"
-                                                            max="9999"
+                                                            max="99999"
                                                             value="{{ $preciosMap[3]->precio ?? '' }}"
                                                             required>
                                                     </div>
@@ -386,7 +398,7 @@
                                                             id="precio_5ml"
                                                             name="precio_5ml"
                                                             min="1"
-                                                            max="9999"
+                                                            max="99999"
                                                             value="{{ $preciosMap[5]->precio ?? '' }}"
                                                             required>
                                                     </div>
@@ -397,7 +409,7 @@
                                                             id="precio_10ml"
                                                             name="precio_10ml"
                                                             min="1"
-                                                            max="9999"
+                                                            max="99999"
                                                             value="{{ $preciosMap[10]->precio ?? '' }}"
                                                             required>
                                                     </div>
@@ -408,7 +420,7 @@
                                                             id="precio_30ml"
                                                             name="precio_30ml"
                                                             min="1"
-                                                            max="9999"
+                                                            max="99999"
                                                             value="{{ $preciosMap[30]->precio ?? '' }}"
                                                             required>
                                                     </div>
@@ -715,6 +727,14 @@
                         dropdownParent: $('#agregarBotellaDecant').find('.modal-content'),
                         width: '100%'
                     });
+                });
+
+                // FIX: Reposicionar modales de editar al body para evitar que se congelen
+                $('body').on('show.bs.modal', '.modal', function() {
+                    // Si el modal no está ya en el body, reposicionarlo
+                    if ($(this).parent().length && !$(this).parent().is('body')) {
+                        $(this).appendTo('body');
+                    }
                 });
             });
         </script>

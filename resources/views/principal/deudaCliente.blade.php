@@ -81,6 +81,13 @@
             }
         </style>
         
+        <div>
+            <a href="{{ route('cliente.index') }}" class="btn btn-outline-light btn-sm">
+                <i class="fa-solid fa-arrow-left"></i>
+                Volver a Clientes
+            </a>
+        </div>
+
         <div class="container-fluid py-4">
 
             <!-- HEADER centrado -->
@@ -93,7 +100,7 @@
             <section class="buscador-row mb-4">
                 <div class="card card-custom rounded-4">
                     <div class="card-body">
-                        <form id="filtros" method="GET" action="{{ route('deuda.index') }}" class="d-flex gap-3 w-100">
+                        <form id="filtros" method="GET" action="{{ route('cliente.show', $cliente->id) }}" class="d-flex gap-3 w-100">
 
                             <input 
                                 id="search"
@@ -112,7 +119,7 @@
                                 <option value="atrasado">Atrasado</option>
                             </select>
 
-                            <a href="{{ route('deuda.index') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('cliente.show', $cliente->id) }}" class="btn btn-outline-secondary">
                                 Limpiar
                             </a>
 

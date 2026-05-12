@@ -12,13 +12,14 @@ class Venta extends Model
         return $this->belongsTo(User::class, 'user_id');
     } 
     protected $fillable = [
-    'cliente_id',
-    'total',
-    'tipo_venta',
-    'articulos',
-    'user_id',
-    'empresa_id'
-]   ;
+        'folio',
+        'cliente_id',
+        'total',
+        'tipo_venta',
+        'articulos',
+        'user_id',
+        'empresa_id'
+    ]   ;
     
     // Relacion con Marca
     public function marca(): BelongsTo

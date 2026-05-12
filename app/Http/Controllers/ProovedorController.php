@@ -33,9 +33,14 @@ class ProovedorController extends Controller
     
     public function store(Request $request){
         $request->validate([
-            'nombre' => 'required|max:100',
-            'celular' => 'required|max:15',
-            'correo' => 'required|max:100'
+            'nombre' => 'required|max:100|unique:proovedores,nombre',
+            'celular' => 'required|min:10|max:15|unique:proovedores,celular',
+            'correo' => 'required|max:100|unique:proovedores,correo'
+        ],[
+            'celular.min' => 'El número de celular debe tener al menos 10 caracteres',
+            'nombre.unique' => 'Ya existe un proveedor con ese nombre',
+            'celular.unique' => 'Ya existe un proveedor con ese número de celular',
+            'correo.unique' => 'Ya existe un proveedor con ese correo electrónico'
         ]);
         
         $proovedor = new Proovedor();
@@ -54,6 +59,17 @@ class ProovedorController extends Controller
     }
 
     public function update(Request $request, $id){
+        $request->validate([
+            'nombre' => 'required|max:100|unique:proovedores,nombre,' . $id,
+            'celular' => 'required|min:10|max:15|unique:proovedores,celular,' . $id,
+            'correo' => 'required|max:100|unique:proovedores,correo,' . $id
+        ],[
+            'celular.min' => 'El número de celular debe tener al menos 10 caracteres',
+            'nombre.unique' => 'Ya existe un proveedor con ese nombre',
+            'celular.unique' => 'Ya existe un proveedor con ese número de celular',
+            'correo.unique' => 'Ya existe un proveedor con ese correo electrónico'
+        ]);
+
         $proovedor = Proovedor::find($id);
 
         $proovedor->nombre = $request->nombre;

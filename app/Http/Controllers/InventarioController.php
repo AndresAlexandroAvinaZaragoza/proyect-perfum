@@ -64,10 +64,28 @@ class InventarioController extends Controller
 
     public function store(Request $request){
         $request->validate([
-        'precio_compra'=> 'required|numeric|min:0',
-        'precio_venta'=> 'required|numeric|min:0',
+        'precio_compra'=> 'required|numeric|min:1',
+        'precio_venta'=> 'required|numeric|min:1',
         'stock'=> 'required|integer|min:0',
+        ],[
+            'precio_compra.required' => 'El precio de compra es obligatorio',
+            'precio_compra.numeric' => 'El precio de compra debe ser un número',
+            'precio_compra.min' => 'El precio de compra debe ser al menos 1',
+            'precio_venta.required' => 'El precio de venta es obligatorio',
+            'precio_venta.numeric' => 'El precio de venta debe ser un número',
+            'precio_venta.min' => 'El precio de venta debe ser al menos 1',
+            'stock.required' => 'El stock es obligatorio',
+            'stock.integer' => 'El stock debe ser un número entero',
+            'stock.min' => 'El stock no puede ser negativo',
         ]);
+
+
+
+        //validar que no se duplique el perfume en el inventario
+        $inventarioExistente = Inventario::where('perfume_id', $request->perfume_id)->first();
+        if($inventarioExistente){
+            return redirect()->back()->with('error', 'El perfume ya existe en el inventario');
+        }
 
         $inventario = new Inventario();
 
@@ -87,6 +105,29 @@ class InventarioController extends Controller
     }
 
     public function update(Request $request, $id){
+
+        $request->validate([
+            'precio_compra'=> 'required|numeric|min:1',
+            'precio_venta'=> 'required|numeric|min:1',
+            'stock'=> 'required|integer|min:0',
+        ],[
+            'precio_compra.required' => 'El precio de compra es obligatorio',
+            'precio_compra.numeric' => 'El precio de compra debe ser un número',
+            'precio_compra.min' => 'El precio de compra debe ser al menos 1',
+            'precio_venta.required' => 'El precio de venta es obligatorio',
+            'precio_venta.numeric' => 'El precio de venta debe ser un número',
+            'precio_venta.min' => 'El precio de venta debe ser al menos 1',
+            'stock.required' => 'El stock es obligatorio',
+            'stock.integer' => 'El stock debe ser un número entero',
+            'stock.min' => 'El stock no puede ser negativo',
+        ]);
+
+        //validar que no se duplique el perfume en el inventario
+        $inventarioExistente = Inventario::where('perfume_id', $request->perfume_id)->where('id', '!=', $id)->first();
+        if($inventarioExistente){
+            return redirect()->back()->with('error', 'El perfume ya existe en el inventario');
+        }
+
         $inventario = Inventario::find($id);
         
         $inventario->precio_compra = $request->precio_compra;

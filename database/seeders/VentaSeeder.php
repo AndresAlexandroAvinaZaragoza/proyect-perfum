@@ -18,8 +18,20 @@ class VentaSeeder extends Seeder
             // 🔹 cliente aleatorio
             $cliente = Cliente::inRandomOrder()->first();
 
+            // 🔹 generar folio
+            $numeroVenta = (Venta::max('id') ?? 0) + 1;
+
+            $folio = 'VTA-' . str_pad(
+                $numeroVenta,
+                5,
+                '0',
+                STR_PAD_LEFT
+            );
+
             // 🔹 crear venta vacía primero
             $venta = Venta::create([
+                'folio' => $folio,
+
                 'total' => 0,
                 'tipo_venta' => 'credito',
                 'pago_deuda' => null,
@@ -32,56 +44,80 @@ class VentaSeeder extends Seeder
             $total = 0;
             $totalArticulos = 0;
 
-            //  seleccionar perfumes aleatorios
-            $perfumes = Perfume::inRandomOrder()->take(rand(1, 5))->get();
+            // 🔹 seleccionar perfumes aleatorios
+            $perfumes = Perfume::inRandomOrder()
+                ->take(rand(1, 5))
+                ->get();
 
             foreach ($perfumes as $perfume) {
 
-                $cantidad = rand(1, 3);
+                $cantidad = 1;
 
-                //  sacar precio desde inventario
+                // 🔹 sacar precio desde inventario
                 $inventario = DB::table('inventarios')
                     ->where('perfume_id', $perfume->id)
                     ->first();
 
-                if (!$inventario) continue;
+                if (!$inventario) {
+                    continue;
+                }
 
                 $precio = $inventario->precio_venta;
+
                 $subtotal = $precio * $cantidad;
 
-                //  insertar detalle
+                // 🔹 insertar detalle
                 DB::table('detalle__ventas')->insert([
+
                     'cantidad' => $cantidad,
+
                     'precio_unitario' => $precio,
+
                     'subtotal' => $subtotal,
+
                     'venta_id' => $venta->id,
+
                     'perfume_id' => $perfume->id,
+
                     'empresa_id' => 1,
+
                     'created_at' => now(),
+
                     'updated_at' => now(),
                 ]);
 
                 $total += $subtotal;
+
                 $totalArticulos += $cantidad;
             }
 
-            //  actualizar venta con total real
+            // 🔹 actualizar venta con total real
             $venta->update([
                 'total' => $total,
                 'articulos' => $totalArticulos,
             ]);
 
-            //  crear deuda automáticamente
+            // 🔹 crear deuda automáticamente
             DB::table('deudas')->insert([
+
                 'deuda_total' => $total,
+
                 'abonado' => 0,
+
                 'faltante' => $total,
+
                 'estatus' => 'pendiente',
+
                 'cliente_id' => $cliente->id,
+
                 'venta_id' => $venta->id,
+
                 'empresa_id' => 1,
+
                 'user_id' => 1,
+
                 'created_at' => now(),
+
                 'updated_at' => now(),
             ]);
         }

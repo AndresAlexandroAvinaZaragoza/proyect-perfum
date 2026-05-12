@@ -1,6 +1,24 @@
 @extends('layouts.app')
     @section('content')
 
+        @if(session('success'))
+            <script>
+                alertify.success("{{ session('success') }}");
+            </script>
+        @endif
+
+        @if(session('error'))
+            <script>
+                alertify.error("{{ session('error') }}");
+            </script>
+        @endif  
+
+        @if ($errors->any())
+            <script>
+                alertify.error("{{ $errors->first() }}");
+            </script>
+        @endif
+
         <link rel="stylesheet" href="{{ asset('css/decants.css') }}">
         <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
         <div class="container-fluid py-4">
@@ -36,7 +54,7 @@
                 <div class="">
                     <div class="row g-4 mb-4">
                         <div class="">
-                            <div class="card card-custom rounded-4 h-100">
+                            <div class="card card-custom rounded-4 h-100" style="width: 65.9rem;">
                                 <div class="card-body">
                                     <form id="filtros" method="GET" action="{{ route('inventario.index') }}" class="d-flex gap-3 flex-wrap">
 
@@ -106,12 +124,6 @@
             </section>
                 
             <section>
-                @if(session('success'))
-                <script>
-                    alertify.success("{{ session('success') }}");
-                </script>
-                @endif
-
                     <!-- TABLA -->
                 <div class="card card-custom rounded-4">
                     <div id="tabla-inventario" class="card-body p-0">
@@ -217,6 +229,10 @@
                                                                     id="precio_compra"
                                                                     name="precio_compra"
                                                                     value="{{ $inventario->precio_compra }}"
+                                                                    maxlength="9"
+                                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                                    onkeypress="if(this.value.length >= 9) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,9), 0);"
                                                                     required>
                                                             </div>
 
@@ -227,6 +243,10 @@
                                                                     id="precio_venta"
                                                                     name="precio_venta"
                                                                     value=" {{ $inventario->precio_venta}}"
+                                                                    maxlength="9"
+                                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                                                    onkeypress="if(this.value.length >= 9) return false;"
+                                                                    onpaste="setTimeout(() => this.value = this.value.slice(0,9), 0);"
                                                                     required>
                                                             </div>
                                                             <div class="mb-3">
@@ -349,6 +369,10 @@
                                     class="form-control custom-input"
                                     id="precio_compra"
                                     name="precio_compra"
+                                    maxlength="9"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    onkeypress="if(this.value.length >= 9) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,9), 0);"
                                     required>
                             </div>
 
@@ -358,6 +382,10 @@
                                     class="form-control custom-input"
                                     id="precio_venta"
                                     name="precio_venta"
+                                    maxlength="9"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    onkeypress="if(this.value.length >= 9) return false;"
+                                    onpaste="setTimeout(() => this.value = this.value.slice(0,9), 0);"
                                     required>
                             </div>
                             <div class="mb-3">
@@ -366,6 +394,8 @@
                                     class="form-control custom-input"
                                     id="stock"
                                     name="stock"
+                                    min="0"
+                                    max="9999"
                                     required>
                             </div>
                         </div>
@@ -443,6 +473,11 @@
 
                         const nuevaTabla = doc.querySelector('#tabla-inventario').innerHTML
                         document.querySelector('#tabla-inventario').innerHTML = nuevaTabla
+
+                        // FIX: Reposiciona modales al body para que DataTables no los destruya
+                        document.querySelectorAll('.modal').forEach(modal => {
+                            document.body.appendChild(modal);
+                        });
                     })
                 }, 400)
             })
