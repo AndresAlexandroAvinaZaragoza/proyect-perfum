@@ -84,7 +84,7 @@ class DecantController extends Controller
                             WHERE perfumes.id = decants.perfume_id
                         )
                     ) BETWEEN 51 AND 75
-                ');09,099
+                ');
 
             } elseif ($porcentaje == 100) {
 
