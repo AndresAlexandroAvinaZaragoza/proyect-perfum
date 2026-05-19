@@ -53,4 +53,9 @@ class InventarioDecants extends Model
     public function marca(){
         return $this->belongsTo(Marca::class, 'marca_id');
     }
+
+    public function detalleVentaDecants()
+    {
+        return $this->hasMany(DetalleVentaDecant::class, 'inventario_decant_id');
+    }
 }

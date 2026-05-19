@@ -86,7 +86,7 @@
             <!-- HEADER centrado -->
             <header class="header-creditos mb-4">
                 <h1>Gestion de Creditos</h1>
-                <p>Aquí puedes gestionar los créditos y ver el estado de las deudas.</p>
+                <p>Módulo encargado de administrar las deudas pendientes de los clientes, permitiendo llevar el control de pagos, saldos y estados financieros relacionados con las ventas a crédito.</p>
             </header>
         
             <!-- Buscador -->

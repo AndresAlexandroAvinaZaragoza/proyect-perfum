@@ -25,7 +25,7 @@
         <!-- DERECHA -->
         <div class="d-flex flex-wrap gap-2">
 
-            <button class="btn btn-outline-gold">Exportar</button>
+            <button id="exportarBtn" class="btn btn-outline-gold">Exportar</button>
 
             <a href="{{ route('venta.index') }}" class="btn btn-outline-warning">
                 <i class="bi bi-cart"></i> Hacer venta
@@ -236,7 +236,7 @@
     <!-- IZQUIERDA -->
     <div class="col-md-8">
 
-        <!-- 📈 VENTAS -->
+        <!-- VENTAS -->
         <div class="card card-custom shadow p-3 mb-4"
              style="height: 320px; overflow: hidden;">
 
@@ -258,7 +258,7 @@
 
         </div>
 
-        <!-- 💰 ABONOS -->
+        <!--  ABONOS -->
         <div class="card card-custom shadow p-3"
              style="height: 320px; overflow: hidden;">
 
@@ -361,7 +361,7 @@
 </div>
 <script>
 
-// 📈 VENTAS
+// VENTAS
 const ctxVentas = document.getElementById('graficaVentas');
 
 new Chart(ctxVentas, {
@@ -417,7 +417,7 @@ new Chart(ctxVentas, {
     }
 });
 
-// 💰 ABONOS
+// ABONOS
 const ctxAbonos = document.getElementById('graficaAbonos');
 
 new Chart(ctxAbonos, {
@@ -473,5 +473,179 @@ new Chart(ctxAbonos, {
     }
 });
 
+// Funcionalidad de exportar (imprimir)
+document.getElementById('exportarBtn').addEventListener('click', function() {
+    window.print();
+});
+
 </script>
+
+<style>
+    @media print {
+        /* Ocultar elementos de navegación y botones */
+        .btn, 
+        form.mb-4,
+        button,
+        a.btn,
+        nav,
+        .navbar,
+        .sidebar,
+        aside {
+            display: none !important;
+        }
+
+        /* Ocultar header con los botones */
+        .d-flex.flex-column.flex-md-row {
+            display: none !important;
+        }
+
+        /* Ajustar el contenedor principal para máximo ancho */
+        .container-fluid {
+            padding: 20px !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+        }
+
+        /* Fondo blanco para impresión */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background-color: white !important;
+        }
+
+        /* Estilos de las cards */
+        .card {
+            box-shadow: none !important;
+            page-break-inside: avoid;
+            border: 1px solid #ddd !important;
+            background-color: white !important;
+            margin-bottom: 15px;
+        }
+
+        .card-body {
+            padding: 12px 15px !important;
+            background-color: white !important;
+        }
+
+        /* Encabezados */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            page-break-after: avoid;
+        }
+
+        h5 {
+            color: #333 !important;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        h6 {
+            color: #666 !important;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        h2, h3 {
+            color: #333 !important;
+        }
+
+        /* Ajustar columnas para mejor distribución */
+        .col-md-3, .col-md-4, .col-md-8 {
+            page-break-inside: avoid;
+        }
+
+        .row {
+            page-break-inside: avoid;
+            margin-bottom: 15px;
+        }
+
+        /* Gráficos */
+        canvas {
+            max-height: 250px !important;
+            background-color: white !important;
+        }
+
+        /* Tablas */
+        .table {
+            font-size: 11px;
+            color: #333;
+            background-color: white;
+            page-break-inside: avoid;
+        }
+
+        .table thead {
+            background-color: #f8f9fa !important;
+            color: #333 !important;
+        }
+
+        .table th,
+        .table td {
+            color: #333 !important;
+            border-color: #ddd !important;
+            padding: 8px !important;
+        }
+
+        /* Textos */
+        p {
+            color: #666 !important;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        /* Colores de texto visibles */
+        .text-success {
+            color: #28a745 !important;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        .text-warning {
+            color: #ffc107 !important;
+        }
+
+        /* Formularios de filtro */
+        form {
+            display: none !important;
+        }
+
+        /* Espacios */
+        .gap-2 {
+            gap: 0 !important;
+        }
+
+        .gap-3 {
+            gap: 0 !important;
+        }
+
+        .mb-4 {
+            margin-bottom: 15px !important;
+        }
+
+        /* Evitar cortes de contenido */
+        .card-custom {
+            overflow: visible !important;
+        }
+
+        /* Ajustar alturas de contenedores */
+        .card-custom[style*="height"] {
+            height: auto !important;
+            max-height: none !important;
+        }
+
+        /* Encabezados de secciones */
+        .d-flex.justify-content-between.align-items-center {
+            page-break-inside: avoid;
+            margin-bottom: 10px;
+        }
+
+        /* Spans de fechas */
+        span {
+            color: #666 !important;
+            font-size: 11px;
+        }
+    }
+</style>
 @endsection

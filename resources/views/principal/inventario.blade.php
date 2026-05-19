@@ -37,7 +37,10 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1>Gestion de Inventario</h1>
-                        <p>Directorio Global de Fabricantes</p>
+                        <p>
+                            Módulo encargado del control y administración del inventario general de perfumes, <br>
+                            permitiendo supervisar existencias, entradas, salidas y disponibilidad de productos.
+                        </p>
                     </div>
 
                     <div class="d-flex gap-4 ">
@@ -177,7 +180,7 @@
                                                                 Editar Inventario
                                                             </h5>
                                                             <p class="mb-0 small p-custom">
-                                                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                                                Complete la informacion para editar el producto del inventario seleccionado, asegurándose de que los datos sean correctos antes de guardar los cambios.
                                                             </p>
                                                         </div>
 
@@ -331,7 +334,7 @@
                                 Registrar Nuevo Producto para el Inventario
                             </h5>
                             <p class="mb-0 small p-custom">
-                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                Complete la información requerida para registrar un nuevo producto en el inventario, asegurándose de que los datos sean correctos antes de guardar el nuevo producto.
                             </p>
                         </div>
 

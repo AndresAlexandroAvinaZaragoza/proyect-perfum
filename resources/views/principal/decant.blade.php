@@ -53,7 +53,10 @@
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <h1>Decants</h1>
-                    <p>Administra los decants de la tienda</p>
+                    <p>
+                        Módulo que permite generar decants a partir de perfumes existentes, administrando las <br>
+                        cantidades utilizadas y actualizando automáticamente el inventario correspondiente.
+                    </p>
                 </div>
                 <a href="{{ route('inventario_decants.index') }}" class="btn btn-outline-warning btn-lg">
                     Regresar a Inventario Decants
@@ -78,7 +81,7 @@
                                         Registrar Nuevo Producto para el Inventario
                                     </h5>
                                     <p class="mb-0 small p-custom">
-                                        Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                        Complete la información requerida para agregar un nuevo perfume al sistema administrativo de decants
                                     </p>
                                 </div>
 
@@ -369,10 +372,10 @@
 
                                             <div class="w-100">
                                                 <h5 class="modal-title mb-1 h5-custom" id="editLabel {{ $decant->id }}">
-                                                    Registrar Nuevo Producto para el Inventario
+                                                    Editar Precios del Decant
                                                 </h5>
                                                 <p class="mb-0 small p-custom">
-                                                    Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                                    Complete la información requerida para actualizar los precios del decant en el sistema administrativo de decants
                                                 </p>
                                             </div>
 

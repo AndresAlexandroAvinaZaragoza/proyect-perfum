@@ -28,7 +28,11 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1>Gestion de Perfume</h1>
-                        <p>Directorio Global de Fabricantes</p>
+                        <p>
+                            Módulo destinado a la administración de perfumes, donde se pueden registrar productos, <br>
+                             asociarlos a una marca, definir características y mantener actualizado el catálogo de perfumes.
+                        </p>
+                        <p></p>
                     </div>
 
                     <button class="btn btn-outline-warning btn-lg" data-bs-toggle="modal" data-bs-target="#agregarPerfume">
@@ -167,7 +171,7 @@
                                                                 Editar Perfume
                                                             </h5>
                                                             <p class="mb-0 small p-custom">
-                                                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                                                Complete la información requerida para editar el perfume seleccionado
                                                             </p>
                                                         </div>
 
@@ -187,7 +191,7 @@
                                                         <div class="modal-body modal-custom-body">
 
                                                             <div class="mb-3">
-                                                                <label for="nombre" class="form-label label-color">Agregar El nombre de la Fragancia</label>
+                                                                <label for="nombre" class="form-label label-color">Nombre de la Fragancia</label>
                                                                 <input type="text"
                                                                     class="form-control custom-input"
                                                                     id="nombre"
@@ -330,10 +334,10 @@
 
                         <div class="w-100">
                             <h5 class="modal-title mb-1 h5-custom" id="staticBackdropLabel">
-                                Registrar Nuevo Producto
+                                Registrar Nueva Fragancia
                             </h5>
                             <p class="mb-0 small p-custom">
-                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                Complete la información requerida para registrar una nueva fragancia en el sistema administrativo de perfumes.
                             </p>
                         </div>
 

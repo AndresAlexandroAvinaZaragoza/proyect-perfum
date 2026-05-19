@@ -26,8 +26,11 @@
             <header class="mb-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <h1>Gestion de Proovedores</h1>
-                        <p>Directorio Global de Fabricantes</p>
+                        <h1>Gestion de Proveedores</h1>
+                        <p>
+                            Módulo que permite gestionar la información de los proveedores, incluyendo registro, <br> 
+                            actualización y consulta de datos necesarios para el control de abastecimiento e inventario.
+                        </p>
                     </div>
 
                     <button class="btn btn-outline-warning btn-lg" data-bs-toggle="modal" data-bs-target="#agregarProovedor">
@@ -56,9 +59,6 @@
                                             
                                         />
 
-                                        <a href="{{ route('proovedor.index') }}" class="btn btn-outline-secondary">
-                                            Limpiar
-                                        </a>
 
                                     </form>
                                 </div>
@@ -107,10 +107,10 @@
 
                                                         <div class="w-100">
                                                             <h5 class="modal-title mb-1 h5-custom" id="editLabel{{ $proovedor->id }}">
-                                                                Editar Proovedor
+                                                                Editar Proveedor
                                                             </h5>
                                                             <p class="mb-0 small p-custom">
-                                                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                                                Complete la información requerida para editar el proveedor en el sistema administrativo de perfumes
                                                             </p>
                                                         </div>
 
@@ -239,7 +239,7 @@
                                 Registrar Nuevo Proovedor
                             </h5>
                             <p class="mb-0 small p-custom">
-                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                Complete la información requerida para registrar un nuevo proveedor en el sistema administrativo de perfumes
                             </p>
                         </div>
 

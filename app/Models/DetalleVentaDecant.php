@@ -28,6 +28,10 @@ class DetalleVentaDecant extends Model
     }
 
     public function inventarioDecant(){
-        return $this->belongsTo(InventarioDecant::class);
+        return $this->belongsTo(InventarioDecants::class, 'inventario_decant_id');
+    }
+
+    public function DetalleVentaDecant(){
+        return $this->hasMany(DetalleVentaDecant::class);
     }
 }

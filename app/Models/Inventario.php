@@ -22,4 +22,18 @@ class Inventario extends Model
     public function perfume(): BelongsTo{
         return $this->belongsTo(Perfume::class);
     }
+
+    public function inventario(): BelongsTo{
+        return $this->belongsTo(Inventario::class);
+    }
+
+    public function decant(){
+        return $this->hasMany(Decant::class, 'inventario_id');
+    }
+
+    public function detalle_Venta(){
+        return $this->hasMany(Detalle_Venta::class, 'inventario_id');
+    }
+
+
 }

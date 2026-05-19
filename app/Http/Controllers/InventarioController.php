@@ -6,6 +6,9 @@ use App\Models\User;
 use App\Models\Marca;
 use App\Models\Perfume;
 use App\Models\Inventario;
+use App\Models\Empresa;
+use App\Models\Decant;
+use App\Models\Detalle_Venta;
 use Illuminate\Http\Request;
 
 class InventarioController extends Controller
@@ -15,7 +18,7 @@ class InventarioController extends Controller
         
         $query = Inventario::with(['marca', 'usuario', 'perfume']);
 
-                if($request->search){
+        if($request->search){
             $query->whereHas('perfume', function($q) use ($request) {
                 $q->where('nombre', 'like', '%' . $request->search . '%');
             });
@@ -140,6 +143,19 @@ class InventarioController extends Controller
 
     public function destroy($id){
         $inventario = Inventario::findOrFail($id);
+
+        if(Detalle_Venta::where('perfume_id', $inventario->perfume_id)->exists()){
+            return redirect()->back()->with(
+                'error',
+                'No se puede eliminar el producto porque tiene ventas asociadas'
+            );
+        }
+
+        if($inventario->decant()->exists()){
+            return redirect()->back()->with('error', 'No se puede eliminar el producto porque tiene decants asociados');
+        }
+
+
 
         $inventario->delete();
         return redirect()->back()->with('success', 'Prodcuto eliminada correctamente');

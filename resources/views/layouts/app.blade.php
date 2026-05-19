@@ -11,6 +11,56 @@
         <link rel="stylesheet" href="{{ asset('alertifyjs/css/alertify.css') }}">
             <link rel="stylesheet" href="{{ asset('alertifyjs/css/themes/bootstrap.css') }}">
         <script src="{{ asset('alertifyjs/alertify.js') }}"></script>
+        <style>
+            /* Asegurar que los notifiers de Alertify estén por encima de otros elementos */
+            .alertify-notifier, .ajs-message, .ajs-overlay {
+                z-index: 9999999 !important;
+            }
+        </style>
+        <script>
+            // Configuración por defecto y fallback para Alertify
+            (function() {
+                try {
+                    if (window.alertify && typeof window.alertify.set === 'function') {
+                        // colocar notificador en esquina superior derecha
+                        window.alertify.set('notifier','position', 'top-right');
+                        window.alertify.set('notifier','delay', 5);
+                    } else {
+                        // shim básico si Alertify no está cargado correctamente
+                        window.alertify = {
+                            notifier: {
+                                notify: function(message) { alert(message); }
+                            },
+                            success: function(msg) { alert(msg); },
+                            error: function(msg) { alert(msg); },
+                            warning: function(msg) { alert(msg); },
+                            confirm: function(title, message, onOk, onCancel) {
+                                var result = confirm((title ? title + "\n\n" : "") + (message || ""));
+                                if (result && typeof onOk === 'function') onOk();
+                                if (!result && typeof onCancel === 'function') onCancel();
+                            }
+                        };
+                    }
+                } catch (e) {
+                    console.error('Alertify init error', e);
+                }
+
+                // Helper global para mostrar notificaciones (usa alertify si está bien)
+                window.showAlert = function(type, message) {
+                    try {
+                        if (window.alertify && typeof window.alertify[type] === 'function') {
+                            window.alertify[type](message);
+                        } else if (window.alertify && window.alertify.notifier && typeof window.alertify.notifier.notify === 'function') {
+                            window.alertify.notifier.notify(message);
+                        } else {
+                            alert(message);
+                        }
+                    } catch (e) {
+                        alert(message);
+                    }
+                };
+            })();
+        </script>
         <link href="{{ asset('css/buttons.dataTables.css') }}" rel="stylesheet" crossorigin="anonymous">
         <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet" crossorigin="anonymous">
         <script src="{{ asset('js/datatables.min.js') }}"></script>

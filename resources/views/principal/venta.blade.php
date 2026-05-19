@@ -18,8 +18,11 @@
         <header class="mb-4">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h1>Punto de venta y facturacion</h1>   
-                    <p>Registro de una nueva venta</p>
+                    <h1>Punto de venta</h1>   
+                    <p>
+                        Módulo destinado al procesamiento de ventas, permitiendo realizar transacciones, <br>
+                        calcular importes y generar el control de productos vendidos.
+                    </p>
                 </div>
 
                 <button class="btn btn-outline-warning btn-lg" data-bs-toggle="modal" data-bs-target="#dropdownParent">
@@ -27,7 +30,6 @@
                 </button>
             </div>
 
-               
         </header>
 
 

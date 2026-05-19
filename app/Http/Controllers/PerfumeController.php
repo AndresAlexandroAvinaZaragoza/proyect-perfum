@@ -5,6 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Marca;
 use App\Models\Perfume;
+use App\Models\Inventario;
+use App\Models\InventarioDecant;
+use App\Models\Decant;
+use App\Models\DetalleVenta;
+use App\Models\DetallePedido;
+
 use Illuminate\Http\Request;
 
 class PerfumeController extends Controller
@@ -138,6 +144,43 @@ class PerfumeController extends Controller
 
     public function destroy($id){
         $perfume = Perfume::findOrFail($id);
+
+        if($perfume->detalleVenta()->exists()){
+
+            return redirect()->back()->with(
+                'error',
+                'No se puede eliminar el perfume porque tiene ventas asociadas'
+            );
+
+        }else if($perfume->detallesPedido()->exists()){
+
+            return redirect()->back()->with(
+                'error',
+                'No se puede eliminar el perfume porque tiene detalles de pedido asociados'
+            );
+
+        }else if($perfume->decants()->exists()){
+
+            return redirect()->back()->with(
+                'error',
+                'No se puede eliminar el perfume porque tiene decants asociados'
+            );
+
+        }else if($perfume->inventarios()->exists()){
+
+            return redirect()->back()->with(
+                'error',
+                'No se puede eliminar el perfume porque tiene inventarios asociados'
+            );
+        }else if($perfume->inventarioDecants()->exists()){
+
+            return redirect()->back()->with(
+                'error',
+                'No se puede eliminar el perfume porque tiene inventarios de decant asociados'
+            );
+        }
+
+
 
         $perfume->delete();
         return redirect()->back()->with('success', 'Perfume eliminado correctamente');

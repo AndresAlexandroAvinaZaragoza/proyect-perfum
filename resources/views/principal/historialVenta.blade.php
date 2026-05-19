@@ -37,7 +37,10 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
                         <h1>Historial de Ventas</h1>
-                        <p>Historial de todas las ventas realizadas</p>
+                        <p>
+                            Módulo que almacena y muestra el historial de ventas realizadas, facilitando la consulta <br>
+                            de transacciones, seguimiento de operaciones y análisis de información comercial.
+                        </p>
                     </div>
 
                     <div class="">

@@ -27,7 +27,10 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1>Gestion de Clientes</h1>
-                        <p>Directorio Global de Clientes</p>
+                        <p>
+                            Módulo destinado a la gestión de clientes, permitiendo registrar, actualizar y consultar <br>
+                            información necesaria para el seguimiento y administración de las relaciones comerciales.
+                        </p>
                     </div>
 
                     <button class="btn btn-outline-warning btn-lg" data-bs-toggle="modal" data-bs-target="#agregarCliente">
@@ -139,6 +142,7 @@
                                                                     maxlength="100"
                                                                     onkeypress="if(this.value.length >= 100) return false;"
                                                                     onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
+                                                                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                                                                     required>
                                                             </div>
 
@@ -252,6 +256,7 @@
                                     maxlength="100"
                                     onkeypress="if(this.value.length >= 100) return false;"
                                     onpaste="setTimeout(() => this.value = this.value.slice(0,100), 0);"
+                                    oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '')"
                                     required>
                             </div>
 

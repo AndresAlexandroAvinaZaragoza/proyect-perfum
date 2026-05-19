@@ -241,6 +241,9 @@
                                 </tr>
                             @endforeach
                         </table>
+                        <div class="mt-3">
+                            {{ $usuarios->withQueryString()->links() }}
+                        </div>
                     </div>
                 </div>
             </section>

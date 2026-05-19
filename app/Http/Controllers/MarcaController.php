@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Marca;
-use App\MOdels\Perfume;
+use App\Models\Perfume;
 use Illuminate\Http\Request;
 
 class MarcaController extends Controller
@@ -114,8 +114,22 @@ class MarcaController extends Controller
     {
         $marca = Marca::findOrFail($id);
 
+        // Verificar si tiene perfumes relacionados
+        if ($marca->perfumes()->exists()) {
+
+            return redirect()->back()->with(
+                'error',
+                'No puedes eliminar una marca con perfumes registrados.'
+            );
+        }
+
+        // Eliminar marca
         $marca->delete();
-        return redirect()->back()->with('success', 'Marca eliminada correctamente');
+
+        return redirect()->back()->with(
+            'success',
+            'Marca eliminada correctamente'
+        );
     }
     
     public function perfumes()

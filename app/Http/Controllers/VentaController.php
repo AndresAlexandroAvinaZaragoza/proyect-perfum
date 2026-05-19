@@ -163,7 +163,7 @@ class VentaController extends Controller
             // =====================================================
             // DEVOLVER STOCK DE DECANTS
             // =====================================================
-
+            /*
             foreach ($venta->detallesDecants as $detalleDecant) {
 
                 // devolver stock al inventario_decants
@@ -190,7 +190,7 @@ class VentaController extends Controller
                     );
                 }
             }
-
+        */
             // =====================================================
             // ELIMINAR DEUDA SI EXISTE
             // =====================================================
@@ -238,7 +238,7 @@ class VentaController extends Controller
         $query = Venta::with(['cliente', 'usuario', 'perfume', 'marca'])
         ->orderBy('created_at', 'desc');
 
-if ($request->search) {
+        if ($request->search) {
 
         $query->where(function($q) use ($request) {
                 $q->where('folio', 'like', '%' . $request->search . '%')

@@ -46,8 +46,9 @@ class ClienteController extends Controller
     public function store(Request $request){
         $request->validate([
             'nombre' => 'required|max:100|unique:clientes,nombre',
-            'celular' => 'required|max:15|unique:clientes,celular',
+            'celular' => 'required|min:10|max:15|unique:clientes,celular',
         ],[
+            'celular.min' => 'El número de celular debe tener al menos 10 caracteres',
             'nombre.unique' => 'Ya existe un cliente con ese nombre',
             'celular.unique' => 'Ya existe un cliente con ese número de celular',
         ]);
@@ -72,8 +73,9 @@ class ClienteController extends Controller
 
         $request->validate([
             'nombre' => 'required|max:100|unique:clientes,nombre,' . $id,
-            'celular' => 'required|max:15|unique:clientes,celular,' . $id,
+            'celular' => 'required|min:10|max:15|unique:clientes,celular,' . $id,
         ],[
+            'celular.min' => 'El número de celular debe tener al menos 10 caracteres',
             'nombre.unique' => 'Ya existe un cliente con ese nombre',
             'celular.unique' => 'Ya existe un cliente con ese número de celular',
         ]);

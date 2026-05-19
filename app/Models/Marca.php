@@ -13,4 +13,8 @@ class Marca extends Model
     {
         return $this->belongsTo(User::class, 'usuario_id');
     } 
+        public function perfumes()
+    {
+        return $this->hasMany(Perfume::class);
+    }
 }

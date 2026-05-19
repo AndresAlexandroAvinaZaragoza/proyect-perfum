@@ -24,7 +24,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1>Gestion de Marcas</h1>
-                        <p>Directorio Global de Fabricantes</p>
+                        <p>Módulo encargado de la gestión de marcas de perfumes, permitiendo registrar, editar, consultar y administrar las diferentes marcas disponibles dentro del sistema.</p>
                     </div>
 
                     <button class="btn btn-outline-warning btn-lg" data-bs-toggle="modal" data-bs-target="#agregarMarca">
@@ -105,10 +105,10 @@
 
                                                         <div class="w-100">
                                                             <h5 class="modal-title mb-1 h5-custom" id="editLabel{{ $marca->id }}">
-                                                                Registrar una Nueva Marca
+                                                                Editar Marca
                                                             </h5>
                                                             <p class="mb-0 small p-custom">
-                                                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                                                Complete la información requerida para editar la marca de perfume
                                                             </p>
                                                         </div>
 
@@ -128,7 +128,7 @@
                                                         <div class="modal-body modal-custom-body">
 
                                                             <div class="mb-3">
-                                                                <label for="nombre" class="form-label label-color">Agregar Marca</label>
+                                                                <label for="nombre" class="form-label label-color">Nombre de la Marca</label>
                                                                 <input type="text"
                                                                     class="form-control custom-input"
                                                                     id="nombre"
@@ -183,7 +183,7 @@
 
                                                                 <button type="submit"
                                                                         class="btn btn-primary">
-                                                                    Guardar Marca
+                                                                    Actualizar Marca
                                                                 </button>
                                                             </div>
 

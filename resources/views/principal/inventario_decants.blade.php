@@ -19,7 +19,10 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h1>Gestion de Inventario de Decants</h1>
-                        <p>Directorio Global de Fabricantes</p>`
+                        <p>
+                            Módulo diseñado para controlar el stock de decants disponibles, facilitando el <br>
+                            seguimiento de cantidades, movimientos y disponibilidad de cada presentación.
+                        </p>
                     </div>
 
                     <div class="d-flex gap-4 ">
@@ -162,7 +165,8 @@
                                                                 Editar Decant 
                                                             </h5>
                                                             <p class="mb-0 small p-custom">
-                                                                Complete la información requerida para el acceso al sistema administrativo de perfumes
+                                                                Complete la información requerida para actualizar el decant en el inventario. <br>
+                                                                Asegúrese de ingresar datos precisos para mantener un control efectivo del stock y la disponibilidad de cada presentación.
                                                             </p>
                                                         </div>
 

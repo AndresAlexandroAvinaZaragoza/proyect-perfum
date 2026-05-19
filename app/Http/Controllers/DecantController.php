@@ -12,6 +12,7 @@ use App\Models\InventarioDecants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\DetalleVentaDecant;
 
 class DecantController extends Controller
 {
@@ -117,9 +118,8 @@ class DecantController extends Controller
 
 
     public function store(Request $request)
-    {   
-
-        try{
+    {
+        try {
 
             $request->validate([
                 'inventario_id' => 'required|exists:inventarios,id',
@@ -131,32 +131,41 @@ class DecantController extends Controller
                 'precio_30ml' => 'required|numeric|min:0|max:9999.99',
             ]);
 
-            // VALIDAR QUE EL DECANT BASE NO EXISTA PARA EL MISMO PERFUME
-            $existingDecant = Decant::where('perfume_id', $request->inventario_id)->first();
-            if ($existingDecant) {
-                return redirect()->back()->with('error', 'Ya existe un decant base para este perfume.');
-            }
-
-            $decant = new Decant();
-            // Buscar el inventario
+            // Buscar inventario
             $inventario = Inventario::findOrFail($request->inventario_id);
 
-            // Obtener precio de compra desde el inventario de BD   
+            // Validar si ya existe un decant para este perfume
+            $existingDecant = Decant::where(
+                'perfume_id',
+                $inventario->perfume_id
+            )->first();
+
+            if ($existingDecant) {
+
+                return redirect()->back()->with(
+                    'error',
+                    'Ya existe un decant base para este perfume.'
+                );
+            }
+
+            // Obtener datos
             $precioCompra = $inventario->precio_compra;
             $contenido = $inventario->perfume->contenido;
-            $inventario_id = $inventario->perfume->id;
+            $perfume_id = $inventario->perfume->id;
+
+            // Crear decant
+            $decant = new Decant();
 
             $decant->inventario_id = $request->inventario_id;
             $decant->precio_botella = $precioCompra;
             $decant->cantidad_restante = $contenido;
-            $decant->perfume_id = $inventario_id;
+            $decant->perfume_id = $perfume_id;
             $decant->user_id = auth()->id();
             $decant->empresa_id = 1;
+
             $decant->save();
 
-            // Guardar precios en la tabla precios decants
-
-            // Arreglo de precios desde el form
+            // Precios
             $precios = [
                 1 => $request->precio_1ml,
                 2 => $request->precio_2ml,
@@ -167,7 +176,9 @@ class DecantController extends Controller
             ];
 
             foreach ($precios as $ml => $precio) {
+
                 if ($precio > 0) {
+
                     DB::table('precios_decants')->insert([
                         'ml' => $ml,
                         'precio' => $precio,
@@ -179,13 +190,22 @@ class DecantController extends Controller
                 }
             }
 
-        }catch(\Exception $e){
-            DB::rollBack();
-            Log::error('Error al registrar decant base', ['error' => $e->getMessage()]);
-            return redirect()->back()->with('error', 'No se pudo registrar el decant base.');
+        } catch (\Exception $e) {
+
+            Log::error('Error al registrar decant base', [
+                'error' => $e->getMessage()
+            ]);
+
+            return redirect()->back()->with(
+                'error',
+                'No se pudo registrar el decant base.'
+            );
         }
-        
-        return redirect()->back()->with('success', 'Decant registrado exitosamente.');
+
+        return redirect()->back()->with(
+            'success',
+            'Decant registrado exitosamente.'
+        );
     }
 
     public function update(Request $request, $id)
@@ -380,8 +400,20 @@ class DecantController extends Controller
     {
         try {
             $decant = Decant::findOrFail($id);
+            
+            if($decant->cantidad_restante > 0){
+                return redirect()->back()->with('error', 'No se puede eliminar un decant que aún tiene líquido restante');
+            }
+            if($decant->inventarioDecants()->exists()){
+                return redirect()->back()->with('error', 'No se puede eliminar el decant porque tiene inventario asociado');
+            }
+
+            
             $decant->delete();
+            
+
         } catch (\Exception $e) {
+            //dd($e->getMessage());
             return redirect()->back()->with('error', 'No se pudo eliminar el decant.');
         }
 

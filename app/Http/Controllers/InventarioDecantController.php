@@ -10,6 +10,7 @@ use App\Models\Perfume;
 use App\Models\Inventario;
 use App\Models\Decant;
 use App\Models\InventarioDecants;
+use App\Models\DetalleVentaDecant;
 use Illuminate\Http\Request;
 
 class InventarioDecantController extends Controller
@@ -70,6 +71,16 @@ class InventarioDecantController extends Controller
 
     public function destroy($id){
         $inventarioDecant = InventarioDecants::findOrFail($id);
+
+        // Evitar eliminación si hay detalles de venta que referencien este inventario_decant_id
+        if($inventarioDecant->detalleVentaDecants()->exists() || 
+           \App\Models\DetalleVentaDecant::where('inventario_decant_id', $inventarioDecant->id)->exists()){
+            return redirect()->back()->with(
+                'error',
+                'No se puede eliminar el decant del inventario porque tiene ventas asociadas'
+            );
+        }
+
         $inventarioDecant->delete();
 
         return back()->with('success', 'Decant eliminado del inventario correctamente');

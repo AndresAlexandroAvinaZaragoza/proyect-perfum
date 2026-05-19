@@ -20,18 +20,42 @@ class Perfume extends Model
     } 
 
 
-    public function ventas(): BelongsToMany
-    {
-        return $this->belongsToMany(Venta::class, 'detalle__ventas', 'venta_id')
-            ->withPivot('cantidad', 'precio_unitario', 'subtotal');
-    }
 
     public function detallesPedido()
     {
         return $this->hasMany(DetallePedido::class);
     }
 
-    public function pedidos(){
-        return $this->belongsToMany(PedidosController::Class);
+
+    public function decants()
+    {
+        return $this->hasMany(Decant::class);
     }
+
+    public function inventarios()
+    {
+        return $this->hasMany(Inventario::class);
+    }
+
+    public function inventarioDecants()
+    {
+        return $this->hasMany(InventarioDecant::class);
+    }
+
+    public function detalleVenta()
+    {
+        return $this->hasMany(Detalle_Venta::class);
+    }
+
+    public function DetalleVentaDEcant()
+    {
+        return $this->hasMany(DetalleVentaDecant::class);
+    }
+
+    
+
+
+    
+
+
 }
