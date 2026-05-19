@@ -193,10 +193,6 @@
                                 <strong class="h6-custom" id="subtotal_display">$0</strong>
                             </div>
 
-                            <div class="d-flex justify-content-between mt-2">
-                                <h6 class="h6-custom">IVA:</h6>
-                                <strong id="iva_display" class="h6-custom">$0</strong>
-                            </div>
                         </div>
                         
 
