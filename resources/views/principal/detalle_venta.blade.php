@@ -28,8 +28,6 @@
                     Imprimir Ticket
             </a>
 
-
-            <button class="btn btn-warning btn-sm fw-bold">Enviar Recibo</button>
         </div>
     </div>
 

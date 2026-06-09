@@ -25,8 +25,6 @@
         <!-- DERECHA -->
         <div class="d-flex flex-wrap gap-2">
 
-            <button id="exportarBtn" class="btn btn-outline-gold">Exportar</button>
-
             <a href="{{ route('venta.index') }}" class="btn btn-outline-warning">
                 <i class="bi bi-cart"></i> Hacer venta
             </a>

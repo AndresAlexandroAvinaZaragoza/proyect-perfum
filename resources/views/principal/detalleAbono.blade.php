@@ -21,12 +21,6 @@
                 Ver Venta
             </a>
 
-            <a href=""
-               target="_blank"
-               class="btn btn-outline-gold btn-sm">
-                Descargar PDF
-            </a>
-
         </div>
 
     </div>
