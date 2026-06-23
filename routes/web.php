@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\PedidosController;
 use App\Http\Controllers\InventarioDecantController;
@@ -68,6 +68,10 @@ Route::get('/venta/{id}/ticket', [VentaController::class, 'ticket'])
     ->name('venta.pdf2');
 
 Route::get('/pedidos/{id}/pdf', [PedidosController::class, 'pdf'])->name('pedidos.pdf');
+
+//ruta para Landing page
+Route::resource('index', PageController::class);
+
 
 
 require __DIR__.'/auth.php';
