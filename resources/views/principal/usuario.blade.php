@@ -73,6 +73,7 @@
                                 <th>Nombre</th>
                                 <th>Correo</th>
                                 <th>Registro</th>
+                                <th>Rol</th>
                                 <th>Acciones</th>
                             </tr>
                             @foreach ($usuarios as $usuario)
@@ -80,6 +81,7 @@
                                     <td>{{ $usuario->name }}</td>
                                     <td>{{ $usuario->email }}</td>
                                     <td>{{ $usuario->created_at }}</td>
+                                    <td>{{ $usuario->rol }}</td>
                                     <td>
                                         
                                         <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#edit{{ $usuario->id }}">

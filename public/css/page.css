@@ -53,9 +53,27 @@ body{
 }
 
 .dashboard-image{
+    width:100%;
+    height:auto;
     border-radius:20px;
-    box-shadow:
-    0 20px 60px rgba(255,193,7,.15);
+    box-shadow:0 20px 60px rgba(255,193,7,.15);
+}
+
+.feature-list{
+    list-style:none;
+    padding:0;
+}
+
+.feature-item{
+    margin-bottom:2rem;
+}
+
+.feature-item h3{
+    font-size:2rem;
+}
+
+.feature-item p{
+    font-size:1.1rem;
 }
 
 /* Badge */
