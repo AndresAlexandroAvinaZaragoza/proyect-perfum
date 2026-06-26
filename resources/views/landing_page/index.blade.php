@@ -40,11 +40,17 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#contact">Contacto</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class=" btn btn-outline-warning" href="{{ route('login') }}">Iniciar Sesión</a>
+                        </li>
                     </ul>
 
                     <a href="#" class="btn btn-gold ms-lg-3">
                         Demo
                     </a>
+
+                    
                 </div>
             </div>
         </nav>
@@ -79,7 +85,7 @@
                         </p>
 
                         <div class="mt-4">
-                            <a href="#" class="btn btn-gold btn-lg me-3">
+                            <a href="{{ route('register') }}" class="btn btn-gold btn-lg me-3">
                                 Comenzar
                             </a>
 
